@@ -5,10 +5,9 @@ these needs a decision from Matt and Aldric, not an implementation.
 
 ## Naming
 
-- **`build-loop.feature` is misnamed.** "Build" is what the *student*
-  does, not what the factory does. Aldric floated "run validation or
-  whatever" and we ran out of time. The file describes the outer loop:
-  the plan, the tasks, and when the factory stops.
+- ~~`build-loop.feature` is misnamed.~~ Settled: one `factory.feature`
+  per iteration, holding the whole spec of the factory at that point. We
+  could not see a slice better than not slicing.
 - **The inner step has no name.** A *pass* is a doer and a validator
   repeating until the validator is satisfied. One doer run inside that
   has no word. Matt reached for game-loop language — frame, step.
