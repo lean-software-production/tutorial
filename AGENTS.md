@@ -18,6 +18,21 @@ starts as a basic unvalidated loop and grows from there.
   student already built and adds behaviour to it.
 - **They build it themselves.** We do not hand over working code.
 
+## Language
+
+Use the terms in `docs/lexicon/` — `software-factory.yaml` for what we
+teach about, `teaching.yaml` for how we teach. Prefer the lexicon's word
+to a synonym, in specs, READMEs and conversation alike. The students learn
+the vocabulary from these materials, so the materials have to be
+consistent.
+
+The lexicon is not finished. When you hear us using a word that is not in
+it, or using a term differently from how it is defined there, say so and
+ask. Sometimes we are being sloppy and you should correct us; sometimes
+the lexicon needs to grow. Either way it is worth the interruption — do
+not quietly translate what we said into the nearest lexicon term, and do
+not quietly adopt a word that is missing from it.
+
 ## Scope
 
 The current spec is the tiniest one that moves forward. Anything we have
