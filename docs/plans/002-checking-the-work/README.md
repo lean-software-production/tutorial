@@ -1,11 +1,9 @@
 # Homework 2 — Checking the work
 
-Read the feature files here and make them true of the factory you built
-for homework 1.
-
-- `checking-the-work.feature` — new. The factory gains a validator.
-- `build-loop.feature` — carried forward from homework 1 and changed. A
-  pass is no longer one doer run.
+Read `factory.feature` and make it true of the factory you built for
+homework 1. It is the whole spec, not just the new parts: the rules you
+already satisfied are still there, and one of them has changed. A pass is
+no longer one doer run.
 
 Before you start, pick what your validator should look for. Testability,
 single responsibility, usability, internationalisation, security — any

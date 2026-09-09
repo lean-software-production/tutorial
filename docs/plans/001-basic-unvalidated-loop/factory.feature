@@ -1,4 +1,4 @@
-Feature: Basic unvalidated loop
+Feature: Factory
 
   The factory builds software from a seed, one task at a time, without
   anyone checking the work. Nothing validates the output, nothing feeds
