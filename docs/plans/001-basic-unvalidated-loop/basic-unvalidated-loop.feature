@@ -1,6 +1,6 @@
 Feature: Basic unvalidated loop
 
-  The factory builds software from a spec, one task at a time, without
+  The factory builds software from a seed, one task at a time, without
   anyone checking the work. Nothing validates the output, nothing feeds
   findings back, and nothing decides the work was wrong. That comes later.
 
@@ -8,21 +8,21 @@ Feature: Basic unvalidated loop
   stops. Running to completion keeps going until the plan is done. The
   examples below say which they mean.
 
-  Rule: The spec is the factory's only input
+  Rule: The seed is the factory's only input
 
-    Example: The factory is given a spec and nothing else
-      Given a spec describing a game of Tetris that runs in the terminal
+    Example: The factory is given a seed and nothing else
+      Given a seed describing a game of Tetris that runs in the terminal
       When the factory runs to completion
       Then it builds Tetris
 
-  Rule: The factory creates the plan from the spec
+  Rule: The factory creates the plan from the seed
 
-    Example: A spec with no plan yet
-      Given a spec describing a game of Tetris
+    Example: A seed with no plan yet
+      Given a seed describing a game of Tetris
       And no plan
       When the factory runs one pass
       Then a plan exists
-      And every task in it comes from the spec
+      And every task in it comes from the seed
 
     Example: A plan already exists
       Given a plan with four tasks, none of them done
