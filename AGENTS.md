@@ -26,3 +26,17 @@ later specs have somewhere to go.
 
 Take the smallest step. The levers here are large: it is easy to overshoot
 when confident and easy to veer when unsure.
+
+## Layout
+
+```
+docs/plans/001-basic-unvalidated-loop/
+    README.md      what the student is asked to do
+    *.feature      the whole spec, as of this iteration
+```
+
+One folder per iteration of the product — which is also one homework. A
+folder holds the complete set of feature files as the factory stands at
+that point, not just the new ones. A later iteration may carry a modified
+copy of an earlier feature file: the spec is a declaration of how the
+system is now, so it changes as the product changes.
