@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Print the room's voice transcript for the last N minutes (default 5),
+# condensed to one line per speaker turn.
+set -euo pipefail
+MINS="${1:-5}"
+SINCE=$(( $(date +%s000) - MINS * 60000 ))
+ensembleworks scribe transcript --since "$SINCE" | python3 -c '
+import json, sys
+entries = json.load(sys.stdin).get("entries", [])
+NOISE = {"um","uh","er","mm","mm-hmm","yeah","yes","no","okay","right","sure","so","and","like"}
+turns, last = [], None
+for e in entries:
+    name, text = e.get("name"), (e.get("text") or "").strip()
+    if not text or text.strip(".,!?").lower() in NOISE:
+        continue
+    if name == last:
+        turns[-1] += " " + text
+    else:
+        turns.append(f"{name}: {text}")
+        last = name
+if not turns:
+    print("(nothing said in this window)")
+else:
+    print("\n".join(turns))
+'
