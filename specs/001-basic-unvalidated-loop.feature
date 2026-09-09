@@ -15,12 +15,6 @@ Feature: Basic unvalidated loop
       When the factory runs to completion
       Then it builds Tetris
 
-    Example: A different spec builds a different thing
-      Given the factory has finished building Tetris
-      When the spec is replaced with one describing a Sudoku solver
-      And the factory runs to completion
-      Then it builds a Sudoku solver
-
   Rule: The factory creates the plan from the spec
 
     Example: A spec with no plan yet

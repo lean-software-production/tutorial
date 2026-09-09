@@ -1,11 +1,26 @@
 #!/usr/bin/env bash
-# Print the room's voice transcript for the last N minutes (default 5),
-# condensed to one line per speaker turn.
+# Print the room's voice transcript, condensed to one line per speaker turn.
+#
+#   recent-transcript          from where the last run stopped (no gaps)
+#   recent-transcript 15       the last 15 minutes, ignoring the watermark
+#
+# A watermark file records the last entry seen, so consecutive runs cover
+# every word said in between however long you spent working.
 set -euo pipefail
-MINS="${1:-5}"
-SINCE=$(( $(date +%s000) - MINS * 60000 ))
-ensembleworks scribe transcript --since "$SINCE" | python3 -c '
-import json, sys
+MARK="${TMPDIR:-/tmp}/.listen-watermark"
+NOW=$(date +%s000)
+
+if [ $# -gt 0 ]; then
+  SINCE=$(( NOW - $1 * 60000 ))
+else
+  SINCE=$(( NOW - 10 * 60000 ))                        # first run: 10 minutes
+  [ -f "$MARK" ] && SINCE=$(cat "$MARK")
+  # never replay more than an hour, however stale the watermark
+  [ "$SINCE" -lt $(( NOW - 3600000 )) ] && SINCE=$(( NOW - 3600000 ))
+fi
+
+ensembleworks scribe transcript --since "$SINCE" | MARK="$MARK" python3 -c '
+import json, os, sys
 entries = json.load(sys.stdin).get("entries", [])
 NOISE = {"um","uh","er","mm","mm-hmm","yeah","yes","no","okay","right","sure","so","and","like"}
 turns, last = [], None
@@ -18,8 +33,8 @@ for e in entries:
     else:
         turns.append(f"{name}: {text}")
         last = name
-if not turns:
-    print("(nothing said in this window)")
-else:
-    print("\n".join(turns))
+if entries:
+    with open(os.environ["MARK"], "w") as f:
+        f.write(str(entries[-1]["t"] + 1))
+print("\n".join(turns) if turns else "(nothing said in this window)")
 '
