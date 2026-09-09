@@ -23,6 +23,7 @@ Feature: Basic unvalidated loop
       When the factory runs one pass
       Then a plan exists
       And every task in it comes from the seed
+      And none of the tasks are done
 
     Example: A plan already exists
       Given a plan with four tasks, none of them done
