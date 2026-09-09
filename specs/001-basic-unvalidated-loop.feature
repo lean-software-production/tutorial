@@ -4,41 +4,45 @@ Feature: Basic unvalidated loop
   anyone checking the work. Nothing validates the output, nothing feeds
   findings back, and nothing decides the work was wrong. That comes later.
 
+  There are two ways to run it. Running one pass does a single task and
+  stops. Running to completion keeps going until the plan is done. The
+  examples below say which they mean.
+
   Rule: The spec is the factory's only input
 
     Example: The factory is given a spec and nothing else
       Given a spec describing a game of Tetris that runs in the terminal
-      When the factory runs
-      Then it starts building Tetris
+      When the factory runs to completion
+      Then it builds Tetris
 
     Example: A different spec builds a different thing
       Given the factory has finished building Tetris
       When the spec is replaced with one describing a Sudoku solver
-      And the factory runs
-      Then it starts building a Sudoku solver
+      And the factory runs to completion
+      Then it builds a Sudoku solver
 
   Rule: The factory creates the plan from the spec
 
     Example: A spec with no plan yet
       Given a spec describing a game of Tetris
       And no plan
-      When the factory runs
+      When the factory runs one pass
       Then a plan exists
       And every task in it comes from the spec
 
     Example: A plan already exists
       Given a plan with four tasks, none of them done
-      When the factory runs
+      When the factory runs one pass
       Then the plan still has those four tasks
 
-  Rule: Each pass does one task, then ends
+  Rule: Each pass does one task, then stops
 
     Example: Three tasks remain
       Given a plan with three tasks, none of them done
       When the factory runs one pass
       Then the first task has been done
       And the other two have not
-      And the factory has ended
+      And the factory has stopped
 
   Rule: The factory maintains the plan
 
@@ -50,18 +54,31 @@ Feature: Basic unvalidated loop
     Example: The next pass carries on from the last
       Given a plan whose first task is done
       When the factory runs one pass
-      Then the second task has been done
-      And the first is not done again
+      Then the plan shows the first two tasks as done
+
+  Rule: The factory commits after every pass
+
+    Example: One pass, one commit
+      Given a plan with three tasks, none of them done
+      When the factory runs one pass
+      Then there is one new commit
+
+    Example: Finished work is not redone
+      Given a plan whose first task is done
+      When the factory runs one pass
+      Then there is one new commit
+      And it contains the work for the second task
 
   Rule: The factory stops when the plan is complete
 
-    Example: Every task is done
-      Given a plan in which every task is done
-      When the factory runs
-      Then it ends without doing any work
+    Example: Work remains
+      Given a plan with three tasks, none of them done
+      When the factory runs to completion
+      Then all three tasks have been done
+      And the factory has stopped
 
-    Example: The last task finishes
-      Given a plan with one task remaining
-      When the factory runs
-      Then that task has been done
-      And the factory ends without waiting for more work
+    Example: Every task is already done
+      Given a plan in which every task is done
+      When the factory runs to completion
+      Then the factory stops without doing any work
+      And there are no new commits
