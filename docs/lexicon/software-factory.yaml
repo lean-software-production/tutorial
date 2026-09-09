@@ -1,0 +1,279 @@
+# Canonical, agent-facing lexicon data. Website grouping is generated.
+
+adversarial:
+  term: "Adversarial"
+  definition: |-
+    The concept of setting up some work to be done in opposition to the "positive" result of the outcome that we actually want, in order to determine whether the work was in fact finished. "Poke holes in this work according to these criteria". It is the stance we ask a *validator* to take toward a *doer*'s output. [→ adversarial-agents](building-blocks/adversarial-agents.md)
+
+agent:
+  term: "Agent"
+  definition: |-
+    A model placed inside a harness, so it can take action in the world — read files, run tests, query databases, call APIs — rather than only produce text. The model supplies judgment; the harness manages its lifecycle (loop, tool dispatch, permissions, stopping); a skill can define its process. Contrast a *chatbot*, whose world ends at the edge of its context window. [→ tools](building-blocks/tools.md), [harnesses](building-blocks/harnesses.md)
+
+agentic-loop:
+  term: "Agentic loop"
+  definition: |-
+    Repetition of the AI sandwich: prepare context → model reasons or calls a tool → process output → feed the result back → repeat, until a final answer or a stopping condition. The loop is controlled entirely by the harness, not the model. [→ ai-sandwich](concepts/ai-sandwich.md)
+
+ai-sandwich:
+  term: "AI sandwich"
+  definition: |-
+    The structural pattern of every agentic system: deterministic code bookends a model call. The *top slice* prepares context (prompt, history, tool definitions); the *filling* is the model inference (reasoning, synthesis, judgment — where you have least control); the *bottom slice* processes output (parsing, validation, action, error handling — where correctness lives). Your code is the bread; the model is the filling. [→ ai-sandwich](concepts/ai-sandwich.md)
+
+assembly-line:
+  term: "Assembly line"
+  definition: |-
+    An ordered sequence of *machines*, arranged as a directed graph: each machine's output becomes the input of the next, and the graph may branch or run paths in parallel. The order is fixed by whoever designed the line, not chosen by the machines while it runs. An assembly line is always part of a *factory*, which is what runs it — see *factory*. A *pipeline* is the simplest case — a straight line with no branching. [→ harnesses](building-blocks/harnesses.md)
+
+calibration-trust-calibration:
+  term: "Calibration (trust calibration)"
+  definition: |-
+    The judgment skill of knowing when to trust AI output and when to verify it. Because the tools are probabilistic, we teach calibration rather than blanket trust. [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+compaction:
+  term: "Compaction"
+  definition: |-
+    A dedicated summarization step — a model call whose only job is to compress prior history — that extends the life of a long-running conversation. A practical trigger is to compact at a fraction of the window (e.g. 70%), not at the ceiling. [→ context-window](concepts/context-window-management.md)
+
+context-editing-context-trimming:
+  term: "Context editing (context trimming)"
+  definition: |-
+    Pruning stale tool results and old reasoning from the transcript as a loop runs, to keep per-call input lean without summarizing. [→ token-cost](concepts/token-cost-and-cost-management.md)
+
+context-rot:
+  term: "Context rot"
+  definition: |-
+    The degradation of model performance as context grows. Bigger is not better: a longer window is not a free win. [→ context-window](concepts/context-window-management.md)
+
+context-window:
+  term: "Context window"
+  definition: |-
+    The total amount of text a model can "see" in a single call — system prompt, conversation history, documents, tool definitions, tool results, and the model's own response. It is the model's working memory: if something is not in the window, the model does not know it exists. [→ context-window](concepts/context-window-management.md)
+
+defensive-prompting:
+  term: "Defensive prompting"
+  definition: |-
+    Building reliability into prompts: be explicit about output format, include negative constraints ("return only the code block"), and use structured-output features that constrain the model at sampling time. [→ semantic-input-output](concepts/semantic-input-output.md)
+
+doer:
+  term: "Doer"
+  definition: |-
+    The agent that does the job. It produces the work product — the code, the plan, the document, the edits — and nothing else; checking the result is the *validator*'s job. We keep the two separate because a model that has just produced an answer is bad at finding its own errors in it. This is our canonical name for the role; older material and the wider industry also call it the *worker*, the *actor*, or *agent A*. [→ adversarial-agents](building-blocks/adversarial-agents.md)
+
+doer-validator-loop:
+  term: "Doer-validator loop"
+  definition: |-
+    The pairing run repeatedly: the doer produces output, the validator checks it against the criteria for done, the findings go back to the doer, and the cycle repeats until the validator has nothing significant left to report. In practice this settles within a few passes, but set a maximum iteration count anyway — a doer and validator can oscillate, each pass introducing a new problem. [→ adversarial-agents](building-blocks/adversarial-agents.md)
+
+eval:
+  term: "Eval"
+  definition: |-
+    A test for AI behavior: does the agent produce correct outputs, behave safely, complete the task, and stay within bounds? The unit-testing instinct applied to a probabilistic system. Main kinds: *rule-based* (exact match / regex / structure checks — fast, brittle), *model-graded* (a second LLM judges quality), *human-in-the-loop* (a person labels outputs — the ground-truth source), and *behavioral / end-to-end* (did the agent accomplish the goal, not just emit good-looking text). [→ evals](building-blocks/evals.md)
+
+eval-driven-development:
+  term: "Eval-driven development"
+  definition: |-
+    TDD applied to agents: write the eval first to define correct behavior, run it against current behavior, improve the agent, re-run, iterate. A passing eval means behavior is *probably* reliable at some confidence level, not guaranteed. [→ evals](building-blocks/evals.md)
+
+external-selection-channel:
+  term: "External selection channel"
+  definition: |-
+    A model-independent check that can actually break a shared blind spot: executable tests, type checkers, proof checkers, numeric invariants, a ground-truth lookup, or even the same model run in fresh context. "External" refers to context and mechanism, not just vendor. [→ model-diversity](concepts/model-diversity.md)
+
+factory:
+  term: "Factory"
+  definition: |-
+    A piece of software containing one or more *assembly lines* and the *orchestrator* that manages them. The factory is the unit you build, deploy, and operate; the machines inside it are components of it rather than things you ship on their own. [→ harnesses](building-blocks/harnesses.md)
+
+freshness-stale-index:
+  term: "Freshness (stale index)"
+  definition: |-
+    The RAG concern that vector indexes go stale and produce confidently wrong answers from outdated content. For rapidly changing data, tool-based retrieval (always current) beats indexed retrieval. [→ rag](concepts/rag.md)
+
+grounding:
+  term: "Grounding"
+  definition: |-
+    Anchoring an agent's answers in actual, specific context — your code, docs, systems, history — via retrieval. The difference between an agent that *sounds* smart and one that is actually useful. [→ rag](concepts/rag.md)
+
+hallucination:
+  term: "Hallucination"
+  definition: |-
+    When a model generates plausible-sounding but factually wrong content (invented citations, wrong API signatures, fabricated dates). Not lying: the model is producing statistically likely continuations as trained. [→ semantic-input-output](concepts/semantic-input-output.md)
+
+harness:
+  term: "Harness"
+  definition: |-
+    The code and infrastructure wrapping a model call — everything except the model itself. The moment you add input preparation, output handling, error handling, retries, routing, permissions, logging, or stopping conditions around a raw API call, you have a harness. It is ordinary code around an extraordinary component, and it is what turns a proof-of-concept call into a workflow you can trust. Common shapes: *simple wrapper*, *loop harness*, *pipeline harness*, and *multi-agent orchestrator*. To understand an agent, understand its harness. [→ harnesses](building-blocks/harnesses.md)
+
+human-escalation:
+  term: "Human escalation"
+  definition: |-
+    The harness-defined conditions under which the system stops and asks a human: low confidence, unexpected output shape, a cost threshold, or a domain-specific heuristic. [→ harnesses](building-blocks/harnesses.md)
+
+human-in-the-loop:
+  term: "Human-in-the-loop"
+  definition: |-
+    A review checkpoint inserted before high-stakes, side-effecting actions (sending email, writing to a database). The model *saying* it will do something is not the same as it being done, so those steps are kept separated. Also the gold-standard source of eval ground truth. [→ semantic-input-output](concepts/semantic-input-output.md), [evals](building-blocks/evals.md)
+
+idempotency:
+  term: "Idempotency"
+  definition: |-
+    The property that an operation can be safely repeated: a harness can be re-run after a partial failure, and calling the same tool twice with the same arguments is safe. Design for restartability from the start. [→ harnesses](building-blocks/harnesses.md)
+
+iteration:
+  term: "Iteration"
+  definition: |-
+    A bounded batch of work handed to an agent between check-ins, sized to a task rather than a clock. You (or the agent) scope what's in for this pass, let it run, then review before deciding the next one. Distinct from the *agentic loop* (the model-tool cycle inside a single call) and from *sub-agent* (a separate context window): iteration is the human-facing unit of how much to hand off before looking again. The word is overloaded in the wild, so confirm what scope is meant when it's ambiguous. [→ harnesses](building-blocks/harnesses.md)
+
+inputoutput-cost-asymmetry:
+  term: "Input/output cost asymmetry"
+  definition: |-
+    Output tokens cost several times more than input tokens (typically 3–6×), because generation is autoregressive (one pass per token) while input is processed in parallel. A long prompt is usually cheaper than a long response. [→ token-cost](concepts/token-cost-and-cost-management.md)
+
+judge-llm-judge-judge-agent:
+  term: "Judge (LLM judge / judge agent)"
+  definition: |-
+    A second model that scores or selects output: the grader in a model-graded eval, or the arbiter in a tournament. Distinct from a *validator*, which checks one piece of work against its criteria; a judge compares candidates or assigns a score. A judge is only as good as its prompt, which is itself a skill that needs testing. [→ evals](building-blocks/evals.md), [adversarial-agents](building-blocks/adversarial-agents.md)
+
+lens:
+  term: "Lens"
+  definition: |-
+    A focused angle of attention brought to a wall of text: security, performance, architecture, reliability, UX, maintainability, or product risk. Choosing a lens narrows what you look for, so the signal you care about surfaces instead of drowning in everything else. [→ load-human-context](../../workshops/load-human-context/runbook.md)
+
+machine:
+  term: "Machine"
+  definition: |-
+    An *agent* running in a non-interactive harness: it is handed its inputs, runs to completion, and returns a result, with no human in the conversation while it works. Non-interactivity is the whole of the distinction — see *agent* for everything else. The internals can be a model call or ordinary deterministic code; from the *assembly line*'s point of view it makes no difference. A machine can be a *doer* or a *validator*. [→ harnesses](building-blocks/harnesses.md)
+
+mcp-model-context-protocol:
+  term: "MCP (Model Context Protocol)"
+  definition: |-
+    An open standard (created by Anthropic) for connecting models to external systems, data, and tools, replacing the M×N custom-integration problem with one protocol. An *MCP host* (the AI app) runs one *MCP client* per connected *MCP server*; servers expose three *primitives* — **tools** (executable functions), **resources** (read-oriented data), and **prompts** (reusable templates) — over *stdio* (local) or *streamable HTTP* (remote), with runtime capability discovery. [→ mcp](building-blocks/mcp.md)
+
+memory-systems:
+  term: "Memory systems"
+  definition: |-
+    Injecting summaries or records of past interactions so an agent has continuity across sessions instead of starting from scratch each time. A form of RAG. [→ rag](concepts/rag.md)
+
+model-diversity:
+  term: "Model diversity"
+  definition: |-
+    There is no single "the AI." Frontier models are not interchangeable; the same prompt often yields materially different answers. Which model you pick is itself a design decision. We use *the three big brains* — Claude (Anthropic), Gemini (Google), ChatGPT/GPT (OpenAI) — as shorthand to break the single-oracle mental model. [→ model-diversity](concepts/model-diversity.md)
+
+model-drift:
+  term: "Model drift"
+  definition: |-
+    Behavior changing when the model version changes underneath you. The reason prompts must be re-tested on version changes and periodically. [→ semantic-input-output](concepts/semantic-input-output.md)
+
+model-routing-cascades:
+  term: "Model routing (cascades)"
+  definition: |-
+    Sending each task to the cheapest model that can handle it, often as a cascade: try a cheap model first, escalate to a stronger one only when confidence is low or a check fails. Requires a reliable signal for "not good enough." [→ token-cost](concepts/token-cost-and-cost-management.md)
+
+model-tiers:
+  term: "Model tiers"
+  definition: |-
+    The flagship / mid / small ladder (e.g. Opus / Sonnet / Haiku). The small-fast tier is often 5× cheaper or more; picking the right-sized model is the cheapest cost "feature" available. [→ token-cost](concepts/token-cost-and-cost-management.md)
+
+orchestrator:
+  term: "Orchestrator"
+  definition: |-
+    The part of a *factory* that manages its *assembly lines*: starting a line, handing each machine its inputs, choosing what runs next where the graph branches, handling failures and retries, and deciding when the line is finished. It does not do the work itself; it decides which machine does. [→ harnesses](building-blocks/harnesses.md)
+
+overfitting-evals:
+  term: "Overfitting evals"
+  definition: |-
+    When an agent aces the eval set but fails in production because it was tuned to the eval cases rather than the underlying behavior. Mitigated by held-out cases, evals drawn from real usage, and rotating in new cases. [→ evals](building-blocks/evals.md)
+
+permission-model:
+  term: "Permission model"
+  definition: |-
+    The tiers a harness uses to gate tool calls: *always allow*,
+    *ask once per session*, *ask every time*, *never allow*. Design it before deployment;
+    tightening permissions after users build workflows on permissiveness is much harder.
+    [→ tools](building-blocks/tools.md)
+
+pipeline:
+  term: "Pipeline"
+  definition: |-
+    As a *multi-agent pattern*: a *doer* produces output, a *validator* reviews it, findings go back to the doer or a human — sequential, correctness over speed. As a *harness*: a fixed sequence of agents where each output is the next input, with deterministic routing so every input runs every stage — an *assembly line* with no branching. [→ adversarial-agents](building-blocks/adversarial-agents.md), [harnesses](building-blocks/harnesses.md)
+
+projection:
+  term: "Projection"
+  definition: |-
+    Re-rendering the same information into a shape a human can actually use, such as a table, diagram, map, lifecycle, flow, or marked-up page, instead of reading it in its raw form. The content does not change; only its shape does, to match how a person reads. [→ load-human-context](../../workshops/load-human-context/runbook.md)
+
+prompt-framing-wording-sensitivity:
+  term: "Prompt framing (wording sensitivity)"
+  definition: |-
+    Because the model is a context-completion engine, how a task is framed — persona, wording, order of information — is itself a major input that strongly affects output. Prompt changes are system-behavior changes: track, test, and version them. [→ semantic-input-output](concepts/semantic-input-output.md)
+
+rag-retrieval-augmented-generation:
+  term: "RAG (Retrieval-Augmented Generation)"
+  definition: |-
+    **Any process that dynamically adds context-relevant information to a prompt at runtime.** The mental model is "find the right stuff → put it in the prompt → ask the question." The mechanism is an implementation detail and includes: *classic RAG* (vector embeddings + similarity search), *keyword / full-text search* (BM25), *tool-based retrieval* (the agent calls a search/API/DB tool — dominant in agentic systems), *structured retrieval* (query a database, inject the rows), *file injection* (pass a file straight into the prompt), and *memory systems*. We use this broad definition deliberately: if it dynamically shapes the prompt with relevant information, it's RAG. [→ rag](concepts/rag.md)
+
+relevance-vs-context-bloat:
+  term: "Relevance vs. context bloat"
+  definition: |-
+    The RAG tradeoff: more retrieved content raises the chance of including what you need, but also raises cost, noise, and latency and can bury the signal. The goal is precision, not volume. [→ rag](concepts/rag.md)
+
+seed:
+  term: "Seed"
+  definition: |-
+    The raw material going into a *orchestrator*. Depending on what the target assembly line does, and
+    therefore what it needs as input, the seed
+    might be anything from a vague idea, or a screenshot, or a codebase you want to
+    port, to a full specification.    
+    The seed is the definition for the work to be done, the assembly line is responsible for doing the work with the appropriate precision and accuracy.
+    [→ seed](software-factory/seed.md)
+
+selective-inclusion:
+  term: "Selective inclusion"
+  definition: |-
+    Including only what's relevant to the current step, rather than adding content out of habit or caution. The core discipline of context management. [→ context-window](concepts/context-window-management.md)
+
+semantic-interface:
+  term: "Semantic interface"
+  definition: |-
+    The LLM programming model: natural-language (semantic) input in, natural-language output out, with the contract defined by *meaning* rather than structure. Powerful (expresses hard-to-formalize tasks) but fuzzy by definition, so it requires empirical testing and degrades unpredictably rather than failing cleanly. A key consequence: the model generates what is *statistically plausible*, not necessarily what is *true*. [→ semantic-input-output](concepts/semantic-input-output.md)
+
+skill:
+  term: "Skill"
+  definition: |-
+    A markdown file that encodes a *process* — a structured, step-by-step way to approach a class of problem — which the agent reads and follows (often invoked via a *slash command* like `/review-pr`). A skill is not a task; it separates the task ("review this PR," given at invocation) from the process ("here's how we review PRs," encoded once). A well-formed skill states its **goal**, **steps**, **criteria for done**, and **when to escalate to a human**. Skills are crystallized prompt engineering, kept in the repo and improved via pull requests. Tools are the hands; skills are the mind that directs them. [→ skills](building-blocks/skills.md)
+
+structured-outputs:
+  term: "Structured outputs"
+  definition: |-
+    A schema-constrained response, tighter than free prose. Serves double duty: an output-token cost control *and* an output-validation technique. [→ token-cost](concepts/token-cost-and-cost-management.md), [semantic-input-output](concepts/semantic-input-output.md)
+
+structured-prompts:
+  term: "Structured prompts"
+  definition: |-
+    Writing system prompts like dense internal documentation — clear, no fluff, no redundancy — so every sentence earns its place. About token efficiency, not terseness for its own sake. [→ context-window](concepts/context-window-management.md)
+
+sub-agent:
+  term: "Sub-agent"
+  definition: |-
+    A separate model call with its own fresh context window. Decomposing a task across sub-agents keeps each one's context small and relevant, at the cost of coordination overhead and more total calls. [→ context-window](concepts/context-window-management.md)
+
+token:
+  term: "Token"
+  definition: |-
+    The atomic unit of model input and output: a subword piece, roughly 4 characters of English or about ¾ of a word. Tokens are the unit of both capacity (how much fits in the context window) and cost (you pay per token, on both input and output). [→ context-window](concepts/context-window-management.md), [token-cost](concepts/token-cost-and-cost-management.md)
+
+tool:
+  term: "Tool"
+  definition: |-
+    A named, typed capability the model can invoke to act in the world or retrieve information it doesn't already have. Tools are what turn a language model from a text autocompleter into an agent. [→ tools](building-blocks/tools.md)
+
+tool-schema-tool-definition:
+  term: "Tool schema (tool definition)"
+  definition: |-
+    A tool's name, description, and JSON parameter schema, provided to the model as context. The schema is the contract for valid inputs — like defining an RPC interface where the caller is non-deterministic. [→ tools](building-blocks/tools.md)
+
+validator:
+  term: "Validator"
+  definition: |-
+    The agent that verifies the job was done satisfactorily. It is given the *doer*'s output plus the original criteria, and reports what is wrong, missing, or unsupported. Because it did not write the work, it has nothing to defend, so it looks for problems instead of justifying choices. Different mandates find different things — check the output against the spec, try to falsify a specific claim, attack it as a hostile user would, or argue the whole approach was the wrong one. A validator can be wrong too, so it should report issues with evidence rather than asserting corrections. This is our canonical name for the role; older material and the wider industry also call it the *critic*, the *reviewer*, the *verifier*, or *agent B*. [→ adversarial-agents](building-blocks/adversarial-agents.md)

@@ -1,0 +1,63 @@
+# Canonical, agent-facing teaching lexicon: how we teach, not what we teach
+# about. Not mounted by the website — never published (ADR-0013).
+
+andragogy:
+  term: "Andragogy"
+  definition: |-
+    Malcolm Knowles's model of *adult* learning (vs. *pedagogy*, child learning). Adults learn best under six conditions: self-direction, use of prior experience, readiness to learn ("why should I learn this?"), a problem-centered orientation, internal motivation, and immediate relevance to their work. [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+cognitive-load:
+  term: "Cognitive load"
+  definition: |-
+    From working-memory research (Sweller): the limit on how much a person can process at once. Justifies keeping exercises short and raising difficulty gradually. [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+deliberate-practice:
+  term: "Deliberate practice"
+  definition: |-
+    Anders Ericsson's concept of practice that drives improvement, distinct from ordinary repetition. Four traits: specific well-defined goals, immediate accurate feedback, a slight stretch beyond the comfort zone, and repetition with variation. [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+dreyfus-model-of-skill-acquisition:
+  term: "Dreyfus model of skill acquisition"
+  definition: |-
+    Five stages a learner moves through in any domain, each with different needs: *Novice* (follows context-free rules), *Advanced beginner* (recognizes situational patterns, needs maxims), *Competent* (deliberate planning, needs decision frameworks), *Proficient* (intuitive perception, deliberate response), *Expert* (fluid intuitive action; needs edge cases and chances to teach). [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+four-cs-training-from-the-back-of-the-room:
+  term: "Four Cs (Training from the Back of the Room)"
+  definition: |-
+    Sharon Bowman's workshop design sequence: Connections → Concepts → Concrete Practice → Conclusions. Use it as a facilitation check: connect learners to relevance, teach only what they need for the next move, let them practice, then have them make meaning and choose a next step. [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+identity-threat:
+  term: "Identity threat"
+  definition: |-
+    The reaction AI tools can trigger in experienced engineers ("Is my expertise being devalued? Will I become obsolete?"). Not irrational, so dismissing it breeds defensiveness; best addressed by framing AI as an added capability layer, not a replacement. [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+kolb-cycle-experiential-learning:
+  term: "Kolb cycle (experiential learning)"
+  definition: |-
+    David Kolb's four-stage cycle in which learning sticks: Concrete Experience → Reflective Observation → Abstract Conceptualization → Active Experimentation → (back to experience). Reflection is the stage most workshops skip and where pattern recognition begins. [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+need-to-know-concepts:
+  term: "Need-to-know concepts"
+  definition: |-
+    The minimum vocabulary, model, example, or demo learners need to do the next practice or make the next decision. Everything else is nice-to-know and belongs in references, details, or a later debrief. [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+psychological-safety:
+  term: "Psychological safety"
+  definition: |-
+    Amy Edmondson's concept: a prerequisite for group learning. Participants must feel that trying and failing won't damage their standing among peers — especially important with probabilistic tools that produce embarrassing results. [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+self-efficacy:
+  term: "Self-efficacy"
+  definition: |-
+    Albert Bandura's theory that belief in one's own ability predicts persistence. Early *small wins* predict willingness to push through harder challenges, so opening exercises must leave participants feeling capable. [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+70-20-10-principle:
+  term: "70-20-10 principle"
+  sortAs: "Seventy-twenty-ten principle"
+  definition: |-
+    Effective professional development draws roughly 70% from challenging on-the-job experience, 20% from social learning (feedback, coaching, peer discussion), and 10% from formal instruction. [→ adult-skill-acquisition](adult-skill-acquisition.md)
+
+transfer:
+  term: "Transfer"
+  definition: |-
+    Applying learning on the job. Its strongest predictor is how closely training content resembles the actual work — the case for exercises built from participants' real scenarios. [→ adult-skill-acquisition](adult-skill-acquisition.md)
