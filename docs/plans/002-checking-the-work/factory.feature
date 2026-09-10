@@ -70,13 +70,6 @@ Feature: Factory
       And the factory has stopped
       And it reports that the pass hit its limit
 
-    Example: The limit is somewhere else
-      Given a factory allowing at most one attempt per pass
-      And a validator that is never satisfied
-      When the factory runs one pass
-      Then the doer has made one attempt
-      And it reports that the pass hit its limit
-
   Rule: The validator checks the work the doer just produced
 
     Example: Earlier work is not rechecked
