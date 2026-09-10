@@ -1,5 +1,8 @@
 # Open questions
 
+Homework for days 2 and 3 is specced. Next: the live-session conversation
+prompts for those days, then homework for day 4.
+
 One homework is one iteration. Iteration 1 is set after day 2, iteration
 2 after day 3 — so iteration N is the homework for day N+1, for now.
 
@@ -11,12 +14,16 @@ these needs a decision from Matt and Aldric, not an implementation.
 - ~~`build-loop.feature` is misnamed.~~ Settled: one `factory.feature`
   per iteration, holding the whole spec of the factory at that point. We
   could not see a slice better than not slicing.
-- **The inner step has no name.** A *pass* is a doer and a validator
-  repeating until the validator is satisfied. One doer run inside that
-  has no word. Matt reached for game-loop language — frame, step.
-- **`plan` and `pass` are not in the lexicon**, and both carry weight in
-  the specs. Looks like the lexicon needs to grow rather than us being
-  sloppy. Matt: not now.
+- ~~The inner step has no name.~~ Settled: **attempt**, and **max
+  attempts** for the limit. It names the try at the task rather than the
+  machinery — you run a machine, you attempt a task — so it spans the
+  doer and the validator.
+- **`plan`, `pass`, `run` and `attempt` are not in the lexicon**, and all
+  carry weight in the specs. The real decision is whether to fork:
+  `docs/lexicon/` here is a copy of the canonical one in `workshops`, so
+  adding terms here makes the two diverge. Options: add here and accept
+  the fork, add upstream and refresh the copy, or leave them undefined.
+  Parked — we were getting bogged down in language.
 
 ## Behaviour we have not specified
 
