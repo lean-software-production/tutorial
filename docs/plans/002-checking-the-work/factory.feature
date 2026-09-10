@@ -55,6 +55,28 @@ Feature: Factory
       Then the doer has run again
       And the pass ends once the validator is satisfied
 
+  Rule: A pass gives up after a set number of attempts
+
+    A doer and a validator can oscillate, each attempt introducing a new
+    problem, so a pass cannot be allowed to run forever. How the limit is
+    set is up to the student — a flag, a setting, whatever suits what
+    they built.
+
+    Example: The validator is never satisfied
+      Given a factory allowing at most three attempts per pass
+      And a validator that is never satisfied
+      When the factory runs one pass
+      Then the doer has made three attempts
+      And the factory has stopped
+      And it reports that the pass hit its limit
+
+    Example: The limit is somewhere else
+      Given a factory allowing at most one attempt per pass
+      And a validator that is never satisfied
+      When the factory runs one pass
+      Then the doer has made one attempt
+      And it reports that the pass hit its limit
+
   Rule: The validator checks the work the doer just produced
 
     Example: Earlier work is not rechecked

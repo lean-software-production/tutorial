@@ -25,8 +25,11 @@ these needs a decision from Matt and Aldric, not an implementation.
   machines. We covered validation and the two machines. Routing — the
   orchestrator choosing what runs next — is arguably implicit in the
   doer/validator flow, but no rule says so.
-- **Nothing caps the doer/validator oscillation.** *Waiting for Matt and
-  Aldric to judge together — do not settle this alone.* "Until the validator
+- ~~Nothing caps the doer/validator oscillation.~~ Settled: a pass gives
+  up after a set number of attempts, and the limit is configurable rather
+  than hard-coded — a flag or whatever suits what the student built. Real
+  graph/DSL routing arrives in day 4's homework and can carry max passes
+  then. "Until the validator
   is satisfied" can run forever. The lexicon's own *doer-validator loop*
   entry warns the pair can oscillate and says set a maximum count anyway.
   Options on the table: cap the rounds, escalate to the student
@@ -34,6 +37,18 @@ these needs a decision from Matt and Aldric, not an implementation.
   purpose and let them hit it.
 - **What the factory does when it discovers new work mid-plan.** Held
   back as too sophisticated; Aldric thought it might make good homework.
+
+## Later iterations
+
+- **Steering is day 4's homework.** Aldric: what happens when the
+  validator stops and you have to decide what to do next *is* steering,
+  though we would not call it that yet. Whether iteration 2's give-up
+  behaviour is the seed of that, or something separate, is undecided.
+- **Human escalation.** Matt raised it because Fabro has it as a feature.
+  It is a lexicon term. No home yet.
+- **Does the factory keep a CLI the whole way through?** Aldric: that is
+  how we start, but by observability and monitorability there is probably
+  a server and a daemon, and the student chooses at that point.
 
 ## Craft
 
