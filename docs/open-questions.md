@@ -20,11 +20,10 @@ these needs a decision from Matt and Aldric, not an implementation.
 
 ## Behaviour we have not specified
 
-- **Routing was in scope for iteration 2 and we did not spec it.** Aldric
-  described day 3's homework as validation, basic routing, and two
-  machines. We covered validation and the two machines. Routing — the
-  orchestrator choosing what runs next — is arguably implicit in the
-  doer/validator flow, but no rule says so.
+- ~~Routing was in scope for iteration 2 and we did not spec it.~~
+  Settled: we move past it on purpose. Going from one agent to another is
+  the nascent form of routing, and it is the core of day 4's homework,
+  not this one. It stays implicit in "done and validated".
 - ~~Nothing caps the doer/validator oscillation.~~ Settled: a pass gives
   up after a set number of attempts, and the limit is configurable rather
   than hard-coded — a flag or whatever suits what the student built. Real
@@ -49,6 +48,22 @@ these needs a decision from Matt and Aldric, not an implementation.
 - **Does the factory keep a CLI the whole way through?** Aldric: that is
   how we start, but by observability and monitorability there is probably
   a server and a daemon, and the student chooses at that point.
+
+## Teaching points, not rules
+
+Things the specs deliberately leave implicit, for the workbook tutor's
+reflection questions or a live conversation prompt.
+
+- **There is already semantic routing in homework 1**, inside the prompt:
+  *if there is no plan, write a plan; otherwise do the first thing on the
+  list.* That branch is routing, and nobody has named it yet. Ask them
+  whether they can see it.
+- **The planner is not a specialist.** The machine that writes the plan
+  is the same agent doing the work, with whatever context it happens to
+  have. Ask: has anybody considered a third machine responsible for
+  nothing but making the plan?
+- **The doer-to-validator hop is routing too.** Same question, one
+  iteration later.
 
 ## Craft
 
