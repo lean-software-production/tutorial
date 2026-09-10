@@ -1,5 +1,7 @@
 # Homework 1 — Basic unvalidated loop
 
+*Set after day 2, following the Ralph loop demo.*
+
 Read `basic-unvalidated-loop.feature` and build it.
 
 How you build it is up to you. It does not have to be a bash loop, and we

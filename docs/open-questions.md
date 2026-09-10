@@ -1,5 +1,8 @@
 # Open questions
 
+One homework is one iteration. Iteration 1 is set after day 2, iteration
+2 after day 3 — so iteration N is the homework for day N+1, for now.
+
 Things we raised and deliberately did not settle. Not a backlog — each of
 these needs a decision from Matt and Aldric, not an implementation.
 
@@ -17,9 +20,18 @@ these needs a decision from Matt and Aldric, not an implementation.
 
 ## Behaviour we have not specified
 
-- **Nothing caps the doer/validator oscillation.** "Until the validator
+- **Routing was in scope for iteration 2 and we did not spec it.** Aldric
+  described day 3's homework as validation, basic routing, and two
+  machines. We covered validation and the two machines. Routing — the
+  orchestrator choosing what runs next — is arguably implicit in the
+  doer/validator flow, but no rule says so.
+- **Nothing caps the doer/validator oscillation.** *Waiting for Matt and
+  Aldric to judge together — do not settle this alone.* "Until the validator
   is satisfied" can run forever. The lexicon's own *doer-validator loop*
   entry warns the pair can oscillate and says set a maximum count anyway.
+  Options on the table: cap the rounds, escalate to the student
+  (`human-escalation` is already a lexicon term), or leave it uncapped on
+  purpose and let them hit it.
 - **What the factory does when it discovers new work mid-plan.** Held
   back as too sophisticated; Aldric thought it might make good homework.
 

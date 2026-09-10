@@ -1,5 +1,7 @@
 # Homework 2 — Checking the work
 
+*Set after day 3.*
+
 Read `factory.feature` and make it true of the factory you built for
 homework 1. It is the whole spec, not just the new parts: the rules you
 already satisfied are still there, and one of them has changed. A pass is
