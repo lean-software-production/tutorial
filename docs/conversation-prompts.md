@@ -6,7 +6,12 @@ what they will need next. The objective is usually "what happened in your
 homework", and the decisional leads to the homework we already have
 specced.
 
-Only the interpretive questions are drafted so far.
+Only the interpretive questions are drafted so far, and they are drafts
+in the weak sense: good enough to prove the shape works, not good enough
+to use. **Matt is doing the homework himself before we write these
+properly** — the conclusion on 2026-09-10 was that neither of us can
+judge these questions well without having done the work. Aldric's
+takeaway: the approach clears the threshold, the rest is hard work.
 
 ## Day 1 — not being polished, captured so it is not lost
 
@@ -31,7 +36,13 @@ Objective: show us your Tetris. Ten of them side by side, all different.
 
 - Your loop stopped. What actually made it stop — did you decide that, or
   did the agent?
+  *Weak. They will mostly get it right first time and never hit max
+  attempts — the safety net does not get tripped, so there is nothing to
+  reflect on. Better angle: why did we add that safety net at all?*
 - Point at the place in your prompt where it chooses between two things.
   Who wrote that decision?
+  *Right place: day 3 follows homework 1, where the nascent routing lives
+  in the prompt. Day 4 is where routing becomes the subject — its
+  homework is a graph/DSL for routing — so this question sets that up.*
 - What did you have to write down for the loop that you'd normally keep
   in your head?
