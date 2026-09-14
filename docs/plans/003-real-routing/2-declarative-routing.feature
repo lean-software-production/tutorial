@@ -13,30 +13,33 @@ Feature: Declarative routing
       Given this route:
         """
         digraph factory {
-          doer -> testability
-          doer -> security
-          testability -> plan
-          security -> plan
+          doer -> anthropic
+          doer -> openai
+          doer -> google
+          anthropic -> synthesiser
+          openai -> synthesiser
+          google -> synthesiser
+          synthesiser -> plan
         }
         """
       When the factory runs one pass
-      Then the doer's work goes to testability and security
-      And both of their findings go to the plan
+      Then the doer's work goes to all three validators
+      And the synthesiser's decision goes to the plan
 
   Rule: Changing the graph changes what runs
 
-    Example: A validator is added
-      Given a factory routing to testability and security
-      When usability is added to the route
+    Example: A fourth validator is added
+      Given a factory routing to three validators
+      When a fourth is added to the route
       And the factory runs one pass
-      Then the doer's work goes to all three
+      Then the doer's work goes to all four
       And no other part of the factory changed
 
     Example: A validator is removed
-      Given a factory routing to testability and security
-      When security is removed from the route
+      Given a factory routing to three validators
+      When one is removed from the route
       And the factory runs one pass
-      Then the doer's work goes only to testability
+      Then the doer's work goes to the remaining two
 
   Rule: The factory refuses a route it cannot run
 

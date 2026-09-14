@@ -4,8 +4,9 @@
 
 Do them in order:
 
-1. `1-many-validators.feature` — fan the work out to several validators
-   at once, each with its own lens and its own model.
+1. `1-many-validators.feature` — fan the work out to three validators at
+   once, same job, three different providers' models, and a synthesiser
+   that reads all three and decides.
 2. `2-declarative-routing.feature` — now extract the routing you just
    built by hand into a graph the factory reads.
 
