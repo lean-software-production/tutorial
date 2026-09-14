@@ -1,10 +1,11 @@
 # Open questions
 
-Homework for days 2 and 3 is specced. Next: the live-session conversation
-prompts for those days, then homework for day 4.
+Homework for days 1 and 2 is specced. Next: homework for day 3 — real
+routing. The live-session conversation prompts are drafted but weak.
 
-One homework is one iteration. Iteration 1 is set after day 2, iteration
-2 after day 3 — so iteration N is the homework for day N+1, for now.
+Days are numbered from zero. Day 0 is the introduction and sets the
+stage, so the course runs day 0 to day 7. Iteration N is the homework set
+after day N.
 
 Things we raised and deliberately did not settle. Not a backlog — each of
 these needs a decision from Matt and Aldric, not an implementation.
@@ -29,12 +30,12 @@ these needs a decision from Matt and Aldric, not an implementation.
 
 - ~~Routing was in scope for iteration 2 and we did not spec it.~~
   Settled: we move past it on purpose. Going from one agent to another is
-  the nascent form of routing, and it is the core of day 4's homework,
+  the nascent form of routing, and it is the core of day 3's homework,
   not this one. It stays implicit in "done and validated".
 - ~~Nothing caps the doer/validator oscillation.~~ Settled: a pass gives
   up after a set number of attempts, and the limit is configurable rather
   than hard-coded — a flag or whatever suits what the student built. Real
-  graph/DSL routing arrives in day 4's homework and can carry max passes
+  graph/DSL routing arrives in day 3's homework and can carry max passes
   then. "Until the validator
   is satisfied" can run forever. The lexicon's own *doer-validator loop*
   entry warns the pair can oscillate and says set a maximum count anyway.
@@ -46,7 +47,7 @@ these needs a decision from Matt and Aldric, not an implementation.
 
 ## Later iterations
 
-- **Steering is day 4's homework.** Aldric: what happens when the
+- **Steering is day 3's homework.** Aldric: what happens when the
   validator stops and you have to decide what to do next *is* steering,
   though we would not call it that yet. Whether iteration 2's give-up
   behaviour is the seed of that, or something separate, is undecided.
@@ -82,6 +83,6 @@ reflection questions or a live conversation prompt.
 ## Parked for a later iteration
 
 - **Structured output from the validator.** A success/failure JSON schema
-  makes the result deterministically parseable. Agreed it lands in day 3
-  or day 4 homework — day 4 at the latest, since it is the only sane way
+  makes the result deterministically parseable. Agreed it lands in day 2
+  or day 3 homework — day 3 at the latest, since it is the only sane way
   to handle anything more complicated.

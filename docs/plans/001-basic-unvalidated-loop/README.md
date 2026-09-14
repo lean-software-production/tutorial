@@ -1,6 +1,6 @@
 # Homework 1 — Basic unvalidated loop
 
-*Set after day 2, following the Ralph loop demo.*
+*Set after day 1, following the Ralph loop demo.*
 
 Read `basic-unvalidated-loop.feature` and build it.
 
