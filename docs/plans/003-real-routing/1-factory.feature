@@ -5,8 +5,13 @@ Feature: Factory
   it, and a synthesiser reads their reports and decides — until the plan
   is done.
 
-  The reviewers do not decide anything; they report. Fan out, reviewers,
-  synthesiser: together that assembly is the validation step.
+  A pass is every machine running once, with validation repeating until
+  it is satisfied.
+
+  The reviewers do not decide anything; they report, and the synthesiser
+  never sees the work itself — only their reports. Fan out, reviewers,
+  synthesiser: together that assembly is the validation step. Rules about
+  the pass say "validation" and do not care how it is done.
 
   There are two ways to run it. Running one pass takes one task from
   start to checked and stops. Running to completion keeps going until the
@@ -43,21 +48,21 @@ Feature: Factory
       And the other two have not
       And the factory has stopped
 
-  Rule: A pass ends when the synthesiser is satisfied
+  Rule: A pass ends when validation is satisfied
 
     Example: The work is right first time
       Given a plan with three tasks, none of them done
       When the factory runs one pass
       Then the doer has done the first task
-      And the synthesiser is satisfied with it
+      And validation is satisfied
       And the pass has ended
 
     Example: The work is wrong first time
       Given a plan with three tasks, none of them done
-      And a doer whose first attempt does not satisfy the synthesiser
+      And a doer whose first attempt does not satisfy validation
       When the factory runs one pass
       Then the doer has run again
-      And the pass ends once the synthesiser is satisfied
+      And the pass ends once validation is satisfied
 
   Rule: A pass gives up after a set number of attempts
 
@@ -68,7 +73,7 @@ Feature: Factory
 
     Example: The validator is never satisfied
       Given a factory allowing at most three attempts per pass
-      And a synthesiser that is never satisfied
+      And validation that is never satisfied
       When the factory runs one pass
       Then the doer has made three attempts
       And the factory has stopped
@@ -108,8 +113,8 @@ Feature: Factory
 
   Rule: A rejected attempt goes back to the doer with the synthesis
 
-    Example: The synthesiser rejects the work
-      Given a synthesiser that rejects the doer's work
+    Example: The synthesiser rejects what the reviewers reported
+      Given a synthesiser that rejects the reviewers' reports
       When the factory runs one pass
       Then the doer runs again
       And it is given the synthesiser's report, not the three separate ones
