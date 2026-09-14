@@ -4,7 +4,7 @@ Feature: Declarative routing
   somewhere, as a graph, separate from the code that runs it. Change the
   graph and the factory routes differently without being rewritten.
 
-  Do this one after `1-many-validators.feature`. You will be extracting
+  Do this one after `1-fan-out.feature`. You will be extracting
   the routing you already built by hand.
 
   Rule: The route is described as a graph, outside the code that runs it
