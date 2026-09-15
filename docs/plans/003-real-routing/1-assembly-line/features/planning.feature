@@ -2,9 +2,9 @@ Feature: Planning
 
   How the planner turns a seed into a plan, and how the plan is kept true.
 
-  Rule: The seed is the factory's only input
+  Rule: The seed is the assembly line's only input
 
-    Example: The factory is given a seed and nothing else
+    Example: The assembly line is given a seed and nothing else
       Given a seed describing a game of Tetris that runs in the terminal
       When the factory runs
       Then it builds Tetris

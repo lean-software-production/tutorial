@@ -50,7 +50,8 @@ Feature: Orchestration
     A doer and a validator can oscillate, each attempt introducing a new
     problem, so a task cannot be allowed to run forever. The limit belongs
     with the retry it bounds, so it is an attribute of the retry edge on
-    the assembly line.
+    the assembly line. A task that gives up is not committed: the work is
+    left where it is, for whoever comes looking.
 
     Example: Validation is never satisfied
       Given an assembly line whose retry edge allows at most three attempts
@@ -60,6 +61,7 @@ Feature: Orchestration
       Then the doer has made three attempts at the first task
       And the factory has stopped without starting the second
       And it reports that the first task hit its limit
+      And there are no new commits
 
   Rule: The factory commits each time a task is finished
 

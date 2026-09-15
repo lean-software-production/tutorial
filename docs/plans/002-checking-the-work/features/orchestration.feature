@@ -34,7 +34,8 @@ Feature: Orchestration
     A doer and a validator can oscillate, each attempt introducing a new
     problem, so a pass cannot be allowed to run forever. How the limit is
     set is up to the student — a flag, a setting, whatever suits what
-    they built.
+    they built. A pass that gives up is not committed: the work is left
+    where it is, for whoever comes looking.
 
     Example: Validation is never satisfied
       Given a factory allowing at most three attempts per pass
@@ -43,8 +44,9 @@ Feature: Orchestration
       Then the doer has made three attempts
       And the factory has stopped
       And it reports that the pass hit its limit
+      And there are no new commits
 
-  Rule: The factory commits after every pass
+  Rule: The factory commits a pass that ends with validation satisfied
 
     Example: One pass, one commit
       Given a plan with three tasks, none of them done
