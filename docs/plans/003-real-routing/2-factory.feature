@@ -72,7 +72,7 @@ Feature: Factory
     set is up to the student — a flag, a setting, whatever suits what
     they built.
 
-    Example: The validator is never satisfied
+    Example: Validation is never satisfied
       Given a factory allowing at most three attempts per pass
       And validation that is never satisfied
       When the factory runs one pass

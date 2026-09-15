@@ -39,21 +39,21 @@ Feature: Factory
       And the other two have not
       And the factory has stopped
 
-  Rule: A pass ends when the validator is satisfied
+  Rule: A pass ends when validation is satisfied
 
     Example: The work is right first time
       Given a plan with three tasks, none of them done
       When the factory runs one pass
       Then the doer has done the first task
-      And the validator has checked that work
+      And validation is satisfied
       And the pass has ended
 
     Example: The work is wrong first time
       Given a plan with three tasks, none of them done
-      And a doer whose first attempt does not satisfy the validator
+      And a doer whose first attempt does not satisfy validation
       When the factory runs one pass
       Then the doer has run again
-      And the pass ends once the validator is satisfied
+      And the pass ends once validation is satisfied
 
   Rule: A pass gives up after a set number of attempts
 
@@ -62,25 +62,25 @@ Feature: Factory
     set is up to the student — a flag, a setting, whatever suits what
     they built.
 
-    Example: The validator is never satisfied
+    Example: Validation is never satisfied
       Given a factory allowing at most three attempts per pass
-      And a validator that is never satisfied
+      And validation that is never satisfied
       When the factory runs one pass
       Then the doer has made three attempts
       And the factory has stopped
       And it reports that the pass hit its limit
 
-  Rule: The validator checks the work the doer just produced
+  Rule: A validator checks the work the doer just produced
 
     Example: Earlier work is not rechecked
       Given a plan whose first task is done and validated
       When the factory runs one pass
-      Then the validator checks the work done in this pass
+      Then a validator checks the work done in this pass
       And it does not report findings about the first task
 
-  Rule: What the validator looks for is chosen, not fixed
+  Rule: What a validator looks for is chosen, not fixed
 
-    The student picks the lens the validator brings to the work —
+    The student picks the lens a validator brings to the work —
     testability, single responsibility, usability, internationalisation,
     security. The factory does not care which. It is the choice that
     teaches, so this spec leaves it open on purpose.
@@ -95,14 +95,14 @@ Feature: Factory
       When the factory runs one pass
       Then its findings are about internationalisation
 
-  Rule: The validator changes the plan, never the work
+  Rule: A validator changes the plan, never the work
 
     Example: A finding becomes a task
       Given a plan with three tasks, none of them done
       And a validator that finds the first task's work untestable
       When the factory runs one pass
       Then the plan contains a new task for that finding
-      And the validator has made no change to the work itself
+      And no validator has changed the work itself
 
     Example: The doer picks up the finding
       Given a plan containing a task that came from a finding
