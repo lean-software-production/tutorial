@@ -50,9 +50,9 @@ docs/plans/001-basic-unvalidated-loop/
     FACTORY.md     what the factory is, at this point
     features/
         planning.feature        seed to plan, and keeping the plan true
-        orchestration.feature   what a pass is, when it ends, when to stop
+        orchestration.feature   running the factory: tasks, attempts, when to stop
         validation.feature      deciding the work is good enough
-        routing.feature         which machine runs next
+        assembly-line.feature   the route through the machines, as a graph
 ```
 
 One folder per iteration of the product — which is also one homework. A
@@ -64,9 +64,11 @@ system is now, so it changes as the product changes.
 Feature files are split by capability, not by what changed. A file
 appears when the factory first has that capability and is carried forward
 after that. Keep the altitudes apart: `orchestration.feature` says
-"validation is satisfied" and must not know that validation is three
-reviewers and a synthesiser — that belongs in `validation.feature`.
+"validation is satisfied" and must not know that validation is the three
+big brains; `assembly-line.feature` knows the three big brains is one
+machine and must not know it is three reviewers and a synthesiser — that
+belongs in `validation.feature`.
 
 Where one iteration is too big for a single homework, it gets numbered
 parts, each a complete spec in its own right:
-`003-real-routing/1-fan-out/` and `.../2-declarative-routing/`.
+`003-real-routing/1-assembly-line/` and `.../2-fan-out/`.

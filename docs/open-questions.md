@@ -1,7 +1,8 @@
 # Open questions
 
-Homework for days 1 and 2 is specced. Next: homework for day 3 — real
-routing. The live-session conversation prompts are drafted but weak.
+Homework for days 1 to 3 is specced. From homework 3 the factory runs
+along an assembly line and the pass is gone. The live-session
+conversation prompts are drafted but weak.
 
 Days are numbered from zero. Day 0 is the introduction and sets the
 stage, so the course runs day 0 to day 7. Iteration N is the homework set
@@ -42,6 +43,15 @@ these needs a decision from Matt and Aldric, not an implementation.
   Options on the table: cap the rounds, escalate to the student
   (`human-escalation` is already a lexicon term), or leave it uncapped on
   purpose and let them hit it.
+- ~~Findings could flow two ways: back to the doer, or into the plan as
+  a new task.~~ Settled 2026-09-15: a validator only reports. The doer
+  records each finding as a subtask of the task in progress, so max
+  attempts bounds a task and findings never grow the plan.
+- ~~Where the attempt limit lives once there is an assembly line.~~
+  Settled 2026-09-15: on the retry edge, as an attribute. It bounds that
+  edge, so it belongs on it, and nothing about the loop is left outside
+  the line. It stays "up to the student" in iteration 2, which has no
+  assembly line yet.
 - **What the factory does when it discovers new work mid-plan.** Held
   back as too sophisticated; Aldric thought it might make good homework.
 
