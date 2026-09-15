@@ -17,5 +17,6 @@ There are two ways to run it. Running one pass takes one task from
 start to checked and stops. Running to completion keeps going until the
 plan is done. The examples say which they mean.
 
-New since iteration 2: four rules in `validation.feature`. `planning`
-and `orchestration` are unchanged.
+New since part 1: four rules in `validation.feature`, and the route in
+`routing.feature` now fans out. `planning` and `orchestration` are
+unchanged.
