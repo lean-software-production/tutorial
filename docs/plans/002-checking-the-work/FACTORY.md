@@ -2,7 +2,8 @@
 
 The factory builds software from a seed. It plans the work, then makes
 it one task at a time: a doer produces the work and a validator checks
-it, until the plan is done.
+it, until the plan is done. A validator only reports. The doer records
+each finding as a subtask of the task it is on, and tries again.
 
 There are two ways to run it. Running one pass takes one task from
 start to checked and stops. Running to completion keeps going until the

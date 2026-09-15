@@ -30,6 +30,7 @@ Feature: Orchestration
 
   Rule: A pass gives up after a set number of attempts
 
+    An attempt is the doer producing work and validation deciding on it.
     A doer and a validator can oscillate, each attempt introducing a new
     problem, so a pass cannot be allowed to run forever. How the limit is
     set is up to the student — a flag, a setting, whatever suits what

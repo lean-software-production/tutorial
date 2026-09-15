@@ -6,8 +6,8 @@ Feature: Validation
 
     Example: Earlier work is not rechecked
       Given a plan whose first task is done and validated
-      When the factory runs one pass
-      Then a validator checks the work done in this pass
+      When the doer makes its first attempt at the second task
+      Then a validator checks the work of that attempt
       And it does not report findings about the first task
 
   Rule: What a validator looks for is chosen, not fixed
@@ -19,24 +19,39 @@ Feature: Validation
 
     Example: A validator that looks at testability
       Given a validator with a lens of testability
-      When the factory runs one pass
+      When the doer makes an attempt at a task
       Then its findings are about testability
 
     Example: A validator that looks at something else
       Given a validator with a lens of internationalisation
-      When the factory runs one pass
+      When the doer makes an attempt at a task
       Then its findings are about internationalisation
 
-  Rule: A validator changes the plan, never the work
+  Rule: A validator reports findings, and changes neither the plan nor the work
 
-    Example: A finding becomes a task
+    Example: The first task's work is untestable
       Given a plan with three tasks, none of them done
       And a validator that finds the first task's work untestable
-      When the factory runs one pass
-      Then the plan contains a new task for that finding
-      And no validator has changed the work itself
+      When the doer makes its first attempt at the first task
+      Then the doer is given that finding
+      And no validator has changed the plan or the work
 
-    Example: The doer picks up the finding
-      Given a plan containing a task that came from a finding
-      When the factory runs one pass
-      Then the doer has done that task
+  Rule: The doer records each finding as a subtask of the task in progress
+
+    A finding is about the task the doer is working on, so it stays with
+    that task. It does not become a new task in the plan, and the task is
+    not done until its subtasks are.
+
+    Example: A finding on the first task
+      Given a plan with three tasks, none of them done
+      And a validator that finds the first task's work untestable
+      When the doer makes its first attempt at the first task
+      Then the first task has a subtask for that finding
+      And the plan still has three tasks
+
+    Example: The next attempt deals with the subtask
+      Given a plan whose first task has a subtask for a finding
+      And a validator that is satisfied by the doer's second attempt
+      When the doer makes its second attempt at the first task
+      Then it has done that subtask
+      And the first task is done and validated
