@@ -47,7 +47,12 @@ when confident and easy to veer when unsure.
 ```
 docs/plans/001-basic-unvalidated-loop/
     README.md      what the student is asked to do
-    *.feature      the whole spec, as of this iteration
+    FACTORY.md     what the factory is, at this point
+    features/
+        planning.feature        seed to plan, and keeping the plan true
+        orchestration.feature   what a pass is, when it ends, when to stop
+        validation.feature      deciding the work is good enough
+        routing.feature         which machine runs next
 ```
 
 One folder per iteration of the product — which is also one homework. A
@@ -55,3 +60,13 @@ folder holds the complete set of feature files as the factory stands at
 that point, not just the new ones. A later iteration may carry a modified
 copy of an earlier feature file: the spec is a declaration of how the
 system is now, so it changes as the product changes.
+
+Feature files are split by capability, not by what changed. A file
+appears when the factory first has that capability and is carried forward
+after that. Keep the altitudes apart: `orchestration.feature` says
+"validation is satisfied" and must not know that validation is three
+reviewers and a synthesiser — that belongs in `validation.feature`.
+
+Where one iteration is too big for a single homework, it gets numbered
+parts, each a complete spec in its own right:
+`003-real-routing/1-fan-out/` and `.../2-declarative-routing/`.

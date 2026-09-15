@@ -2,7 +2,7 @@
 
 *Set after day 1, following the Ralph loop demo.*
 
-Read `basic-unvalidated-loop.feature` and build it.
+Read `FACTORY.md`, then the feature files in `features/`, and build it.
 
 How you build it is up to you. It does not have to be a bash loop, and we
 would rather it weren't. What matters is that the behaviour in the feature
