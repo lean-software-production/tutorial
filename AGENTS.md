@@ -33,6 +33,10 @@ the lexicon needs to grow. Either way it is worth the interruption — do
 not quietly translate what we said into the nearest lexicon term, and do
 not quietly adopt a word that is missing from it.
 
+`docs/reference/` holds material we did not write and may borrow language
+from — manufacturing taxonomies, mostly. It is not the lexicon, and
+reading it does not license its words.
+
 ## Scope
 
 The current spec is the tiniest one that moves forward. Anything we have

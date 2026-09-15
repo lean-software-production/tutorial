@@ -1,0 +1,486 @@
+#+TITLE: The NIST Manufacturing Control Hierarchies — Reference
+#+STARTUP: overview
+
+Not a Stone document. This records what the source material actually says, so
+that when Stone borrows a term we can check the borrowing. Paraphrased from
+the sources listed at the end, with the load-bearing sentences quoted.
+
+*What it establishes.* Stone's containment axis — facility, production
+control, composite, workstation, machine, device — is a hierarchy of
+controllers in the shape NIST's manufacturing control projects arrived at, and
+most of the words on that axis are theirs. There is no single NIST control
+hierarchy, though. There are three lines of work, and they disagree about the
+one question that matters most for the borrowing, whether the number of
+levels is fixed:
+
+- *AMRF* (NBS, from 1981): five fixed levels, each assigned specific manufacturing functions.
+- *MSI* (NIST, 1990–93): NIST's own successor, which rejected AMRF's criteria for identifying a level and put any number of workcell levels between shop and equipment.
+- *RCS* (Albus, from the mid-1970s, running alongside both): a layered reference model whose node design repeats at every layer, with the layer count set by the application.
+
+The five fixed levels are AMRF's 1987 snapshot, and Stone does not use them.
+What Stone reuses is the structure that survived AMRF's own revision, so this
+entry leads with that and records the five levels compactly afterwards, so the
+borrowing can still be checked. A second axis inside each level — regulation,
+optimization, adaptation — is in [[file:multilayer-control.org][multilayer-control.org]]; what came after MSI
+is in [[file:sima-activity-model.org][sima-activity-model.org]] and [[file:smart-manufacturing-ecosystem.org][smart-manufacturing-ecosystem.org]].
+
+* The structure Stone reuses
+
+Six things, each with the source it comes from.
+
+** A hierarchy of controllers: command down, status up
+
+AMRF's founding shape, kept by MSI and RCS. Jackson and Jones (1987): control
+flow is strictly vertical and only between adjacent neighbours; each module
+decomposes its supervisor's command into procedures it executes itself plus
+subcommands to its subordinates, repeated down to primitive actions at the
+lowest level; status feedback from subordinates closes the loop at each level.
+A module's goals "must be consistent with those set by the module's supervisor
+and they must commit the entire subordinate structure to a unified and
+coordinated course of action" (§3.3).
+
+In Stone this is ADR-001: One contract, all the way down — take a command,
+report a result — and ADR-002's rule that state flows outward while parts
+flow along routing.
+
+** A level exists wherever coordination is needed, and the middle nests
+
+MSI's revision of AMRF, NISTIR 4682 §3.4.2:
+
+#+begin_quote
+A level of control may be introduced whenever a coordinating or supervisory
+function is needed. This typically occurs when the decomposition of the initial
+problem regularly results in less complex, independent subproblems. ... In
+particular, this means that there may be a different number of control levels,
+depending upon the shop configuration.
+#+end_quote
+
+and NISTIR 4626 §2.3 on where the depth lives:
+
+#+begin_quote
+The grouping of equipment into workcells is based upon many factors and is
+highly facility dependent. A workcell controller may control equipment
+controllers directly, or may control any number of layers of workcell level
+controllers.
+#+end_quote
+
+MSI's word for the thing that nests is *workcell*, and it is AMRF's cell and
+workstation merged (§MSI below). Stone's composite is the same shape: a
+composite presents itself to its parent as a workstation and nests to any
+depth (ADR-020, F-24). The reason differs, and the difference matters. MSI's
+depth is a property of the installation — machines that sit together need
+coordinating. Stone's depth is a property of the plan — the work decomposes,
+and someone wanted that decomposition accountable. A composite travels with
+the work, which is what ADR-021 requires.
+
+** A process plan is a template; a production plan binds it
+
+MSI, NISTIR 4626 Appendix D:
+
+#+begin_quote
+process plan — A specification of tasks, or operations, to accomplish a given
+goal — typically the manufacture of a product. In contrast to a production
+plan, a process plan serves as a template, or recipe, for the accomplishment of
+the tasks.
+
+production plan — A specification of tasks, or operations, to accomplish a
+specific goal, using specific resources at specific times.
+#+end_quote
+
+and on how a process plan names what it needs, NISTIR 4682 §3.5.1: "a process
+plan will typically refer to required resources by class reference, as in
+'This step requires a three-axis milling machine,' rather than 'This step
+requires machine XYZ001.'" — with the footnote that the model "also supports
+the referencing of resources by capability".
+
+These are Stone's Process plan, Production plan and Capability (UL), and
+ADR-021: A process plan names no resource. One difference: MSI has production
+plans at shop, workcell and equipment level, and a workcell "is permitted to
+generate its production plans on-line"; Stone has one production plan per
+job, written in the facility.
+
+** A checkpoint
+
+MSI, NISTIR 4626 §2.4.1:
+
+#+begin_quote
+A checkpoint is a step in the production plan where the manufacturing process
+may be halted in a safe manner without damaging either the equipment or the
+workpiece and later replaced or resumed.
+#+end_quote
+
+Stone's Checkpoint (UL) is the boundary between two cycles of a machine
+(ADR-016, ADR-033). MSI required the workcell to understand checkpoints in
+1991 and the shop and workcell but not equipment in 1993, and admitted the
+notion was not well defined above one device (§Where the sources disagree).
+Stone requires it of every machine with no opt-out, which is the strictest of
+the three answers and the one that buys "interruption costs at most one
+cycle".
+
+** A revision signal that carries no detail
+
+MSI's *capability index*, NISTIR 4626 §3.1. Each subsystem carries a
+monotonically increasing integer, incremented when a subordinate is lost or
+added, or when "the capability index of a subordinate changes and the
+subsystem controller determines that the capabilities of the whole subsystem
+are thereby affected."
+
+#+begin_quote
+The administrative supervisor does not understand the capabilities of the
+subsystem: it interprets a change in the capability index to mean that the
+subsystem capabilities have changed in such a way as to require replanning for
+its use. The capability index has no other intrinsic semantics.
+#+end_quote
+
+Each value must be distinguishable from all previous values, because the
+supervisor may miss individual changes. This is Stone's Revision (UL) and
+ADR-019: A revision bump is an opaque signal to replan, including the
+conditional propagation upward.
+
+** A guardian
+
+MSI's console interface beside the supervisory and task ones, "allowing
+external monitoring and intervention in the otherwise automatic operation of
+the control entity" (NISTIR 4626 §4). It holds every administrative command
+plus configuration commands — Attach, Detach, Ignore — and "has priority over
+the supervisory interface". Any configuration change made through it
+increments the capability index.
+
+On who is behind it, 4626 §2.5: "the operator may be human, but is not
+required to be, and may be an automated expert system, or a human with
+computer assistance." NISTIR 5272 §2.6.1.1 keeps that in 1993, and adds a
+*watchdog*, "a primitive guardian interface ... presumed always to exist for a
+running control entity", described as a pair of red lights, one for planning
+errors and one for job control errors, that stay on until the problems needing
+assistance are resolved.
+
+Stone's Guardian (UL) narrows this to the human alone, and ADR-022: Limits are
+set from outside the job says why: an automated guardian would run inside the
+job and could raise its own ceiling.
+
+** Level for level
+
+| Stone              | AMRF (1987)                                                                      | MSI (1991–93)                                                   |
+|--------------------+----------------------------------------------------------------------------------+-----------------------------------------------------------------|
+| Facility           | Facility: process planning, resource requirements, capital investment            | Not defined: "levels above Shop ... have not yet been defined"  |
+| Production control | Shop: assigns and releases batch jobs to cells; allocates resources to them      | Shop: holds the workcells currently available; the highest level |
+| Job / process plan | A batch job released to a cell                                                   | A production plan generated from a process plan                 |
+| Composite          | Cell: routes jobs through workstations, replans on conflict; does not nest       | Workcell: "any number of layers"; AMRF's cell and workstation merged |
+| Workstation        | Workstation: coordinates a grouping of equipment, including in-process inspection | Absorbed into the lowest workcell                               |
+| Machine            | Equipment controller: translates the workstation's command, monitors execution   | Equipment controller: runs tasks on one device                  |
+| Equipment          | The equipment level is the pair, controller plus device                          | —                                                               |
+| Device             | The commercial machine with its own vendor controller                            | One per equipment controller                                    |
+
+Two things in the table are easy to misread. AMRF's equipment level is not
+Stone's device: it is a controller plus the device it drives (§AMRF below),
+so it is Stone's machine and its equipment together. And Stone's workstation
+is AMRF's, closely — "a small integrated physical grouping of equipment"
+coordinated by one controller, whose sequence includes in-process inspection
+— rather than something AMRF lacked.
+
+* What Stone did not take
+
+- /Five fixed levels/, each assigned specific manufacturing functions. AMRF's own successor rejected this by name, and Stone's levels are defined by containment: what a thing is depends on what contains it and what it contains.
+- /Planning horizon as the criterion for a level./ AMRF's second guideline. Stone's horizons come out ordered anyway — a call in seconds, a cycle in seconds to a minute, a workstation in minutes, a composite in hours, process planning outside any job — but as a consequence, not the criterion. MSI rejected the horizon for the same kind of reason, calling it a hallmark of a correct decomposition rather than a test for one; Stone is closer to MSI than to AMRF here. What the principle was for is still worth knowing: it bounds the computation a level must do, and Stone's version of that problem is the cost of consulting the resident planner (ADR-010), where the principle would have argued for the same coarse default subscription that was chosen on cost grounds.
+- /Two hierarchies, administrative and task/ (MSI 1991). MSI replaced this itself in 1993 with a planner/job-controller pair (§MSI below). Stone derives containment and routing from one written plan (ADR-020), which is a different cut.
+- /An automated guardian./ Excluded by ADR-022.
+- /Production plans at every level, generated on-line by a workcell./ Stone has one per job, and a resident planner that revises the process plan or re-dispatches its resources rather than a planner in every controller.
+- /A scheduler./ AMRF puts a queue manager and a dispatch manager under every controller (§AMRF below), resequencing as status changes. Stone's combinators state precedence and a pool caps concurrency; nothing says which of the ready operations runs first.
+
+* AMRF (NBS, 1981–87)
+
+The Automated Manufacturing Research Facility was a small-batch manufacturing
+testbed built at the US National Bureau of Standards (now NIST) from 1981, for
+research into interface standards for automated factories. The control
+architecture was a five-level command/feedback hierarchy.
+
+** The three guidelines for introducing a level
+
+Credited to Albus, Barbera and Nagel (1981):
+
+1. Levels are introduced to reduce complexity and limit responsibility and authority.
+2. Each level has a distinct *planning horizon*, which decreases as you go down the hierarchy.
+3. Control resides at the lowest possible level.
+
+/Attribution./ The list in this wording is Smith, Hoberecht and Joshi (1994)
+summarising Albus et al.; the 1981 paper was not obtainable. Jackson and Jones
+(1987) §3.3 elaborate the second: "The amount of computation that can be
+performed in real-time at each level is limited by the planning horizon: the
+period of time over which the module is responsible for planning and updating
+local goals."
+
+Stone keeps the first and third — containment limits responsibility, and the
+escalation ladder of rework before routing before replanning before stopping
+is control at the lowest level that can exercise it — and not the second.
+
+** The five levels
+
+Jackson and Jones (1987) §2.3: "the decomposition of the control functions
+into five levels: facility, shop, cell, workstation, and equipment." Strictly
+five; a cell is never a workstation.
+
+- Facility :: The front office. Manufacturing engineering (CAD, group technology, process planning, with human involvement); information management (administrative and business functions); production management (long-range schedules, resource requirements, capital investment, quality summaries).
+- Shop :: Coordinates production and support jobs on the floor and allocates resources to them. A task manager (capacity planning, batching orders, assigning and releasing batch jobs to cells, tracking orders) and a resource manager (allocating resources to cells, repair, procurement).
+- Cell :: Sequences batch jobs of similar parts through workstations and supervises material handling and calibration; decides which workstation performs an operation, how tasks are scheduled across its workstations, and how parts and tools move between them. When a conflict arises at the workstation level, the cell replans, reroutes and reschedules. The AMRF cell was *virtual* — "dynamic production control structures which permit the time sharing of workstation level processing systems" — as against a "real" cell fixed on the floor.
+- Workstation :: Directs "a small integrated physical grouping of equipment" — typically a robot, a machine tool, a material buffer and a control computer — through job setup, fixturing, cutting, chip removal, *in-process inspection*, takedown and cleanup. In-process inspection is distinct from the dedicated inspection station elsewhere in the shop.
+- Equipment :: Front-end systems tied to individual commercial machines. The controller translates the workstation's commands into tasks the vendor-supplied controller understands, and monitors execution through the hardware's sensors. So the equipment /level/ is a pair: a controller plus a device with its own vendor controller beneath it.
+
+Each level is data-driven — the data a module needs is held apart from its
+control code — and data, unlike control, may be shared across levels.
+
+** The Production Control module
+
+One generic module, implemented at cell, workstation and equipment, itself a
+three-level hierarchy:
+
+- Production manager :: takes a job list and resources from the supervisor and status from the queue manager; on any change in job status, regenerates a real-time production plan — tasks per subordinate, precedence and coordination flags, start and finish times.
+- Queue manager :: one per subordinate; resequences its queue as job status changes, passes command information down, removes completed jobs, reports timing upward.
+- Dispatch manager :: one per subordinate; releases jobs to it and monitors them to completion, reporting delays.
+
+Planning is the production manager and queue manager; control is the dispatch
+manager.
+
+Command carries an action verb (startup, shutdown, execution, maintenance,
+wait), a pointer to a job list, and a pointer to a resource list; each job
+entry has a new/old flag, an id, an action (plan, execute, cancel), a priority
+and timing; each resource entry carries the supervisor's response and an
+expected time of availability. Feedback mirrors it: operational status, job
+status and resource requests, each a short condition code and a pointer to
+detail.
+
+** AMRF process plans
+
+Used at the bottom three levels: machining and robot handling instructions,
+workstation-level operations, cell-level routing steps, with alternate
+sequences at each level. Each step carries a work element description,
+precedence constraints and an estimated duration; plans carry an extended
+bill of materials of tooling, fixtures, materials, systems, data and programs.
+
+/Not verified./ A previous version of this entry described an AMRF process
+plan as a directed graph whose nodes are operations and arcs are movements of
+the part, built hierarchically so its levels of detail map onto the control
+levels. That description is not in Jackson and Jones (1987); it is plausibly
+from Jones and McLean (1986), which is paywalled and was not read. Treat it as
+unattributed.
+
+** Planning, scheduling, execution
+
+Smith et al. (1994), crediting Joshi et al. (1990) and Jones and Saleh (1990):
+"controller activities at each level in the hierarchy can be partitioned into
+planning activities, scheduling activities, and execution activities" —
+planning selects which tasks to perform, scheduling sets their start and
+finish times at subordinates, execution verifies preconditions and carries
+out the dialogue with subordinates. Coordination between levels is by
+*generalized due dates*: "The shop sets a due date for the batch or part group
+at each individual workstation that the parts visit", and within that
+constraint each level schedules as it sees fit. Durations are negotiated
+between a supervisor and its subordinates, never between peers.
+
+* MSI (NIST, 1990–93)
+
+Manufacturing Systems Integration was NIST's own successor project. Its
+architecture document calls itself "a second generation AMRF architecture" and
+says experience implementing AMRF "leads us to revise the hierarchical control
+architecture of the AMRF as designed."
+
+Three documents matter and are not interchangeable: NISTIR 4682 (the
+architecture, September 1991), NISTIR 4626 (the control entity interfaces,
+June 1991), and NISTIR 5272 (the revised interface specification, 1993, which
+supersedes 4626).
+
+** The objection to AMRF's levels
+
+NISTIR 4682 §3.4.2 names the two AMRF criteria it rejects — span of control
+("any complex of 7-plus-or-minus-2 controllers requires a level of control")
+and the planning horizon:
+
+#+begin_quote
+The difficulty with these two criteria from the MSI point of view is that they
+are not based on problem decomposition or activity coordination requirements.
+... it is the difference in the nature and complexity of the problem
+decomposition that determines the need for a level of control, not the number
+of subordinates. ... these are not the criteria for determining the need for a
+level of control, but rather (typical but not necessary) hallmarks of a
+correct problem decomposition.
+#+end_quote
+
+Smith et al. (1994), from outside: "One of the main contentions of the MSI
+group is that the five level hierarchy imposed by the original NIST
+architecture is too rigid in structure."
+
+** Three controller types
+
+Equipment, workcell, shop. An equipment controller runs tasks on one device,
+one task at a time; what is inside it is out of scope. A workcell is a
+collection of equipment viewed as a functional unit under one supervisory
+controller, and "A Workcell Level Controller (WLC) entity coordinates two or
+more ELCs, WLCs or a combination of either type" (4682 §3.4.2). A shop holds
+the workcells currently configured as available, and is the highest level:
+"higher levels of control above the Shop Level, which would deal with business
+and management concerns and coordination of multiple shops, have not yet been
+defined." AMRF's facility level was dropped, not revised.
+
+On the word: "The notion of control in this level has similarities both to
+the AMRF Virtual Cell and Workstation level concepts, hence the term workcell.
+In fact, the lowest level workcell, which supervises a collection of
+equipment, corresponds to the AMRF Workstation level of control" (4682
+§3.4.2).
+
+** How a control entity is structured: 1991 and 1993
+
+In 1991 (4626 §2.3–2.4, 4682 §3.6) a controller had two hierarchies over it.
+The *administrative* hierarchy — at most one supervisor, any number of
+subordinates — carries startup, shutdown, health and configuration and
+"remains unchanged during the manufacturing of tasks". The *task* hierarchy is
+a client/server relation, "continually redefined depending on which tasks are
+outstanding", and "task control is not required to follow the administrative
+control paths." A controller could be asked to do work by something other
+than its administrative supervisor.
+
+By 1993 this framing is gone. NISTIR 5272 §2.2.2 splits a control entity into
+a *planner* and a *job controller* and defines five interfaces: planning, job
+control, planning-to-job-control, guardian planning, guardian job control.
+Every control entity above equipment holds the pair.
+
+Where the planner sits is left open. 5272 §2.2.3 puts two requirements on
+an implementation — "Each job controller in the control hierarchy has some
+agent which is responsible for creating and maintaining its schedule" and
+"some agent which is responsible for addressing planning errors which the job
+controller detects" — and then names three valid placements and allows
+hybrids: an *embedded planner* inside each control entity; a *distributed
+planning hierarchy* "which mirrors the control hierarchy (i.e., a planner for
+each job controller)"; and a *centralized planner* "which plans for every job
+controller in the control hierarchy", where "Each control entity is a
+conceptual entity only; there is no physical correspondence." A planner
+"supports resource allocation and scheduling; it may, but is not required
+to, support process planning and batching" (§2.2.2). Its two functions are
+"to schedule the execution of tasks for specific job controller(s) and to
+assist in anomaly recovery on behalf of those job controller(s)" (§2.4).
+
+Plans are three kinds in 5272 (§2.3.1), not two: a *process plan* is the
+generic recipe; a *production-managed plan* expands it for a required number
+of products on a given factory configuration, carrying "decisions about part
+mix, batching, lot sizes and material handling"; a *production plan* refines
+that with specific resources and times per step. Production-managed plans
+are the planner's input and production plans its output; production plans
+are the job controller's input. Both of the latter "must be hierarchical"
+(§2.3.2): a shop-level plan's steps refer to workcells and subordinate plans,
+down to an equipment-level plan "which contains only primitive operations".
+
+The job controller runs a *token of control* (§2.5): it executes the steps
+assigned to it, and on a step referring to a subordinate passes the token
+down by commanding that subordinate, monitoring it by status until the token
+returns on normal or abnormal completion. "There will be multiple tokens of
+control for a task if there are parallel or concurrent paths in that
+production plan (one for each path)."
+
+Controllers are also typed by what they can do with tasks rather than by
+position (4626 §2.4.2): one that accepts a task at a time and starts it at
+once; one that queues tasks and starts them on its own schedule without
+understanding production plans; one that queues, understands production plans
+and schedules, and reports schedule violations. MSI's testbed interfaced a
+single-task controller at the equipment level and a queueing one at the
+workcell level "as it had its own embedded scheduling capabilities."
+
+** Error recovery, replanning and covenants
+
+NISTIR 4626 §2.5: a task failure that cannot be handled locally is reported in
+task status to the client and ultimately reaches the shop controller, which
+"alerts the Production Planner to the need for replanning". Contingency
+production plans may come from existing alternative process plans or from new
+ones generated on-line.
+
+NISTIR 5272 §2.4.2 and §2.6 make this *anomaly* handling — resource, task and
+tooling anomalies — with two mechanisms: human intervention, and *replanning*,
+"the dynamic modification of production plans", which "may involve
+rescheduling steps, adding, removing, or modifying steps, or even taking
+different production alternatives". 5272 is candid that "with current
+technology, it is likely that a planner will only be able to resolve problems
+that can be solved by rescheduling steps."
+
+5272 also introduces *covenants*: a supervisor asks subordinates who can
+perform an operation, each bids, the supervisor accepts one, and the accepted
+bid becomes a contract, each associated with one production plan.
+
+** Checkpoints, in both years
+
+In 4626 the workcell controller must understand checkpoints, and Pause and
+Terminate both act at the next one. 4626 §8 then admits:
+
+#+begin_quote
+Checkpointing a task at a lower level in the control hierarchy necessarily
+means that a higher level controller (namely the task client) is in the middle
+of a manufacturing step, and is not considered checkpointed on that task. The
+current meaning of checkpoint is not well defined for any level other than the
+Equipment Level.
+#+end_quote
+
+4682 Appendix 3 records the same from the 1990 implementation: "The notion of
+checkpointing is clear for Equipment Level plans, but requires refinement for
+higher level plans." 5272 inverts the requirement rather than solving it:
+"The shop level planner and job controller and all workcell planners and job
+controllers are required to understand checkpoints. ... The MSI architecture
+does not require that equipment job controllers understand the notion of
+checkpoint." Its definition also loosens, from halted "and later replaced or
+resumed" to "temporarily or indefinitely suspended in a safe manner without
+damage".
+
+* RCS (Albus, mid-1970s onward)
+
+Albus's own line ran alongside AMRF and outlived it. RCS-2, built for the
+AMRF, "was used to define an eight level hierarchy consisting of Servo,
+Coordinate Transform, E-Move, Task, Workstation, Cell, Shop, and Facility
+levels of control. Only the first six levels were actually built." Later
+generations added a world model, an operator interface and a value judgment
+system.
+
+On depth, RCS is not MSI. Its layers are typed by characteristic timing —
+"The functionality of each level in the control hierarchy can be derived from
+the characteristic timing of that level, and vice versa" — which is AMRF's
+second guideline, kept. Layers may be absent in a branch: "the missing modules
+can be thought of as degenerate computing nodes that produce unity gain
+pass-through of inputs to outputs." Albus's word *recursive* names the node
+design repeating at every layer, not variable depth, and he answers the
+rigidity charge directly: "A reference model architecture is a canonical
+form, not a system design specification."
+
+* Where the sources disagree
+
+Five places. Each is a point where borrowing from "the NIST taxonomy" means
+choosing which NIST.
+
+- Whether the number of levels is fixed :: AMRF: five. MSI: "a different number of control levels, depending upon the shop configuration". RCS: set by the application, with layers allowed to be absent in a branch.
+- What identifies a level :: AMRF: span of control and planning horizon. MSI: problem decomposition — a level exists "whenever a coordinating or supervisory function is needed". RCS: the planning horizon, kept throughout.
+- Whether cell and workstation are two kinds :: AMRF: two, and a cell is never a workstation. MSI: one kind, the workcell, with the lowest workcell being AMRF's workstation.
+- Who must understand a checkpoint :: 4626 (1991): the workcell, admitting the notion is only well defined at equipment. 5272 (1993): shop and workcell, and equipment need not. MSI moved the obligation upward rather than solving it.
+- How a controller is structured :: 1991: administrative and task hierarchies. 1993: a planner/job-controller pair and five interfaces, with covenants and anomalies. The capability index does not appear in 5272; whether it was dropped or renamed was not established.
+
+* What the sources do not name
+
+None of the sources names a "nested cell pattern" or any equivalent phrase.
+MSI's own word for the thing that nests is *workcell level*, and its phrasing
+for the depth is "any number of layers of workcell level controllers" (4626)
+and "any number of 'levels' of workcell management within a control
+hierarchy" (5272). Smith et al. (1994), from outside: "A hierarchical
+structure of arbitrary depth can be constructed using these three types of
+controllers." Albus writes *recursive* of the node design, not the depth. The
+idea is in the sources three times over; the phrase is not, and anything
+written here beyond the sources' own words is ours.
+
+* Sources
+
+Read in full for this entry, from the URLs given:
+
+- Jackson, R. and Jones, A. (1987), /Hierarchical Decision-Making in the Factory of the Future/, NBSIR 87-3511. https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=821434 — AMRF's five levels, the planning-horizon principle, the Production Control module, command/feedback structures, AMRF process plan contents, the virtual cell. Scanned and OCR'd; quotations were read against the scan.
+- Senehi, M., Wallace, S., Barkmeyer, E., Ray, S. and Wallace, E. (1991), /Manufacturing Systems Integration Control Entity Interface Document/, NISTIR 4626, June 1991. https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=821506 — the two hierarchies, the workcell nesting sentence, controller categories, checkpoints and their §8 limitation, the capability index, the guardian, error recovery, the process/production plan glossary.
+- Senehi, M., Barkmeyer, E., Ray, S. and Wallace, E. (1991), /Manufacturing Systems Integration Initial Architecture Document/, NISTIR 4682, September 1991. https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir4682.pdf — §3.4.2 the objection to AMRF's level criteria and the workcell level; §3.5 process plan by class reference; §3.6 administrative and task control; §4.8 the guardian; Appendix 3 what the 1990 implementation found.
+- Wallace, S., Senehi, M., Barkmeyer, E., Ray, S. and Wallace, E. (1993), /Manufacturing Systems Integration Control Entity Interface Specification/, NISTIR 5272. https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir5272.pdf — supersedes NISTIR 4626. The planner/job-controller split and five interfaces, covenants, anomalies and replanning, the guardian and the watchdog, the reversed checkpoint requirement.
+- Smith, J., Hoberecht, W. and Joshi, S. (1994), /A Shop Floor Control Architecture for Computer Integrated Manufacturing/. https://tamcam.tamu.edu/Papers/Shop%20Floor%2094/ARCH10.htm — the three Albus guidelines as a numbered list, MSI's "too rigid" contention reported from outside, "arbitrary depth", the planning/scheduling/execution partition, generalized due dates.
+- Albus, J., /A Reference Model Architecture for Intelligent Systems Design/. https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=820139 — the RCS generations, RCS-2's eight levels, absent nodes, "recursive structure", and the answer to the rigidity charge.
+
+Cited by the above but not read:
+
+- Albus, J., Barbera, A. and Nagel, N. (1981), /Theory and Practice of Hierarchical Control/, 23rd IEEE Computer Society International Conference. The origin of the three guidelines; not obtainable.
+- Jones, A. and McLean, C. (1986), /A Proposed Hierarchical Control Model for Automated Manufacturing Systems/, Journal of Manufacturing Systems 5(1), 15–25. Paywalled; the likely home of the directed-graph process plan description flagged above.
+- Jones, A. and McLean, C. (1985), /Production Control Module for the AMRF/, ASME Computers in Engineering.
+- McLean, C., Bloom, H. and Hopp, T. (1982), /The Virtual Manufacturing Cell/, 4th IFAC/IFIP Conference on Information Control Problems in Manufacturing Technology.
