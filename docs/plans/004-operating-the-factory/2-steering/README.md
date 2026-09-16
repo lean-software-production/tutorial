@@ -1,0 +1,21 @@
+# Homework 4, part 2 — Steering
+
+*Do this after part 1.*
+
+Read `FACTORY.md`, then the feature files in `features/`.
+
+You can see what the machines are doing. Now you can answer them. While a
+machine is working you can send it a message, and it picks the message up
+at its next step — the way you interrupt an agent mid-task, not the way
+you edit its prompt.
+
+Two things make this harder than it sounds. More than one machine runs at
+once during fan out, so a message names the machine it is for. And a
+message is for a machine that is working now: if the machine you name has
+finished, or has not started, the factory tells you so rather than holding
+your message for whoever comes next.
+
+A message lives in that machine's run and dies with it. If you want
+something to stick, it belongs in the seed, the plan, or the machine's own
+prompt. Noticing where the difference bites is most of the point of this
+homework.
