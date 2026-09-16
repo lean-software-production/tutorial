@@ -60,6 +60,8 @@ docs/plans/001-basic-unvalidated-loop/
         monitoring.feature      what the factory is spending
         observability.feature   what the machines generate
         steering.feature        talking to a machine while it works
+        skills.feature          how a machine gets a way of working
+        command-execution.feature  what a machine is allowed to run
 ```
 
 One folder per iteration of the product — which is also one homework. A

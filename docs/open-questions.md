@@ -1,6 +1,6 @@
 # Open questions
 
-Homework for days 1 to 4 is specced. From homework 3 the factory runs
+Homework for days 1 to 5 is specced. From homework 3 the factory runs
 along an assembly line and the pass is gone. The live-session
 conversation prompts are drafted but weak.
 
@@ -76,6 +76,17 @@ these needs a decision from Matt and Aldric, not an implementation.
   its own.
 - **A spend ceiling.** Once spend is visible, stopping at a limit is the
   obvious next lever. Deliberately not in iteration 4.
+- **How tight the command gate is.** Iteration 5 authorises the program,
+  not the exact line: a skill that says `pytest -q` lets the machine run
+  `pytest` with any arguments. Tighter is possible and worse to use;
+  looser is not. Pipelines, shell built-ins and `sh -c` are not specified
+  at all, and a student will find that hole — it is probably a good
+  conversation rather than a rule.
+- **Whether `allowed-tools` should be the gate instead.** The Agent Skills
+  spec has the field, marked experimental, and we chose the body instead:
+  what the skill tells the machine to run is what it may run, with nothing
+  to keep in sync. Worth revisiting if the parsing turns out to be the
+  hard part.
 
 ## Teaching points, not rules
 
