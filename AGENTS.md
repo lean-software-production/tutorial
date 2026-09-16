@@ -57,6 +57,9 @@ docs/plans/001-basic-unvalidated-loop/
         orchestration.feature   running the factory: tasks, attempts, when to stop
         validation.feature      deciding the work is good enough
         assembly-line.feature   the route through the machines, as a graph
+        monitoring.feature      what the factory is spending
+        observability.feature   what the machines generate
+        steering.feature        talking to a machine while it works
 ```
 
 One folder per iteration of the product — which is also one homework. A

@@ -1,6 +1,6 @@
 # Open questions
 
-Homework for days 1 to 3 is specced. From homework 3 the factory runs
+Homework for days 1 to 4 is specced. From homework 3 the factory runs
 along an assembly line and the pass is gone. The live-session
 conversation prompts are drafted but weak.
 
@@ -57,15 +57,25 @@ these needs a decision from Matt and Aldric, not an implementation.
 
 ## Later iterations
 
-- **Steering is day 3's homework.** Aldric: what happens when the
-  validator stops and you have to decide what to do next *is* steering,
-  though we would not call it that yet. Whether iteration 2's give-up
-  behaviour is the seed of that, or something separate, is undecided.
+- ~~Steering is day 3's homework.~~ Settled 2026-09-15: steering is
+  iteration 4, part 2, and it is talking to a machine while it works.
+  What happens when a task gives up is a different thing, and still
+  unnamed.
 - **Human escalation.** Matt raised it because Fabro has it as a feature.
   It is a lexicon term. No home yet.
-- **Does the factory keep a CLI the whole way through?** Aldric: that is
-  how we start, but by observability and monitorability there is probably
-  a server and a daemon, and the student chooses at that point.
+- ~~Does the factory keep a CLI the whole way through?~~ Settled
+  2026-09-15: iteration 4 makes it a daemon. You start a job, get your
+  terminal back, and attach with another command. How it is attached to
+  is the student's choice.
+- **Tokens or money.** Iteration 4 counts tokens, per machine and per
+  provider. Prices would turn that into a number people feel. Parked: it
+  dates fast, and it is arithmetic rather than behaviour.
+- **One job at a time.** Iteration 4 says the daemon refuses a second
+  seed while a job is running. Many jobs at once is a bigger question —
+  queueing, worktrees, one plan or several — and could be an iteration of
+  its own.
+- **A spend ceiling.** Once spend is visible, stopping at a limit is the
+  obvious next lever. Deliberately not in iteration 4.
 
 ## Teaching points, not rules
 
