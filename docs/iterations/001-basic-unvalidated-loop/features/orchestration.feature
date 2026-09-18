@@ -3,6 +3,14 @@ Feature: Orchestration
   What a pass is, when it ends, and when the factory stops. These
   rules do not care how validation is done.
 
+  Rule: The factory prepares a workspace to commit to
+
+    Example: No workspace exists yet
+      Given a seed and no workspace
+      When the factory runs one pass
+      Then the workspace is a git repository
+      And it has a starting commit
+
   Rule: Each pass does one task, then stops
 
     Example: Three tasks remain
