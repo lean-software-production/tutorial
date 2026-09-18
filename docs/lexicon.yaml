@@ -226,7 +226,7 @@ seed:
     might be anything from a vague idea, or a screenshot, or a codebase you want to
     port, to a full specification.    
     The seed is the definition for the work to be done, the assembly line is responsible for doing the work with the appropriate precision and accuracy.
-    [→ seed](software-factory/seed.md)
+    [→ seed](lexicon/seed.md)
 
 selective-inclusion:
   term: "Selective inclusion"

@@ -1,6 +1,6 @@
 # Seed
 
-Depth behind the [`seed`](../software-factory.yaml) entry: what we mean, where
+Depth behind the [`seed`](../lexicon.yaml) entry: what we mean, where
 we disagree, and how the rest of the field uses the word. Not published.
 
 ## What we mean
