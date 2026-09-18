@@ -1,7 +1,11 @@
 # Tutorial
 
 A hands-on course for building an agentic software factory. Work through the
-iterations one homework at a time, coached by the `coach-me` skill.
+iterations one homework at a time, as directed by your instructor.
+
+## Get started
+
+Fire up your favourite coding agent harness (Claude Code, Codex, Pi, etc) and say "coach me".
 
 ## Where things live
 
