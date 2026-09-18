@@ -2,7 +2,7 @@
 
 | Iteration | Spec | Set after | Status |
 |---|---|---|---|
-| 001 | [Basic unvalidated loop](001-basic-unvalidated-loop/README.md) | Day 1 | Todo |
+| 001 | [Basic unvalidated loop](001-basic-unvalidated-loop/README.md) | Day 1 | Done |
 | 002 | [Checking the work](002-checking-the-work/README.md) | Day 2 | Todo |
 | 003.1 | [Real routing — the assembly line](003-real-routing/1-assembly-line/README.md) | Day 3, part 1 | Todo |
 | 003.2 | [Real routing — fan out](003-real-routing/2-fan-out/README.md) | Day 3, part 2 | Todo |
