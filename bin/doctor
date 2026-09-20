@@ -2,6 +2,8 @@
 # Diagnose the learner environment without reading credentials or contacting models.
 set -u
 
+repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+
 agent="all"
 agent_explicit=0
 case "${1-}" in
@@ -79,24 +81,93 @@ check_pi() {
   fi
   pass "Pi: $(pi --version 2>/dev/null | { IFS= read -r line || true; printf '%s' "${line-unknown version}"; })"
 
-  # Pi does not publish a non-interactive auth-status command. Do not parse auth.json.
-  if [[ -r "${HOME}/.pi/agent/auth.json" ]]; then
-    pass 'Pi authentication configuration is present (not validated against a provider).'
-    pi_configured=1
+  # Only provider IDs and default-selection fields leave this Node process;
+  # credential values in auth.json are never printed or passed to this script.
+  local default_provider='' default_model='' stored_provider='' stored_count=0
+  local metadata key value
+  while IFS=$'\t' read -r key value; do
+    case "$key" in
+      default_provider) default_provider="$value" ;;
+      default_model) default_model="$value" ;;
+      stored_provider) stored_provider="$value"; stored_count=$((stored_count + 1)) ;;
+    esac
+  done < <(node - "${HOME}/.pi/agent/settings.json" "${repo_root}/.pi/settings.json" "${HOME}/.pi/agent/auth.json" <<'NODE'
+const fs = require("fs");
+const valid = (value) => typeof value === "string" && /^[A-Za-z0-9._/-]+$/.test(value);
+const readJson = (path) => {
+  try { return JSON.parse(fs.readFileSync(path, "utf8")); } catch { return undefined; }
+};
+let settings = {};
+for (const path of process.argv.slice(2, 4)) {
+  const parsed = readJson(path);
+  if (parsed && typeof parsed === "object") {
+    for (const key of ["defaultProvider", "defaultModel"]) {
+      if (typeof parsed[key] === "string") settings[key] = parsed[key];
+    }
+  }
+}
+if (valid(settings.defaultProvider)) console.log(`default_provider\t${settings.defaultProvider}`);
+if (valid(settings.defaultModel)) console.log(`default_model\t${settings.defaultModel}`);
+const auth = readJson(process.argv[4]);
+if (auth && typeof auth === "object" && !Array.isArray(auth)) {
+  for (const provider of Object.keys(auth).sort()) {
+    if (valid(provider)) console.log(`stored_provider\t${provider}`);
+  }
+}
+NODE
+)
+
+  if [[ -n "$default_provider" && -n "$default_model" ]]; then
+    pass "Pi default selection: ${default_provider}/${default_model}."
+  elif [[ -n "$default_provider" ]]; then
+    pass "Pi default provider: ${default_provider} (model uses Pi's available/default selection)."
+  elif [[ -n "$default_model" ]]; then
+    warn "Pi default model is ${default_model}, but no default provider is saved."
   else
-    local variable
-    for variable in ANTHROPIC_API_KEY OPENAI_API_KEY GEMINI_API_KEY XAI_API_KEY; do
+    warn 'Pi has no saved default provider or model; Pi selects from available providers at startup.'
+  fi
+
+  local target_kind='' target='' env_count=0 variable provider variable_provider selected_variable=''
+  if [[ -n "$default_provider" ]]; then
+    target_kind='provider'; target="$default_provider"
+  elif [[ "$default_model" == */* ]]; then
+    target_kind='model'; target="$default_model"
+  else
+    for variable_provider in \
+      'ANTHROPIC_API_KEY:anthropic' 'OPENAI_API_KEY:openai' \
+      'GEMINI_API_KEY:google' 'XAI_API_KEY:xai' 'OPENROUTER_API_KEY:openrouter'; do
+      variable=${variable_provider%%:*}
+      provider=${variable_provider#*:}
       if [[ -n "${!variable-}" ]]; then
-        pass "Pi can use configured ${variable} (value not inspected)."
-        pi_configured=1
-        break
+        target_kind='provider'; target="$provider"; selected_variable="$variable"; env_count=$((env_count + 1))
       fi
     done
-    if [[ $pi_configured -eq 0 ]]; then
-      warn 'Pi is not configured. Run pi, then /login; or set a supported provider API-key variable.'
+    if [[ $env_count -eq 1 ]]; then
+      pass "Pi provider ${target} identified from ${selected_variable} (value not inspected)."
+    elif [[ $env_count -gt 1 ]]; then
+      target_kind=''; target=''
+      warn 'Pi has multiple supported provider-key variables but no default provider.'
+    elif [[ $stored_count -eq 1 ]]; then
+      target_kind='provider'; target="$stored_provider"
+      pass "Pi provider ${target} identified from stored configuration (credential not read)."
+    elif [[ $stored_count -gt 1 ]]; then
+      warn 'Pi has multiple stored providers but no default provider.'
     fi
   fi
-  warn 'Pi effective model is selected in its UI (/model); no non-interactive status command exposes it.'
+
+  if ! pi auth check --help >/dev/null 2>&1; then
+    warn 'Pi does not support native auth checks; update Pi, then run bin/doctor again.'
+  elif [[ -z "$target" ]]; then
+    warn 'Pi readiness is unknown: select a default provider with /model, or configure exactly one provider.'
+  elif [[ "$target_kind" == provider ]] && pi auth check --provider "$target" --json --no-refresh >/dev/null 2>&1; then
+    pass "Pi authentication is ready for provider ${target} (native local check; no refresh)."
+    pi_configured=1
+  elif [[ "$target_kind" == model ]] && pi auth check --model "$target" --json --no-refresh >/dev/null 2>&1; then
+    pass "Pi authentication is ready for model ${target} (native local check; no refresh)."
+    pi_configured=1
+  elif [[ -n "$target" ]]; then
+    warn "Pi authentication is not ready for ${target}; run pi, then /login."
+  fi
 }
 
 check_claude() {

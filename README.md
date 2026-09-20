@@ -30,7 +30,9 @@ bin/doctor --agent codex
 requires the tools and at least one configured agent; `--agent pi`,
 `--agent claude`, or `--agent codex` checks a specific choice, and
 `--agent all` requires every agent to be configured. It does not read credential
-contents or make a model request. Once it reports ready, start Pi with `pi`,
+contents or make a model request. For Pi, it uses `pi auth check --no-refresh`
+against a saved/uniquely identifiable provider; ambiguous Pi configuration is
+reported as unknown rather than ready. Once it reports ready, start Pi with `pi`,
 Claude Code with `claude`, or Codex with `codex`, and say **coach me**.
 
 The coaching workflow is available through `AGENTS.md` (Codex and Pi),
