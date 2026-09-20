@@ -1,0 +1,167 @@
+#!/usr/bin/env bash
+# Diagnose the learner environment without reading credentials or contacting models.
+set -u
+
+agent="all"
+agent_explicit=0
+case "${1-}" in
+  "") ;;
+  --agent)
+    if [[ $# -ne 2 ]]; then
+      printf 'FAIL: --agent needs one of: pi, claude, codex, all\n' >&2
+      exit 2
+    fi
+    agent="$2"
+    agent_explicit=1
+    ;;
+  --help|-h)
+    cat <<'EOF'
+Usage: bin/doctor [--agent pi|claude|codex|all]
+
+Checks local tools and installed agent CLIs without sending a model request.
+With no option, all agent CLIs must be installed and at least one must be
+configured. Selecting an agent requires that agent to be configured; `all`
+requires every agent to be configured.
+EOF
+    exit 0
+    ;;
+  *)
+    printf 'FAIL: unknown argument: %s\nTry: bin/doctor --help\n' "$1" >&2
+    exit 2
+    ;;
+esac
+
+case "$agent" in pi|claude|codex|all) ;; *)
+  printf 'FAIL: unknown agent: %s\nUse pi, claude, codex, or all.\n' "$agent" >&2
+  exit 2
+  ;;
+esac
+
+if [[ -t 1 && -z "${NO_COLOR-}" ]]; then
+  green=$'\033[32m'; yellow=$'\033[33m'; red=$'\033[31m'; reset=$'\033[0m'
+else
+  green=''; yellow=''; red=''; reset=''
+fi
+
+pass() { printf '%sPASS%s %s\n' "$green" "$reset" "$*"; }
+warn() { printf '%sWARN%s %s\n' "$yellow" "$reset" "$*"; }
+fail() { printf '%sFAIL%s %s\n' "$red" "$reset" "$*"; }
+
+base_ok=1
+agents_installed=1
+configured_count=0
+pi_configured=0
+claude_configured=0
+codex_configured=0
+
+check_tool() {
+  local tool="$1" version
+  if ! command -v "$tool" >/dev/null 2>&1; then
+    fail "$tool is not on PATH"
+    base_ok=0
+    return
+  fi
+  version=$("$tool" --version 2>/dev/null | { IFS= read -r line || true; printf '%s' "${line-unknown version}"; })
+  pass "$tool: ${version:-unknown version}"
+}
+
+printf 'Tutorial environment diagnostics (read-only; no model request)\n'
+check_tool bash
+check_tool git
+check_tool node
+check_tool npm
+
+check_pi() {
+  if ! command -v pi >/dev/null 2>&1; then
+    fail 'Pi is not on PATH (rebuild the Dev Container).'
+    agents_installed=0
+    return
+  fi
+  pass "Pi: $(pi --version 2>/dev/null | { IFS= read -r line || true; printf '%s' "${line-unknown version}"; })"
+
+  # Pi does not publish a non-interactive auth-status command. Do not parse auth.json.
+  if [[ -r "${HOME}/.pi/agent/auth.json" ]]; then
+    pass 'Pi authentication configuration is present (not validated against a provider).'
+    pi_configured=1
+  else
+    local variable
+    for variable in ANTHROPIC_API_KEY OPENAI_API_KEY GEMINI_API_KEY XAI_API_KEY; do
+      if [[ -n "${!variable-}" ]]; then
+        pass "Pi can use configured ${variable} (value not inspected)."
+        pi_configured=1
+        break
+      fi
+    done
+    if [[ $pi_configured -eq 0 ]]; then
+      warn 'Pi is not configured. Run pi, then /login; or set a supported provider API-key variable.'
+    fi
+  fi
+  warn 'Pi effective model is selected in its UI (/model); no non-interactive status command exposes it.'
+}
+
+check_claude() {
+  if ! command -v claude >/dev/null 2>&1; then
+    fail 'Claude Code is not on PATH (rebuild the Dev Container).'
+    agents_installed=0
+    return
+  fi
+  pass "Claude Code: $(claude --version 2>/dev/null | { IFS= read -r line || true; printf '%s' "${line-unknown version}"; })"
+  if claude auth status >/dev/null 2>&1; then
+    pass 'Claude Code authentication is configured.'
+    claude_configured=1
+  else
+    warn 'Claude Code is not configured. Run: claude auth login'
+  fi
+  warn 'Claude Code model is governed by its settings or upstream default; doctor does not start a session to infer it.'
+}
+
+check_codex() {
+  if ! command -v codex >/dev/null 2>&1; then
+    fail 'Codex is not on PATH (rebuild the Dev Container).'
+    agents_installed=0
+    return
+  fi
+  pass "Codex: $(codex --version 2>/dev/null | { IFS= read -r line || true; printf '%s' "${line-unknown version}"; })"
+  if codex login status >/dev/null 2>&1; then
+    pass 'Codex authentication is configured.'
+    codex_configured=1
+  else
+    warn 'Codex is not configured. Run: codex login --device-auth (or codex login)'
+  fi
+  warn 'Codex effective model is determined by its configuration or upstream default; doctor makes no request to discover it.'
+}
+
+check_pi
+check_claude
+check_codex
+
+configured_count=$((pi_configured + claude_configured + codex_configured))
+if [[ $base_ok -eq 0 || $agents_installed -eq 0 ]]; then
+  fail 'Environment is not ready: install the missing required tools or rebuild the Dev Container.'
+  exit 1
+fi
+
+case "$agent" in
+  pi) required_configured=$pi_configured ;;
+  claude) required_configured=$claude_configured ;;
+  codex) required_configured=$codex_configured ;;
+  all) required_configured=$configured_count ;;
+esac
+
+if [[ "$agent" == all && $agent_explicit -eq 1 && $configured_count -eq 3 ]]; then
+  pass 'Environment is ready: all agents are configured. Say "coach me" to begin.'
+elif [[ "$agent" == all && $agent_explicit -eq 0 && $configured_count -ge 1 ]]; then
+  pass 'Environment is ready: at least one agent is configured. Say "coach me" to begin.'
+elif [[ "$agent" == all ]]; then
+  if [[ $agent_explicit -eq 1 ]]; then
+    fail 'Environment is not ready for all agents: configure every agent, then run bin/doctor --agent all.'
+  else
+    fail 'Environment is not ready: configure at least one agent, then run bin/doctor again.'
+  fi
+  exit 1
+elif [[ $required_configured -eq 1 ]]; then
+  pass "Environment is ready for ${agent}. Say \"coach me\" to begin."
+else
+  fail "Environment is not ready for ${agent}: complete its login, then run bin/doctor --agent ${agent}."
+  exit 1
+fi
