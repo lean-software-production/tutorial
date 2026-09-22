@@ -3,6 +3,27 @@ Feature: Orchestration
   What a pass is, when it ends, and when the factory stops. These
   rules do not care how validation is done.
 
+  Rule: The factory prepares a workspace to commit to
+
+    Example: No workspace exists yet
+      Given a seed and no workspace
+      When the factory runs one pass
+      Then the workspace is a git repository
+      And it has a starting commit
+
+  Rule: The doer and the validator do not follow the student's own configuration
+
+    What the factory puts in a prompt is all the agent works from.
+    Settings on the machine running the factory — a personal AGENTS.md or
+    CLAUDE.md, say — do not reach it.
+
+    Example: The student's own configuration asks for a worktree
+      Given my own agent configuration says to always work in a git worktree
+      And a plan with three tasks, none of them done
+      When the factory runs one pass
+      Then there is one new commit on the workspace's current branch
+      And it contains the work for the first task
+
   Rule: Each pass completes one task, then stops
 
     Example: Three tasks remain

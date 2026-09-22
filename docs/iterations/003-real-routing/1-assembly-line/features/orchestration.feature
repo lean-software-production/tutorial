@@ -4,6 +4,26 @@ Feature: Orchestration
   a task is finished, when to give up and when to stop. These rules do
   not care how validation is done.
 
+  Rule: The factory prepares a workspace to commit to
+
+    Example: No workspace exists yet
+      Given a seed and no workspace
+      When the factory runs
+      Then the workspace is a git repository
+      And it has a starting commit
+
+  Rule: No machine follows the student's own configuration
+
+    What the factory puts in a prompt is all a machine works from.
+    Settings on the machine running the factory — a personal AGENTS.md or
+    CLAUDE.md, say — do not reach it.
+
+    Example: The student's own configuration asks for a worktree
+      Given my own agent configuration says to always work in a git worktree
+      And a plan with three tasks, none of them done
+      When the factory runs
+      Then there are three new commits on the workspace's current branch
+
   Rule: The factory runs the machines its assembly line gives it
 
     Example: An assembly line with no validator on it

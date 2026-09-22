@@ -38,3 +38,11 @@ Feature: Planning
       Given a plan whose first task is done
       When the factory runs
       Then the doer starts on the second task
+
+  Rule: The factory keeps nothing between runs but the files
+
+    Example: A run is stopped part-way through a task
+      Given a plan with three tasks, none of them done
+      And a run that was stopped while the doer was working on the first task
+      When the factory runs
+      Then the doer starts on the first task

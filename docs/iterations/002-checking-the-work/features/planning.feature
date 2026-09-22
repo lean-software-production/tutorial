@@ -35,3 +35,12 @@ Feature: Planning
       Given a plan whose first task is done
       When the factory runs one pass
       Then the plan shows the first two tasks as done
+
+  Rule: The factory keeps nothing between passes but the files
+
+    Example: A pass is stopped part-way through
+      Given a plan with three tasks, none of them done
+      And a pass that was stopped while the doer was working on the first task
+      When the factory runs one pass
+      Then the doer works on the first task
+      And the plan shows the first task as done
