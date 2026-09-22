@@ -4,6 +4,10 @@ Feature: Planning
 
   Rule: The seed is the assembly line's only input
 
+    The job's name and its target are inputs to the orchestrator: where to
+    keep the job's state, and where to build. The assembly line itself is
+    given the seed and nothing else.
+
     Example: The assembly line is given a seed and nothing else
       Given a seed describing a game of Tetris that runs in the terminal
       When the factory runs
@@ -47,20 +51,17 @@ Feature: Planning
       When the factory runs
       Then the doer starts on the second task
 
-  Rule: The factory keeps nothing between runs but the files
+  Rule: A job remembers its assembly line, its seed and its target
 
-    Example: A run is stopped part-way through a task
-      Given a plan with three tasks, none of them done
-      And a run that was stopped while the doer was working on the first task
-      When the factory runs
-      Then the doer starts on the first task
-
-  Rule: A job is picked up again by its name
+    The line, the seed and the target are given when a job starts. After
+    that, its name is enough.
 
     Example: The "tetris" job, run again
-      Given a job named "tetris" whose plan has its first task done
-      When the factory runs the "tetris" job
-      Then the doer starts on the second task
+      Given a job named "tetris" started on the "careful" line with a Tetris seed and a target
+      And its plan has its first task done
+      When the factory runs the "tetris" job, given only its name
+      Then the doer starts on the second task, on the "careful" line
+      And the work lands in that same target
 
   Rule: Each job has its own plan and its own target
 

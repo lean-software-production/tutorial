@@ -5,10 +5,20 @@ doer makes it one task at a time and the three big brains checks each
 attempt, until the plan is complete. You can watch what every machine
 generates and what it spends, and talk to a machine while it works.
 
+Each run is for a **job**, named on the command line. A job is started
+with an assembly line, a seed and a target — the codebase it builds, its
+own git repository — and remembers all three, so after that its name is
+enough. The seed is the assembly line's only input; the name and the
+target are for the orchestrator, telling it where to keep the job's
+plan and its record (`jobs/<name>/`, never in the target) and where to build. No
+machine sees the student's own agent configuration. Stopping the factory
+part-way leaves the job in a sane state, and the next run carries on.
+
 New here: a machine can have skills. A skill is a folder with a `SKILL.md`
 in it — a name, a description of what it is for, and the instructions —
 and it sits beside the machine that owns it. The doer's skills are the
-doer's, and a reviewer's are its own.
+doer's, and a reviewer's are its own. Skills belong to the machine, not
+to the line: a machine brings the same skills to every line it runs on.
 
 A machine starts a run knowing only what its skills are called and what
 they are for. It reads a skill's instructions when it judges the task

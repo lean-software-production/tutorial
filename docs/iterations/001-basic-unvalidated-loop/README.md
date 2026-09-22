@@ -10,9 +10,10 @@ homework is a mock or a placeholder.
 
 ## What you're building
 
-Each run of the factory is for a **job**. You name the job, and give it a
-seed (what to build) and a target (the git repository to build it in —
-kept separate from your factory's own repo). On each pass, the factory:
+Each run of the factory is for a **job**. You name the job, and the first
+time you run it you give it a seed (what to build) and a target (the git
+repository to build it in — kept separate from your factory's own repo).
+The job remembers both; after that, its name is enough. On each pass, the factory:
 
 1. Reads the seed — the `spec.md` in this folder is the sample (it says:
    build Tetris in the terminal, started with `npm start`, fitting inside
@@ -34,18 +35,21 @@ The exact command name is your choice. This is the shape of what should
 work by the end, using `./factory` as a stand-in:
 
 ```sh
-# first run — no plan yet, so the factory plans instead of building
+# first run — a new job, no plan yet, so the factory plans instead of building
 $ ./factory --job tetris --seed spec.md --target ../targets/tetris
 created jobs/tetris/plan.md (4 tasks) from spec.md
 
-# next run — one pass, one task, one commit in the target
-$ ./factory --job tetris --seed spec.md --target ../targets/tetris
+# next run — the job remembers its seed and target; one pass, one task,
+# one commit in the target
+$ ./factory --job tetris
 task 1 done: set up the project
 $ git -C ../targets/tetris log --oneline
 # one new commit
 
+# stopping part-way (Ctrl-C) is fine: the next run picks the task up again
+
 # run to completion
-$ ./factory --job tetris --seed spec.md --target ../targets/tetris --all
+$ ./factory --job tetris --all
 task 2 done: ...
 task 3 done: ...
 task 4 done: ...

@@ -62,3 +62,22 @@ Feature: Orchestration
       When the factory runs to completion
       Then the factory stops without doing any work
       And there are no new commits
+
+  Rule: Stopping the factory part-way leaves the job in a sane state
+
+    Stopping is something you choose to do — interrupting a pass that is
+    taking too long, say. The factory marks nothing done that isn't and
+    commits nothing half-finished, so the next pass can carry on from the
+    files. A crash is not a stop; after one, the factory makes a best
+    effort to do the same, and no more is asked of it.
+
+    Example: I stop a pass part-way through
+      Given a plan with three tasks, none of them done
+      When I stop the factory while the doer is working on the first task
+      Then the plan shows the first task as not done
+      And there are no new commits
+
+    Example: The next pass carries on
+      Given I stopped the factory while the doer was working on the first task
+      When the factory runs one pass
+      Then the doer works on the first task

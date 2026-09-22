@@ -17,13 +17,21 @@ the factory reads before it does any work.
   will carry before the factory gives up.
 
 A factory can hold more than one assembly line, and each job says which
-one it runs, alongside its seed and its target. A line is a recipe, not
-an address: it never names a target, so the same line can build any
-number of them.
+one it runs. A line is a recipe, not an address: it never names a
+target, so the same line can build any number of them.
+
+Each run is for a **job**, named on the command line. A job is started
+with an assembly line, a seed and a target — the codebase it builds, its
+own git repository — and remembers all three, so after that its name is
+enough. The seed is the assembly line's only input; the name and the
+target are for the orchestrator, telling it where to keep the job's
+plan (`jobs/<name>/`, never in the target) and where to build. No
+machine sees the student's own agent configuration. Stopping the factory
+part-way leaves the job in a sane state, and the next run carries on.
 
 The pass is gone. It used to do the looping, and the loop is on the line
 now. The factory runs; the assembly line says what runs next.
 
 The feature files in `features/` are the whole spec. New since iteration
 2: `assembly-line.feature`. `orchestration` and `planning` are rewritten
-without the pass. `validation` is unchanged.
+without the pass, and gain the rules for choosing a line for each job. `validation` is unchanged.

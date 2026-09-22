@@ -10,6 +10,15 @@ reviewers on three providers' models at once, and a synthesiser reads
 their reports — never the work itself — and decides. The reviewers report;
 only the synthesiser decides.
 
+Each run is for a **job**, named on the command line. A job is started
+with an assembly line, a seed and a target — the codebase it builds, its
+own git repository — and remembers all three, so after that its name is
+enough. The seed is the assembly line's only input; the name and the
+target are for the orchestrator, telling it where to keep the job's
+plan (`jobs/<name>/`, never in the target) and where to build. No
+machine sees the student's own agent configuration. Stopping the factory
+part-way leaves the job in a sane state, and the next run carries on.
+
 Each file knows only its own altitude. `orchestration.feature` says
 "validation" and does not care how it is done. `assembly-line.feature`
 knows the three big brains is one machine and nothing about what is inside

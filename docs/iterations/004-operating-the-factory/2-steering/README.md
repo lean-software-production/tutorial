@@ -19,3 +19,15 @@ A message lives in that machine's run and dies with it. If you want
 something to stick, it belongs in the seed, the plan, or the machine's own
 prompt. Noticing where the difference bites is most of the point of this
 homework.
+
+## The commands you'll end up with
+
+On top of part 1's, one more — again, the exact shape is yours:
+
+```sh
+$ ./factory say tetris doer "use curses, not print"
+delivered to doer
+
+$ ./factory say tetris reviewer-1 "be strict about error handling"
+refused: doer is what is running
+```
