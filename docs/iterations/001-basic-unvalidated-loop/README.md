@@ -25,8 +25,8 @@ kept separate from your factory's own repo). On each pass, the factory:
 4. Marks the task done in `plan.md` and commits the work to the target.
 
 The seed and the plan live in files, not in your code. Each pass is
-stateless: it reads the files, does one thing, writes the files back. Read
-the ADRs in `adr/` — they pin down these decisions.
+stateless: it reads the files, does one thing, writes the files back. The
+rules below pin down the rest.
 
 ## The commands you'll end up with
 

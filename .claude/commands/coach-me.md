@@ -5,7 +5,7 @@ Walk the student through implementing the next `Todo` iteration from `docs/itera
 
 The student is building a "factory" — a small program that turns a spec (a seed) into a plan, then works the plan one task at a time, driving a coding agent to do the real work. The spec and plan live in files on disk, not in the factory's code.
 
-Start by reading the full specification of the iteration: its `README.md`, `FACTORY.md`, the feature files in `features/`, any ADRs in `adr/`, and the spec file (e.g. `spec.md`) if there is one. Together they are the whole spec, not just what's new.
+Start by reading the full specification of the iteration: its `README.md` (including its Rules), `FACTORY.md`, the feature files in `features/`, and the spec file (e.g. `spec.md`) if there is one. Together they are the whole spec, not just what's new.
 
 Give the student a one-paragraph summary of what will happen in this iteration, and show them the example CLI commands and expected outputs from the `README.md`. Then ask what questions they have before you start.
 
@@ -21,7 +21,7 @@ Follow this process exactly:
 1. Read `docs/iterations/README.md`.
 2. Find the first ledger row whose status is exactly `Todo`.
 3. If no iteration is `Todo`, stop and report that there is nothing to implement.
-4. Read the spec for that row: its `README.md` (the homework framing), `FACTORY.md` (the factory's full behavior at this point, in prose), the feature files in `features/` (the acceptance criteria, in Gherkin), and any ADRs in `adr/` (the architectural decisions). Read this iteration only — do not look at the other iterations.
+4. Read the spec for that row: its `README.md` (the homework framing), `FACTORY.md` (the factory's full behavior at this point, in prose), and the feature files in `features/` (the acceptance criteria, in Gherkin). Read this iteration only — do not look at the other iterations.
 5. If the spec is unclear, stop and ask before editing.
 6. Check the working tree and avoid touching unrelated student changes.
 7. Change only that ledger row from `Todo` to `WIP` without committing it.
@@ -49,11 +49,11 @@ Rules:
 - Do not read or look ahead at the other iterations' specs. Coach the current `Todo` iteration only.
 - Do not make a separate commit for the `WIP` ledger change.
 - Do not edit implementation files unless the student asks you to, and even then only implement the next baby step.
-- Do not edit `README.md`, `FACTORY.md`, `adr/*`, or `features/*.feature` under `docs/iterations/` — those are the spec, not yours to change.
+- Do not edit `README.md`, `FACTORY.md`, or `features/*.feature` under `docs/iterations/` — those are the spec, not yours to change.
 - You may edit `docs/iterations/README.md` for ledger status updates.
 - You may run commands to inspect files, review diffs, and run checks.
 - Do not commit unrelated existing changes.
-- Keep the implementation scoped to the spec: the README, `FACTORY.md`, ADRs, and feature files for this iteration only.
+- Keep the implementation scoped to the spec: the README, `FACTORY.md`, and feature files for this iteration only.
 - Keep the factory minimal: a short loop driving the agent, with state on disk. Do not encode the plan or spec in code, and do not simulate the agent's work.
 - Keep coaching steps small enough for a student to do comfortably.
 - Be super concise. Avoid jargon.

@@ -18,9 +18,9 @@ decided, when, and why. Each record follows [adr_template.md](adr_template.md).
 | [0001](0001-use-adrs.md) | use ADRs | accepted |
 | [0002](0002-students-work-across-three-repositories.md) | students work across three repositories | proposed |
 
-## Iteration ADRs
+## Not in here
 
-The architectural decisions that shape a given iteration's factory live in
-that iteration's own `adr/` folder (e.g.
-`docs/iterations/001-basic-unvalidated-loop/adr/`). They are part of the
-iteration spec, not of this ledger.
+These records are decisions about how the course is built. What a
+student's factory must do is specified as Gherkin in each iteration's
+`features/`, and how they must build it is in the Rules section of that
+iteration's `README.md`.
