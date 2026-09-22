@@ -16,15 +16,18 @@ with an assembly line, a seed and a target — the codebase it builds, its
 own git repository — and remembers all three, so after that its name is
 enough. The seed is the assembly line's only input; the name and the
 target are for the orchestrator, telling it where to keep the job's
-plan and its record (`jobs/<name>/`, never in the target) and where to build. No
-machine sees the student's own agent configuration. Stopping the factory
-part-way leaves the job in a sane state, and the next run carries on.
+plan and its record (`jobs/<name>/`, never in the target) and where to build. You can stop a
+job, and the factory stays up; or stop the factory, and its job stops
+with it. Either way the work in flight is interrupted, nothing
+half-finished is marked done or committed, and starting the job again by
+name carries on from there.
 
 Tokens are counted for each machine and totalled for each provider,
 because the three big brains puts three providers' models on one attempt
 and each of them invoices separately.
 
 New since iteration 3: `monitoring.feature` and `observability.feature`,
-and two rules in `orchestration.feature` — the factory runs as a daemon,
-and it runs one job at a time. A job's record is kept with the job. `planning`, `validation` and
+and new rules in `orchestration.feature` — the factory runs as a daemon,
+it runs one job at a time, and a job or the factory can be stopped and
+the job started again. A job's record is kept with the job. `planning`, `validation` and
 `assembly-line` are unchanged.

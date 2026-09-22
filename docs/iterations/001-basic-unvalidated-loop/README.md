@@ -46,8 +46,6 @@ task 1 done: set up the project
 $ git -C ../targets/tetris log --oneline
 # one new commit
 
-# stopping part-way (Ctrl-C) is fine: the next run picks the task up again
-
 # run to completion
 $ ./factory --job tetris --all
 task 2 done: ...
@@ -87,8 +85,6 @@ disturbing the first job.
   done
   ```
 
-- Keep your own agent configuration out of it (see `orchestration.feature`).
-  With `pi`, `--no-context-files` does this.
 
 You will keep this. The next homework adds checking the work: the factory
 starts noticing when the agent's output is wrong.

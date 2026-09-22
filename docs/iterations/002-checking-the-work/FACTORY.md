@@ -10,10 +10,7 @@ with a seed and a target — the codebase it builds, its own git
 repository — and remembers both, so after that its name is enough. The
 seed is the only input to the work; the name and the target tell the
 factory where to keep the job's plan (`jobs/<name>/`, never in the
-target) and where to build. The agent works only from what the factory
-puts in its prompt: the student's own agent configuration does not reach
-it. Stopping the factory part-way leaves the job in a sane state, and the
-next pass carries on.
+target) and where to build.
 
 There are two ways to run it. Running one pass takes one task from
 start to checked and stops. Running to completion keeps going until the

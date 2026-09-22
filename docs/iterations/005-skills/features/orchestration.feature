@@ -31,18 +31,6 @@ Feature: Orchestration
       Then the target is a git repository
       And it has a starting commit
 
-  Rule: No machine follows the student's own configuration
-
-    What the factory puts in a prompt is all a machine works from.
-    Settings on the machine running the factory — a personal AGENTS.md or
-    CLAUDE.md, say — do not reach it.
-
-    Example: The student's own configuration asks for a worktree
-      Given my own agent configuration says to always work in a git worktree
-      And a plan with three tasks, none of them done
-      When the factory runs
-      Then there are three new commits on the target's current branch
-
   Rule: The factory runs the machines its assembly line gives it
 
     Example: An assembly line with no validator on it
@@ -149,20 +137,42 @@ Feature: Orchestration
       Then the doer never runs
       And there are no new commits
 
-  Rule: Stopping the factory part-way leaves the job in a sane state
+  Rule: Stopping a job leaves the factory running
 
-    Stopping is something you choose to do. The factory marks nothing done
-    that isn't and commits nothing half-finished, so the next run can carry
-    on from the files. A crash is not a stop; after one, the factory makes
-    a best effort to do the same, and no more is asked of it.
+    Example: Stopping the "tetris" job
+      Given the "tetris" job is running
+      When I stop the "tetris" job
+      Then the "tetris" job is no longer running
+      And the factory is still running
 
-    Example: I stop the factory part-way through a task
-      Given a plan with three tasks, none of them done
-      When I stop the factory while the doer is working on the first task
-      Then the plan shows the first task as not done
+  Rule: Stopping the factory stops its job too
+
+    Example: Stopping the factory while a job runs
+      Given the "tetris" job is running
+      When I stop the factory
+      Then the factory is no longer running
+      And neither is the "tetris" job
+
+  Rule: A stop interrupts the work at once and leaves the job in a sane state
+
+    Stopping is something you choose to do. Whatever machine is working
+    is interrupted there and then, and its attempt is abandoned: nothing is
+    marked done that isn't, and nothing half-finished is committed. What it
+    had written is left in the target, for whoever comes looking. A crash
+    is not a stop; after one, the factory makes a best effort to do the
+    same, and no more is asked of it.
+
+    Example: The doer is mid-attempt
+      Given the "tetris" job's plan has three tasks, none of them done
+      And the doer is part-way through its first attempt at the first task
+      When I stop the "tetris" job
+      Then the doer's attempt has been abandoned
+      And the plan shows the first task as not done
       And there are no new commits
 
-    Example: The next run carries on
-      Given I stopped the factory while the doer was working on the first task
-      When the factory runs
+  Rule: A stopped job carries on when it is started again
+
+    Example: Starting the "tetris" job again
+      Given I stopped the "tetris" job while the doer was working on the first task
+      When I start the "tetris" job again, by name alone
       Then the doer starts on the first task

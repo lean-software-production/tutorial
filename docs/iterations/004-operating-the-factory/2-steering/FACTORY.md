@@ -10,9 +10,11 @@ with an assembly line, a seed and a target — the codebase it builds, its
 own git repository — and remembers all three, so after that its name is
 enough. The seed is the assembly line's only input; the name and the
 target are for the orchestrator, telling it where to keep the job's
-plan and its record (`jobs/<name>/`, never in the target) and where to build. No
-machine sees the student's own agent configuration. Stopping the factory
-part-way leaves the job in a sane state, and the next run carries on.
+plan and its record (`jobs/<name>/`, never in the target) and where to build. You can stop a
+job, and the factory stays up; or stop the factory, and its job stops
+with it. Either way the work in flight is interrupted, nothing
+half-finished is marked done or committed, and starting the job again by
+name carries on from there.
 
 New here: you can talk to a machine while it is working. A message names
 the machine it is for, reaches it at that machine's next step, and lives

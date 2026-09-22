@@ -31,6 +31,13 @@ Feature: Observability
       Then I see what the planner generated
       And what the doer generated in its first attempt
 
+  Rule: Watching shows when a job is stopped
+
+    Example: The job is stopped while I watch
+      Given I am watching the running "tetris" job
+      When I stop the "tetris" job
+      Then I see that it was stopped
+
   Rule: The record outlives the job
 
     Example: The job finished yesterday

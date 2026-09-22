@@ -25,9 +25,7 @@ with an assembly line, a seed and a target — the codebase it builds, its
 own git repository — and remembers all three, so after that its name is
 enough. The seed is the assembly line's only input; the name and the
 target are for the orchestrator, telling it where to keep the job's
-plan (`jobs/<name>/`, never in the target) and where to build. No
-machine sees the student's own agent configuration. Stopping the factory
-part-way leaves the job in a sane state, and the next run carries on.
+plan (`jobs/<name>/`, never in the target) and where to build.
 
 The pass is gone. It used to do the looping, and the loop is on the line
 now. The factory runs; the assembly line says what runs next.

@@ -35,9 +35,12 @@ tokens     doer 12.4k in / 3.1k out   anthropic 15.5k   google 4.2k   openai 3.9
 $ ./factory --job snake --line lines/quick.dot --seed snake.md --target ../targets/snake
 refused: job tetris is running
 
-# stop it; start it again later by name alone
+# stop the job (the factory stays up); start it again later by name alone
 $ ./factory stop tetris
 $ ./factory --job tetris
+
+# stop the factory itself — its job stops with it
+$ ./factory stop
 ```
 
 Before you start, look at what your factory does today. It probably

@@ -60,6 +60,22 @@ Feature: Planning
       Then the doer works on the second task, from the Tetris seed
       And the work lands in that same target
 
+  Rule: A job's settings cannot be changed once it has started
+
+    Naming a job again with its original seed and target is fine, and
+    so is naming it alone. Naming it with different ones is refused.
+
+    Example: The "tetris" job is given a different target
+      Given a job named "tetris" started with a Tetris seed and a target
+      When the factory runs one pass of the "tetris" job with a different target
+      Then the factory refuses
+      And it says the "tetris" job already has a target
+
+    Example: The "tetris" job is given the same settings again
+      Given a job named "tetris" started with a Tetris seed and a target
+      When the factory runs one pass of the "tetris" job with that same seed and target
+      Then the factory runs it as usual
+
   Rule: Each job has its own plan and its own target
 
     Example: Two jobs side by side

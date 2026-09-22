@@ -21,22 +21,12 @@ after that, the factory finds the first task not yet done and hands it to
 a coding agent, which implements that one task in real code. The factory
 then marks the task done in `plan.md` and commits the work.
 
-Every call to the agent runs without the student's own personal config —
-only what the factory itself puts in the prompt reaches it. Otherwise an
-unrelated setting on the machine running the factory could silently change
-what the agent does.
-
 The seed and the plan live in files. The factory holds nothing in its own
 code or memory between passes: each pass reads the files, does one thing,
 and writes them back. Naming the same job again picks it up where it
 stopped; naming a new one starts afresh, with its own plan and its own
 target. The factory itself does not write the project — the
 agent does.
-
-You can stop the factory part-way through a pass. It leaves the job in a
-sane state — nothing marked done that isn't, nothing half-finished
-committed — so the next pass carries on. After a crash it makes a best
-effort to do the same, and no more.
 
 There are two ways to run it. Running one pass does a single task (or, on
 the first run, creates the plan) and stops. Running to completion keeps
