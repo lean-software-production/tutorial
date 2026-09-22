@@ -16,6 +16,11 @@ the factory reads before it does any work.
   goes back for another attempt, and the edge says how many attempts it
   will carry before the factory gives up.
 
+A factory can hold more than one assembly line, and each job says which
+one it runs, alongside its seed and its target. A line is a recipe, not
+an address: it never names a target, so the same line can build any
+number of them.
+
 The pass is gone. It used to do the looping, and the loop is on the line
 now. The factory runs; the assembly line says what runs next.
 

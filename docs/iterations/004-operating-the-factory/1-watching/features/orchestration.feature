@@ -7,25 +7,28 @@ Feature: Orchestration
   Rule: The factory runs as a daemon
 
     Example: Starting a job
-      Given a seed describing a game of Tetris
-      When I start the factory on it
+      Given a job named "tetris" whose seed describes a game of Tetris
+      When I start the "tetris" job
       Then the factory goes on running after the command returns
       And I can watch it
 
   Rule: The factory runs one job at a time
 
-    Example: A second seed while a job is running
+    Example: A second job while one is running
       Given a running job
-      When I start the factory on another seed
+      When I start another job
       Then it refuses
       And the running job carries on untouched
 
-  Rule: The factory prepares a workspace to commit to
+  Rule: The factory works in the target it is given
 
-    Example: No workspace exists yet
-      Given a seed and no workspace
+    The target is the codebase a job builds: its own git repository,
+    holding only the product.
+
+    Example: The target is not a git repository yet
+      Given a seed and a target folder that is not a git repository
       When the factory runs
-      Then the workspace is a git repository
+      Then the target is a git repository
       And it has a starting commit
 
   Rule: No machine follows the student's own configuration
@@ -38,7 +41,7 @@ Feature: Orchestration
       Given my own agent configuration says to always work in a git worktree
       And a plan with three tasks, none of them done
       When the factory runs
-      Then there are three new commits on the workspace's current branch
+      Then there are three new commits on the target's current branch
 
   Rule: The factory runs the machines its assembly line gives it
 
@@ -48,6 +51,27 @@ Feature: Orchestration
       When the factory runs
       Then all three tasks have been done
       And nothing has validated the work
+
+  Rule: Each job runs the assembly line it is given
+
+    A factory can hold more than one assembly line. Which one a job runs
+    is chosen when the job starts; a line never names a target.
+
+    Example: Two lines, one factory
+      Given an assembly line "careful" on which the doer's work is validated
+      And an assembly line "quick" on which the doer goes straight to plan_complete
+      When the factory runs the "tetris" job on "careful"
+      And the factory runs the "snake" job on "quick"
+      Then the "tetris" job's work has been validated
+      And nothing has validated the "snake" job's work
+
+  Rule: An assembly line works on any target
+
+    Example: One line, two targets
+      Given an assembly line "careful"
+      When the factory runs the "tetris" job on "careful" against one target
+      And the factory runs the "snake" job on "careful" against another
+      Then each target holds only its own job's work
 
   Rule: The factory does no work on an assembly line it refuses
 

@@ -13,6 +13,12 @@ Feature: Skills
       Then it knows about "tdd" and "commit-style"
       And it does not know about "security-review"
 
+    Example: The doer brings the same skills to every line
+      Given the doer has the skills "tdd" and "commit-style"
+      And two assembly lines that both use the doer
+      When the doer starts an attempt on either line
+      Then it knows about "tdd" and "commit-style"
+
   Rule: A machine starts knowing what its skills are for, and no more
 
     Example: Two skills, neither of them read yet

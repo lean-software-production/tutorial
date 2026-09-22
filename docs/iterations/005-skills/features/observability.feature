@@ -38,3 +38,4 @@ Feature: Observability
       When I read its record
       Then it shows what every machine generated
       And what every machine spent
+      And the record is in the job's folder in the factory, not in the target

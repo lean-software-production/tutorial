@@ -2,9 +2,9 @@ Feature: Planning
 
   How the factory turns a seed into a plan, and keeps that plan true.
 
-  Rule: The seed is the factory's only input
+  Rule: The seed is the only description of what to build
 
-    Example: The factory is given a seed and nothing else
+    Example: The factory is told what to build by the seed and nothing else
       Given a seed describing a game of Tetris that runs in the terminal
       When the factory runs to completion
       Then it builds Tetris
@@ -23,6 +23,14 @@ Feature: Planning
       Given a plan with four tasks, none of them done
       When the factory runs one pass
       Then the plan still has those four tasks
+
+  Rule: A job keeps its plan with the factory, not in the target
+
+    Example: The first pass of a job named "tetris"
+      Given a job named "tetris" with a seed, a target and no plan
+      When the factory runs one pass of the "tetris" job
+      Then the plan is in jobs/tetris in the factory
+      And there is no plan in the target
 
   Rule: The factory maintains the plan
 
@@ -44,3 +52,19 @@ Feature: Planning
       When the factory runs one pass
       Then the doer works on the first task
       And the plan shows the first task as done
+
+  Rule: A job is picked up again by its name
+
+    Example: The "tetris" job's second pass
+      Given a job named "tetris" whose plan has its first task done
+      When the factory runs one pass of the "tetris" job
+      Then the doer works on the second task
+
+  Rule: Each job has its own plan and its own target
+
+    Example: Two jobs side by side
+      Given a job named "tetris" whose seed describes Tetris
+      And a job named "snake" whose seed describes Snake, with a different target
+      When the factory runs one pass of each
+      Then each job has its own plan
+      And each target holds only its own job's work

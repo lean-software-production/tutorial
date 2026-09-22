@@ -3,12 +3,15 @@ Feature: Orchestration
   What a pass is, when it ends, and when the factory stops. These
   rules do not care how validation is done.
 
-  Rule: The factory prepares a workspace to commit to
+  Rule: The factory works in the target it is given
 
-    Example: No workspace exists yet
-      Given a seed and no workspace
+    The target is the codebase a job builds: its own git repository,
+    holding only the product.
+
+    Example: The target is not a git repository yet
+      Given a seed and a target folder that is not a git repository
       When the factory runs one pass
-      Then the workspace is a git repository
+      Then the target is a git repository
       And it has a starting commit
 
   Rule: The doer and the validator do not follow the student's own configuration
@@ -21,7 +24,7 @@ Feature: Orchestration
       Given my own agent configuration says to always work in a git worktree
       And a plan with three tasks, none of them done
       When the factory runs one pass
-      Then there is one new commit on the workspace's current branch
+      Then there is one new commit on the target's current branch
       And it contains the work for the first task
 
   Rule: Each pass completes one task, then stops

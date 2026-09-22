@@ -130,6 +130,11 @@ inputoutput-cost-asymmetry:
   definition: |-
     Output tokens cost several times more than input tokens (typically 3–6×), because generation is autoregressive (one pass per token) while input is processed in parallel. A long prompt is usually cheaper than a long response. [→ token-cost](concepts/token-cost-and-cost-management.md)
 
+job:
+  term: "Job"
+  definition: |-
+    One run of an *assembly line* on a *seed*, against a *target*, under a name. The job's own state — its plan and its record — lives with the *factory*, in a folder named after the job, not in the target. Naming the same job again picks it up where it stopped.
+
 judge-llm-judge-judge-agent:
   term: "Judge (LLM judge / judge agent)"
   definition: |-
@@ -257,6 +262,11 @@ sub-agent:
   term: "Sub-agent"
   definition: |-
     A separate model call with its own fresh context window. Decomposing a task across sub-agents keeps each one's context small and relevant, at the cost of coordination overhead and more total calls. [→ context-window](concepts/context-window-management.md)
+
+target:
+  term: "Target"
+  definition: |-
+    The codebase a *job* works on: its own git repository, holding only the product. The target is chosen when the job starts; an *assembly line* never names one, so the same line can work on any number of targets, new or existing.
 
 token:
   term: "Token"

@@ -10,15 +10,19 @@ homework is a mock or a placeholder.
 
 ## What you're building
 
-On each pass, the factory:
+Each run of the factory is for a **job**. You name the job, and give it a
+seed (what to build) and a target (the git repository to build it in —
+kept separate from your factory's own repo). On each pass, the factory:
 
-1. Reads the seed — the `spec.md` in this folder (it says: build Tetris in
-   the terminal, started with `npm start`, fitting inside 24 rows).
-2. If `plan.md` doesn't exist yet, writes it: the spec broken into a few
-   tasks. If it does exist, leaves it alone.
+1. Reads the seed — the `spec.md` in this folder is the sample (it says:
+   build Tetris in the terminal, started with `npm start`, fitting inside
+   24 rows).
+2. If the job has no `plan.md` yet, writes it in the job's folder,
+   `jobs/<name>/`: the spec broken into a few tasks. If it does, leaves it
+   alone.
 3. Picks the first not-done task and hands it to a coding agent, which
-   implements *that task* in real code.
-4. Marks the task done in `plan.md` and commits the work.
+   implements *that task* in real code, in the target.
+4. Marks the task done in `plan.md` and commits the work to the target.
 
 The seed and the plan live in files, not in your code. Each pass is
 stateless: it reads the files, does one thing, writes the files back. Read
@@ -31,31 +35,32 @@ work by the end, using `./factory` as a stand-in:
 
 ```sh
 # first run — no plan yet, so the factory plans instead of building
-$ ./factory
-created plan.md (4 tasks) from spec.md
+$ ./factory --job tetris --seed spec.md --target ../targets/tetris
+created jobs/tetris/plan.md (4 tasks) from spec.md
 
-# next run — one pass, one task, one commit
-$ ./factory
+# next run — one pass, one task, one commit in the target
+$ ./factory --job tetris --seed spec.md --target ../targets/tetris
 task 1 done: set up the project
-$ git log --oneline
+$ git -C ../targets/tetris log --oneline
 # one new commit
 
 # run to completion
-$ ./factory --all
+$ ./factory --job tetris --seed spec.md --target ../targets/tetris --all
 task 2 done: ...
 task 3 done: ...
 task 4 done: ...
 factory stopped — plan complete
 
 # the payoff: a real, playable Tetris
-$ npm start
+$ cd ../targets/tetris && npm start
 ```
 
 Your task names and count will differ; the point is that real code appears
-in the working directory, one task per pass, and `npm start` runs Tetris.
+in the target, one task per pass, and `npm start` runs Tetris.
 
-Once it works, change the seed (point at a different `spec.md`) and run it
-again — the factory should build whatever the new seed describes.
+Once it works, start a second job with a different seed and a new target —
+the factory should build whatever the new seed describes, without
+disturbing the first job.
 
 ## Rules
 

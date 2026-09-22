@@ -25,6 +25,14 @@ Feature: Planning
       When the factory runs
       Then the plan still has those four tasks
 
+  Rule: A job keeps its plan with the factory, not in the target
+
+    Example: The first run of a job named "tetris"
+      Given a job named "tetris" with a seed, a target and no plan
+      When the factory runs the "tetris" job
+      Then the plan is in jobs/tetris in the factory
+      And there is no plan in the target
+
   Rule: The factory maintains the plan
 
     Example: The factory stops part-way through
@@ -46,3 +54,19 @@ Feature: Planning
       And a run that was stopped while the doer was working on the first task
       When the factory runs
       Then the doer starts on the first task
+
+  Rule: A job is picked up again by its name
+
+    Example: The "tetris" job, run again
+      Given a job named "tetris" whose plan has its first task done
+      When the factory runs the "tetris" job
+      Then the doer starts on the second task
+
+  Rule: Each job has its own plan and its own target
+
+    Example: Two jobs, one after the other
+      Given a job named "tetris" whose seed describes Tetris
+      And a job named "snake" whose seed describes Snake, with a different target
+      When the factory runs each of them
+      Then each job has its own plan
+      And each target holds only its own job's work
