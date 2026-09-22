@@ -66,9 +66,25 @@ disturbing the first job.
 
 - How you build it is up to you. It doesn't have to be a bash loop, and
   we'd rather it weren't. The behaviour in `features/` is the spec.
-- The factory drives the agent; it does not fake the work. No placeholder
-  files, no hard-coded plan.
-- Keep it small. The reference version is a few lines of loop.
+- The factory drives a coding agent (we use `pi`), and the agent does the
+  work. The factory picks the task, hands it over, records the result and
+  commits; it does not write the project itself, and it does not fake the
+  work. No placeholder files, no hard-coded plan.
+- State lives in files, not in your factory. It holds nothing in memory
+  between passes: each pass reads the files, does one thing, and writes
+  them back.
+- Keep it small. All the intelligence is in the agent and the files; the
+  factory is a short loop around one agent call. The reference version is
+  a few lines of loop, and the language is irrelevant:
+
+  ```sh
+  for pass in 1 2 3 4 5; do
+    pi -p < prompt.md
+  done
+  ```
+
+- Keep your own agent configuration out of it (see `orchestration.feature`).
+  With `pi`, `--no-context-files` does this.
 
 You will keep this. The next homework adds checking the work: the factory
 starts noticing when the agent's output is wrong.
