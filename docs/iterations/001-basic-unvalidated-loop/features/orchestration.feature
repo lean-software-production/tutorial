@@ -3,6 +3,10 @@ Feature: Orchestration
   What a pass is, when it ends, and when the factory stops. These
   rules do not care how validation is done.
 
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+
   Rule: The factory works in the target it is given
 
     The target is the codebase a job builds: its own git repository,

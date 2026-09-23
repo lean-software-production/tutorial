@@ -2,6 +2,10 @@ Feature: Steering
 
   Talking to a machine while it works.
 
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+
   Rule: A message reaches the machine at its next step
 
     Example: The doer is mid-attempt

@@ -4,6 +4,10 @@ Feature: Orchestration
   a task is finished, when to give up and when to stop. These rules do
   not care how validation is done.
 
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+
   Rule: The factory runs as a daemon
 
     Example: Starting a job

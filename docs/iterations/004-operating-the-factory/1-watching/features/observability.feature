@@ -2,6 +2,10 @@ Feature: Observability
 
   Reading what the machines generate.
 
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+
   Rule: What a machine generates can be read while it is generating it
 
     Example: The doer is working

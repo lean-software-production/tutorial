@@ -21,7 +21,8 @@ factory — where to keep things and where to build — not for the work.
 On its first pass the factory reads the seed and writes a plan,
 `plan.md`, breaking the spec into a small number of tasks. The plan lives
 with the factory, in the job's folder (`jobs/<name>/`), not in the
-target. On every pass
+target — or in another folder, if the factory is told to keep its jobs
+elsewhere, as its tests do. On every pass
 after that, the factory finds the first task not yet done and hands it to
 a coding agent, which implements that one task in real code. The factory
 then marks the task done in `plan.md` and commits the work.

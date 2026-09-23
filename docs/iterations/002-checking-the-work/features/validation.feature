@@ -2,6 +2,10 @@ Feature: Validation
 
   How the factory decides the doer's work is good enough.
 
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+
   Rule: A validator checks the work the doer just produced
 
     Example: Earlier work is not rechecked

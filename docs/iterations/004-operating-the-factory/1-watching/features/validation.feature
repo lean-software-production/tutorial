@@ -4,6 +4,10 @@ Feature: Validation
   line that is one machine, the three big brains. This file is about what
   happens inside it.
 
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+
   Rule: The same work goes to every reviewer at once
 
     Three reviewers on three providers' models is the concrete example we

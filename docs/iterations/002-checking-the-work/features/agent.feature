@@ -7,12 +7,16 @@ Feature: The coding agent
 
   Several examples swap in a stand-in agent: one of the small programs the
   course ships in `stand-ins/`, which take what the factory hands them and
-  do something simple and predictable.
-  That shows what the factory gives the agent and what it does with the
-  answer, and it makes checks fast — other features' examples may use a
-  stand-in too. A stand-in is chosen from outside, the same way pi is;
-  the factory never contains one. Examples that build real software need
-  a real agent.
+  do something simple and predictable. That shows what the factory gives
+  the agent and what it does with the answer, and it makes checks fast —
+  other features' examples may use a stand-in too. A stand-in is chosen
+  from outside, the same way pi is; the factory never contains one.
+  Examples tagged @real-agent need a real agent; any other example may use
+  a stand-in.
+
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
 
   Rule: pi is the agent unless another is chosen
 
@@ -77,6 +81,7 @@ Feature: The coding agent
     A factory that had Tetris tucked away inside it would pass every
     example that asks for Tetris. It would not pass this one.
 
+    @real-agent
     Example: A Tetris with different details
       Given a seed describing Tetris on a board 8 columns wide, started with "npm run play"
       When the factory runs the job to completion with a real agent

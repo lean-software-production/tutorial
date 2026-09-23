@@ -10,7 +10,9 @@ Feature: Assembly line
   may be taken.
 
   Background:
-    Given this assembly line:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+    And this assembly line:
       """
       digraph assembly_line {
         start -> planner

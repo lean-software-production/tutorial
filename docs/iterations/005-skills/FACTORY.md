@@ -14,12 +14,13 @@ Each run is for a **job**, named on the command line. A job is started
 with an assembly line, a seed and a target — the codebase it builds, its
 own git repository — and remembers all three, so after that its name is
 enough. The seed is the assembly line's only input; the name and the
-target are for the orchestrator, telling it where to keep the job's
-plan and its record (`jobs/<name>/`, never in the target) and where to build. You can stop a
-job, and the factory stays up; or stop the factory, and its job stops
-with it. Either way the work in flight is interrupted, nothing
-half-finished is marked done or committed, and starting the job again by
-name carries on from there.
+target are for the orchestrator, telling it where to keep the job's plan
+and its record (`jobs/<name>/`, never in the target) and where to build.
+The factory can be told to keep its jobs in another folder instead, as
+its tests do. You can stop a job, and the factory stays up; or stop the
+factory, and its job stops with it. Either way the work in flight is
+interrupted, nothing half-finished is marked done or committed, and
+starting the job again by name carries on from there.
 
 New here: a machine can have skills. A skill is a folder with a `SKILL.md`
 in it — a name, a description of what it is for, and the instructions —

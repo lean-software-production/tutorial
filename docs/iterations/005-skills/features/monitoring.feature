@@ -2,6 +2,10 @@ Feature: Monitoring
 
   What the factory is spending, while it spends it.
 
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+
   Rule: Tokens are counted for each machine
 
     Example: The doer and the three big brains

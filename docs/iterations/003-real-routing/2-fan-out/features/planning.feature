@@ -2,12 +2,17 @@ Feature: Planning
 
   How the planner turns a seed into a plan, and how the plan is kept true.
 
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+
   Rule: The seed is the assembly line's only input
 
     The job's name and its target are inputs to the orchestrator: where to
     keep the job's state, and where to build. The assembly line itself is
     given the seed and nothing else.
 
+    @real-agent
     Example: The assembly line is given a seed and nothing else
       Given a seed describing a game of Tetris that runs in the terminal
       When the factory runs
@@ -34,8 +39,19 @@ Feature: Planning
     Example: The first run of a job named "tetris"
       Given a job named "tetris" with a seed, a target and no plan
       When the factory runs the "tetris" job
-      Then the plan is in jobs/tetris in the factory
+      Then the plan is in the factory's jobs folder, under tetris
       And there is no plan in the target
+
+  Rule: The factory can keep its jobs somewhere else
+
+    By default a job's folder is in jobs/ in the factory. The factory can
+    be told to keep its jobs in another folder instead, so that a test run
+    never touches the jobs a person started.
+
+    Example: Jobs kept in another folder
+      When the factory runs a new job named "tetris"
+      Then the plan is in the folder it was told to use, under tetris
+      And there is nothing new in jobs/ in the factory
 
   Rule: The factory maintains the plan
 

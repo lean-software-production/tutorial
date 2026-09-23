@@ -16,7 +16,8 @@ with a seed and a target — the codebase it builds, its own git
 repository — and remembers both, so after that its name is enough. The
 seed is the only input to the work; the name and the target tell the
 factory where to keep the job's plan (`jobs/<name>/`, never in the
-target) and where to build.
+target) and where to build. The factory can be told to keep its jobs in
+another folder instead, as its tests do.
 
 There are two ways to run it. Running one pass takes one task from
 start to checked and stops. Running to completion keeps going until the

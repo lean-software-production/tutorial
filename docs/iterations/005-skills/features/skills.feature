@@ -4,6 +4,10 @@ Feature: Skills
   folder holding a SKILL.md: a name, a description of what the skill is
   for, and the instructions.
 
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+
   Rule: A machine's skills are the ones that sit beside it
 
     Example: The doer and a reviewer have different skills
@@ -33,12 +37,14 @@ Feature: Skills
     descriptions and judges, which is the same judgement that did the
     routing in homework 1.
 
+    @real-agent
     Example: A task the skill is for
       Given the doer has the skill "tdd", described as writing the test first
       And a task to build a board model that is under test
       When the doer attempts the task
       Then it has read the instructions of "tdd"
 
+    @real-agent
     Example: A task the skill is not for
       Given the doer has the skill "tdd", described as writing the test first
       And a task to write the README
@@ -47,12 +53,14 @@ Feature: Skills
 
   Rule: A skill's own files are read only when its instructions point at them
 
+    @real-agent
     Example: A reference the instructions send it to
       Given the doer has activated "tdd"
       And its instructions point at "references/fixtures.md"
       When the doer follows them
       Then it has read references/fixtures.md
 
+    @real-agent
     Example: A file nothing points at
       Given the doer has activated "tdd"
       And the skill also holds "references/history.md", which its instructions never mention

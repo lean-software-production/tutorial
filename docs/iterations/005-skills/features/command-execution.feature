@@ -3,6 +3,10 @@ Feature: Command execution
   Machines can run commands, and an activated skill is what authorises
   them. What no activated skill names, the machine cannot run.
 
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+
   Rule: A machine may run a command an activated skill names
 
     Example: The skill says to run the test suite
