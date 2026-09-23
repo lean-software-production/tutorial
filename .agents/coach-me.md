@@ -5,7 +5,7 @@ Walk the student through implementing the next `Todo` iteration from `docs/itera
 
 The student is building a "factory" — a small program that turns a spec (a seed) into a plan, then works the plan one task at a time, driving a coding agent to do the real work. The spec and plan live in files on disk, not in the factory's code.
 
-Start by reading the full specification of the iteration: its `README.md` (including its Rules), `FACTORY.md`, the feature files in `features/`, and the spec file (e.g. `spec.md`) if there is one. Together they are the whole spec, not just what's new.
+Start by reading the full specification of the iteration: its `README.md`, `FACTORY.md`, the feature files in `features/`, and the spec file (e.g. `spec.md`) if there is one, plus the ground rules in `docs/iterations/README.md`. Together they are the whole spec, not just what's new.
 
 Give the student a one-paragraph summary of what will happen in this iteration, and show them the example CLI commands and expected outputs from the `README.md`. Then ask what questions they have before you start.
 

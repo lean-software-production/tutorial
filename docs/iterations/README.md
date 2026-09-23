@@ -20,7 +20,19 @@
 
 Each iteration folder holds the whole spec at that point, not just what's new:
 
-- `README.md` — the homework framing: what day it was set, what's changing, what to watch for, the CLI commands you should end up with, and the rules for how you build it.
+- `README.md` — the homework framing: what day it was set, what's changing, what to watch for, and the CLI commands you should end up with.
 - `FACTORY.md` — the factory's full behaviour at this point, in prose.
 - `spec.md` — the seed: the project the factory builds (when there is one).
 - `features/*.feature` — the acceptance criteria, in Gherkin.
+
+## Ground rules
+
+These hold for every homework.
+
+- The behaviour in `features/` is the spec. How you build it — language,
+  shape, libraries — is up to you.
+- Your factory drives a real coding agent, and the agent does the work:
+  the plans, the code and the verdicts. `pi` is the default; any coding
+  agent will do. The factory writes none of the work itself and fakes
+  none of it — `agent.feature` is how that is checked, with the stand-ins
+  in [`stand-ins/`](../../stand-ins/README.md).

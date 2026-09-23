@@ -70,25 +70,18 @@ disturbing the first job.
 
 ## Rules
 
-- How you build it is up to you. It doesn't have to be a bash loop, and
-  we'd rather it weren't. The behaviour in `features/` is the spec.
-- The factory drives a coding agent (we use `pi`), and the agent does the
-  work. The factory picks the task, hands it over, records the result and
-  commits; it does not write the project itself, and it does not fake the
-  work. No placeholder files, no hard-coded plan.
-- State lives in files, not in your factory. It holds nothing in memory
-  between passes: each pass reads the files, does one thing, and writes
-  them back.
-- Keep it small. All the intelligence is in the agent and the files; the
-  factory is a short loop around one agent call. The reference version is
-  a few lines of loop, and the language is irrelevant:
+The [ground rules](../README.md#ground-rules) apply, as they do to every
+homework. It doesn't have to be a bash loop, and we'd rather it weren't.
 
-  ```sh
-  for pass in 1 2 3 4 5; do
-    pi -p < prompt.md
-  done
-  ```
+**Hint: keep it small.** All the intelligence is in the agent and the
+files; the factory is a short loop around one agent call. The reference
+version is a few lines, and the language is irrelevant:
 
+```text
+if the job has no plan:  ask the agent to write one from the seed
+otherwise:               hand the next task to the agent, in the target
+                         mark the task done, commit
+```
 
 You will keep this. The next homework adds checking the work: the factory
 starts noticing when the agent's output is wrong.
