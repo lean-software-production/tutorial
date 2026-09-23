@@ -1,0 +1,4 @@
+#!/bin/sh
+. "$(dirname "$0")/_read-prompt.sh"
+echo "NOT SATISFIED"
+echo "The never-satisfied stand-in is never satisfied."

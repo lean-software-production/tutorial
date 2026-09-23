@@ -1,0 +1,4 @@
+#!/bin/sh
+. "$(dirname "$0")/_read-prompt.sh"
+echo "written by the write-sentinel stand-in" > SENTINEL
+echo "wrote SENTINEL"

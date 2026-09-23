@@ -1,0 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_read-prompt.sh"
+record="${STAND_IN_RECORD:-${TMPDIR:-/tmp}/stand-in-record.txt}"
+{
+  echo "--- $(date) in $(pwd)"
+  echo "args: $*"
+  echo "prompt:"
+  echo "$prompt"
+} >> "$record"
+echo "recorded to $record"

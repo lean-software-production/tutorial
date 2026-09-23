@@ -5,9 +5,9 @@ Feature: The coding agent
   LLM-driven tool such as pi — that the machine calls. Each machine's
   agent is part of that machine's configuration; pi is the default.
 
-  Several examples give a machine a stand-in agent: a small program that
-  takes what the machine hands it and does something simple and
-  predictable. That shows what the machine gives its agent and what it
+  Several examples give a machine a stand-in agent: one of the small
+  programs the course ships in `stand-ins/`, which take what the machine
+  hands them and do something simple and predictable. That shows what the machine gives its agent and what it
   does with the answer, and it makes checks fast — other features'
   examples may use a stand-in too. A stand-in is configured from outside,
   the same way pi is; the factory never contains one. Examples that build
@@ -35,7 +35,7 @@ Feature: The coding agent
 
     Example: A stand-in planner that plans two tasks
       Given a job with no plan
-      And a planner whose stand-in agent, asked for a plan, gives the tasks "alpha" and "beta"
+      And a planner configured with the plan-alpha-beta stand-in
       When the factory runs
       Then the plan has the tasks "alpha" and "beta", and no others
 
@@ -43,7 +43,7 @@ Feature: The coding agent
 
     Example: A stand-in doer that writes one file
       Given a plan with three tasks, none of them done
-      And a doer whose stand-in agent writes a file called SENTINEL and nothing else
+      And a doer configured with the write-sentinel stand-in
       When the factory runs
       Then each new commit in the target contains SENTINEL and nothing else
 
@@ -51,7 +51,7 @@ Feature: The coding agent
 
     Example: A stand-in doer that records what it is given
       Given a plan whose first task is done and whose second is "add a score display"
-      And a doer whose stand-in agent records what it is given
+      And a doer configured with the record-input stand-in
       When the factory runs
       Then the stand-in was given "add a score display"
       And it was pointed at the seed
@@ -60,7 +60,7 @@ Feature: The coding agent
 
     Example: A stand-in that is never satisfied
       Given an assembly line whose retry edge allows at most three attempts
-      And a validator whose stand-in agent is never satisfied
+      And a validator configured with the never-satisfied stand-in
       When the factory runs
       Then the doer has made three attempts at the first task
       And there are no new commits in the target

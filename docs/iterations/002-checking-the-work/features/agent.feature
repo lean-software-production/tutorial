@@ -3,10 +3,11 @@ Feature: The coding agent
   The factory writes no project code and no plan. Both come from a coding
   agent — an LLM-driven tool such as pi — that the factory calls. Every call it makes — for the plan, for each task, and to check the work —
   goes to that agent. pi is the default; another agent can be chosen on
-  the command line for a run.
+  the command line for a run, and the validator's agent separately.
 
-  Several examples swap in a stand-in agent: a small program that takes
-  what the factory hands it and does something simple and predictable.
+  Several examples swap in a stand-in agent: one of the small programs the
+  course ships in `stand-ins/`, which take what the factory hands them and
+  do something simple and predictable.
   That shows what the factory gives the agent and what it does with the
   answer, and it makes checks fast — other features' examples may use a
   stand-in too. A stand-in is chosen from outside, the same way pi is;
@@ -40,7 +41,7 @@ Feature: The coding agent
 
     Example: A stand-in that plans two tasks
       Given a job named "tetris" with no plan
-      And a stand-in agent that, asked for a plan, gives the tasks "alpha" and "beta"
+      And the plan-alpha-beta stand-in as the agent
       When the factory runs one pass with the stand-in
       Then the plan has the tasks "alpha" and "beta", and no others
 
@@ -48,7 +49,7 @@ Feature: The coding agent
 
     Example: A stand-in that writes one file
       Given a plan with three tasks, none of them done
-      And a stand-in agent that writes a file called SENTINEL and nothing else
+      And the write-sentinel stand-in as the agent
       When the factory runs one pass with the stand-in
       Then the new commit in the target contains SENTINEL and nothing else
 
@@ -56,7 +57,7 @@ Feature: The coding agent
 
     Example: A stand-in that records what it is given
       Given a plan whose first task is done and whose second is "add a score display"
-      And a stand-in agent that records what it is given
+      And the record-input stand-in as the agent
       When the factory runs one pass with the stand-in
       Then the stand-in was given "add a score display"
       And it was pointed at the seed
@@ -65,8 +66,9 @@ Feature: The coding agent
 
     Example: A stand-in that is never satisfied
       Given a factory allowing at most three attempts per pass
-      And a stand-in agent that, asked to check work, is never satisfied
-      When the factory runs one pass with the stand-in
+      And the write-sentinel stand-in as the agent
+      And the never-satisfied stand-in as the validator's agent
+      When the factory runs one pass with those stand-ins
       Then the doer has made three attempts
       And there are no new commits in the target
 

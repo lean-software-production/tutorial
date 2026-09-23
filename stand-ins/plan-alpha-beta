@@ -1,0 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_read-prompt.sh"
+plan='- [ ] alpha
+- [ ] beta'
+path=$(printf '%s\n' "$prompt" | grep -o '[^[:space:]`"'"'"']*plan\.md' | head -n 1)
+if [ -n "$path" ]; then
+  mkdir -p "$(dirname "$path")"
+  printf '%s\n' "$plan" > "$path"
+fi
+printf '%s\n' "$plan"

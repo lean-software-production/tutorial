@@ -8,8 +8,8 @@ each finding as a subtask of the task it is on, and tries again.
 The factory itself writes no project code, no plan and no verdict. All
 three come from a coding agent — an LLM-driven tool such as `pi`, the
 default — that the factory calls. Another agent can be chosen on the
-command line for a run, including a stand-in for quick checks (see
-`agent.feature`).
+command line for a run, and the validator's agent separately, including
+the course's stand-ins for quick checks (see `agent.feature`).
 
 Each run is for a **job**, named on the command line. A job is started
 with a seed and a target — the codebase it builds, its own git
