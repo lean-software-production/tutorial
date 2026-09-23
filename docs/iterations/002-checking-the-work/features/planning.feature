@@ -11,7 +11,7 @@ Feature: Planning
     Example: The work is given a seed and nothing else
       Given a seed describing a game of Tetris that runs in the terminal
       When the factory runs to completion
-      Then it builds Tetris
+      Then the coding agent has built Tetris in the target
 
   Rule: The factory creates the plan from the seed
 

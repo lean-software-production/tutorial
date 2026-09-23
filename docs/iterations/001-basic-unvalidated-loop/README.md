@@ -53,6 +53,10 @@ task 3 done: ...
 task 4 done: ...
 factory stopped — plan complete
 
+# swap the agent for a run — here a stand-in, for a quick check
+$ ./factory --job scratch --seed spec.md --target ../targets/scratch --agent ./stand-in.sh
+created jobs/scratch/plan.md (2 tasks) from spec.md
+
 # the payoff: a real, playable Tetris
 $ cd ../targets/tetris && npm start
 ```

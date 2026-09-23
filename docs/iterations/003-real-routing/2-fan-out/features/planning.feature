@@ -11,7 +11,7 @@ Feature: Planning
     Example: The assembly line is given a seed and nothing else
       Given a seed describing a game of Tetris that runs in the terminal
       When the factory runs
-      Then it builds Tetris
+      Then the machines' agents have built Tetris in the target
 
   Rule: The planner writes the plan from the seed
 

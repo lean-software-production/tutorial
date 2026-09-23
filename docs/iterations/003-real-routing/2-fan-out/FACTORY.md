@@ -4,6 +4,11 @@ The factory builds software from a seed. A planner writes the plan, then
 a doer makes it one task at a time and the three big brains checks each
 attempt, until the plan is complete.
 
+The factory itself writes none of its machines' work. Each machine calls
+a coding agent — an LLM-driven tool such as `pi`, the default — named in
+that machine's own configuration, which is also where a stand-in can be
+swapped in for quick checks (see `agent.feature`).
+
 The three big brains is one machine on the assembly line, where the
 validator used to be. Inside it, the doer's work fans out to three
 reviewers on three providers' models at once, and a synthesiser reads

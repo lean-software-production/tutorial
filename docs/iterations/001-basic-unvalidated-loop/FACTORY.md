@@ -4,6 +4,11 @@ The factory builds software from a seed, one task at a time, without
 anyone checking the work. Nothing validates the output, nothing feeds
 findings back, and nothing decides the work was wrong. That comes later.
 
+The factory itself writes no project code and no plan. Both come from a
+coding agent — an LLM-driven tool such as `pi`, the default — that the
+factory calls. Another agent can be chosen on the command line for a run,
+including a stand-in for quick checks (see `agent.feature`).
+
 Each run of the factory is for a **job**, named on the command line. A
 job is started with a seed and a target, and remembers both, so after
 that its name is enough. The seed is a file, `spec.md`, describing a

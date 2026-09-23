@@ -5,6 +5,11 @@ a doer makes it one task at a time and the three big brains checks each
 attempt, until the plan is complete. You can watch what every machine
 generates and what it spends, live or afterwards.
 
+The factory itself writes none of its machines' work. Each machine calls
+a coding agent — an LLM-driven tool such as `pi`, the default — named in
+that machine's own configuration, which is also where a stand-in can be
+swapped in for quick checks (see `agent.feature`).
+
 Each run is for a **job**, named on the command line. A job is started
 with an assembly line, a seed and a target — the codebase it builds, its
 own git repository — and remembers all three, so after that its name is

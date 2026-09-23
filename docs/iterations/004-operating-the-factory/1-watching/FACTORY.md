@@ -4,6 +4,11 @@ The factory builds software from a seed. A planner writes the plan, then
 a doer makes it one task at a time and the three big brains checks each
 attempt, until the plan is complete.
 
+The factory itself writes none of its machines' work. Each machine calls
+a coding agent — an LLM-driven tool such as `pi`, the default — named in
+that machine's own configuration, which is also where a stand-in can be
+swapped in for quick checks (see `agent.feature`).
+
 What changes here is that you can see it work. The factory no longer runs
 in front of you: you start a job, it keeps running, and a second command
 attaches to it. What that command shows is what every machine generates
