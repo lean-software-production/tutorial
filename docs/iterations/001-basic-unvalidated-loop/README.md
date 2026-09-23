@@ -15,7 +15,8 @@ time you run it you give it a seed (what to build) and a target (the git
 repository to build it in — kept separate from your factory's own repo).
 The job remembers both; after that, its name is enough. On each pass, the factory:
 
-1. Reads the seed — the `spec.md` in this folder is the sample (it says:
+1. Reads the seed — the sample is the `spec.md` in this folder, which
+   coaching copies into your factory repo as `seeds/tetris.md` (it says:
    build Tetris in the terminal, started with `npm start`, fitting inside
    24 rows).
 2. If the job has no `plan.md` yet, writes it in the job's folder,
@@ -36,8 +37,8 @@ work by the end, using `./factory` as a stand-in:
 
 ```sh
 # first run — a new job, no plan yet, so the factory plans instead of building
-$ ./factory --job tetris --seed spec.md --target ../targets/tetris
-created jobs/tetris/plan.md (4 tasks) from spec.md
+$ ./factory --job tetris --seed seeds/tetris.md --target ../targets/tetris
+created jobs/tetris/plan.md (4 tasks) from seeds/tetris.md
 
 # next run — the job remembers its seed and target; one pass, one task,
 # one commit in the target
@@ -54,8 +55,8 @@ task 4 done: ...
 factory stopped — plan complete
 
 # swap the agent for a run — here a stand-in, for a quick check
-$ ./factory --job scratch --seed spec.md --target ../targets/scratch --agent ../tutorial/stand-ins/plan-alpha-beta
-created jobs/scratch/plan.md (2 tasks) from spec.md
+$ ./factory --job scratch --seed seeds/tetris.md --target ../targets/scratch --agent ../tutorial/stand-ins/plan-alpha-beta
+created jobs/scratch/plan.md (2 tasks) from seeds/tetris.md
 
 # the payoff: a real, playable Tetris
 $ cd ../targets/tetris && npm start
