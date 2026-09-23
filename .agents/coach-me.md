@@ -47,7 +47,7 @@ Follow this process exactly:
    - If there is no next row, stop and report that there is nothing left to implement.
 4. Adopt the next iteration's spec. Make `spec/` hold exactly its `README.md`, `FACTORY.md` and `features/` — remove anything left over from the previous iteration — and write `spec/ITERATION` as `<iteration> WIP`. If the iteration folder has a `spec.md`, it is a sample seed: copy it into `seeds/` (for 001, as `seeds/tetris.md`) unless it is already there. Commit with message `Adopt spec for iteration <iteration>`.
 5. For any iteration after the first, show the student what the adoption commit changed in `spec/` (`git show --stat HEAD`, and the diff of `FACTORY.md`). That diff is how their factory's spec evolves.
-6. Read the whole spec: `spec/README.md` (the homework framing), `spec/FACTORY.md` (the factory's full behaviour at this point, in prose), `spec/features/` (the acceptance criteria, in Gherkin), the seeds in `seeds/`, and the ground rules. Together they are the whole spec, not just what's new. Do not read other iterations in the course.
+6. Read the whole spec: `spec/README.md` (the homework framing), `spec/FACTORY.md` (a short summary of the factory at this point), `spec/features/` (the acceptance criteria, in Gherkin), the seeds in `seeds/`, and the ground rules. Together they are the whole spec, not just what's new. Do not read other iterations in the course.
 7. If the spec is unclear, stop and ask before editing.
 8. Check the working tree and avoid touching unrelated student changes.
 9. If this is iteration 001 and there is no factory implementation yet, ask what language and shape the student wants to build it in (a script, a long-running process, whatever). There is no prescribed stack. For later iterations, keep using what they already chose.
@@ -61,7 +61,7 @@ Follow this process exactly:
 14. If the student asks you to make it, edit only the files needed for that step.
 15. Inspect the relevant files or diff to confirm whether the change is correct.
 16. If the change is not correct, explain the smallest correction and ask again whether the student wants to make it or wants you to make it.
-17. Repeat steps 11-16 until the behaviour described in `spec/FACTORY.md` and `spec/features/` is true of the student's factory.
+17. Repeat steps 11-16 until the behaviour in `spec/features/` is true of the student's factory.
 18. Run whatever checks the student's implementation has (tests, linters) — or, if there are none yet, walk through the feature files' examples by hand against manual runs of the factory. Use the course's stand-in agents (`<course>/stand-ins/`) for the examples that call for them, and for quick checks; examples that build real software need a real agent.
 19. If checks fail because implementation changes are needed, coach the student through the fixes one small change at a time, always offering to make each change yourself.
 20. Finish by pointing at what's still missing: read the closing lines of `spec/README.md` for what the next homework builds on, and make clear that any remaining rough edges are expected at this point.

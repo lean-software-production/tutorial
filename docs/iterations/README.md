@@ -18,7 +18,7 @@ here. Coaching works through these in order.
 Each iteration folder holds the whole spec at that point, not just what's new:
 
 - `README.md` — the homework framing: what day it was set, what's changing, what to watch for, and the CLI commands you should end up with.
-- `FACTORY.md` — the factory's full behaviour at this point, in prose.
+- `FACTORY.md` — a short summary of the factory at this point. The features win where they disagree.
 - `spec.md` — the seed: the project the factory builds (when there is one).
 - `features/*.feature` — the acceptance criteria, in Gherkin.
 

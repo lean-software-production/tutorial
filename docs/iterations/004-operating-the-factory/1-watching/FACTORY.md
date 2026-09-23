@@ -1,39 +1,34 @@
 # The factory, as of this iteration
 
-The factory builds software from a seed. A planner writes the plan, then
-a doer makes it one task at a time and the three big brains checks each
-attempt, until the plan is complete.
+*A summary. The feature files in `features/` are the spec; where the two
+disagree, the features win.*
 
-The factory itself writes none of its machines' work. Each machine calls
-a coding agent — an LLM-driven tool such as `pi`, the default — named in
-that machine's own configuration, which is also where a stand-in can be
-swapped in for quick checks (see `agent.feature`).
+The factory builds software from a seed. A planner writes the plan,
+then a doer makes it one task at a time and the three big brains checks
+each attempt, until the plan is complete.
 
-What changes here is that you can see it work. The factory no longer runs
-in front of you: you start a job, it keeps running, and a second command
-attaches to it. What that command shows is what every machine generates
-and what every machine spends — live, from the start of the job, and
-still there after the job has finished, because the factory writes it
-down as it goes.
+The factory writes none of its machines' work itself. Each machine calls
+a coding agent — `pi` by default, or another named in the machine's
+configuration.
 
-Each run is for a **job**, named on the command line. A job is started
-with an assembly line, a seed and a target — the codebase it builds, its
-own git repository — and remembers all three, so after that its name is
-enough. The seed is the assembly line's only input; the name and the
-target are for the orchestrator, telling it where to keep the job's plan
-and its record (`jobs/<name>/`, never in the target) and where to build.
-The factory can be told to keep its jobs in another folder instead, as
-its tests do. You can stop a job, and the factory stays up; or stop the
-factory, and its job stops with it. Either way the work in flight is
-interrupted, nothing half-finished is marked done or committed, and
-starting the job again by name carries on from there.
+The route through the machines is an **assembly line**: a graph the
+factory reads before it does any work. The line holds the loop over the
+plan and the retry after failed validation. A factory can hold several
+lines, and a line never names a target.
 
-Tokens are counted for each machine and totalled for each provider,
-because the three big brains puts three providers' models on one attempt
-and each of them invoices separately.
+Validation is done by the **three big brains**, one machine on the
+line: three reviewers on different providers' models report on each
+attempt, and a synthesiser reads their reports and decides.
 
-New since iteration 3: `monitoring.feature` and `observability.feature`,
-and new rules in `orchestration.feature` — the factory runs as a daemon,
-it runs one job at a time, and a job or the factory can be stopped and
-the job started again. A job's record is kept with the job. `planning`, `validation` and
-`assembly-line` are unchanged.
+The factory runs as a daemon. You start a job, and it keeps working
+while another command watches it: what each machine generates and what
+it spends.
+
+Each run is for a **job**: an assembly line, a seed, saying what to
+build, and a target, the git repository to build it in. The job keeps
+its plan and its record with the factory, never in the target. A job
+can be stopped, and started again later.
+
+New since iteration 3: `monitoring.feature` and `observability.feature`;
+the factory runs as a daemon, one job at a time, and jobs can be
+stopped.

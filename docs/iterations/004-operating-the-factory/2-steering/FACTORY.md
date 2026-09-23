@@ -1,33 +1,34 @@
 # The factory, as of this iteration
 
-The factory builds software from a seed. A planner writes the plan, then
-a doer makes it one task at a time and the three big brains checks each
-attempt, until the plan is complete. You can watch what every machine
-generates and what it spends, live or afterwards.
+*A summary. The feature files in `features/` are the spec; where the two
+disagree, the features win.*
 
-The factory itself writes none of its machines' work. Each machine calls
-a coding agent — an LLM-driven tool such as `pi`, the default — named in
-that machine's own configuration, which is also where a stand-in can be
-swapped in for quick checks (see `agent.feature`).
+The factory builds software from a seed. A planner writes the plan,
+then a doer makes it one task at a time and the three big brains checks
+each attempt, until the plan is complete.
 
-Each run is for a **job**, named on the command line. A job is started
-with an assembly line, a seed and a target — the codebase it builds, its
-own git repository — and remembers all three, so after that its name is
-enough. The seed is the assembly line's only input; the name and the
-target are for the orchestrator, telling it where to keep the job's plan
-and its record (`jobs/<name>/`, never in the target) and where to build.
-The factory can be told to keep its jobs in another folder instead, as
-its tests do. You can stop a job, and the factory stays up; or stop the
-factory, and its job stops with it. Either way the work in flight is
-interrupted, nothing half-finished is marked done or committed, and
-starting the job again by name carries on from there.
+The factory writes none of its machines' work itself. Each machine calls
+a coding agent — `pi` by default, or another named in the machine's
+configuration.
 
-New here: you can talk to a machine while it is working. A message names
-the machine it is for, reaches it at that machine's next step, and lives
-only as long as that machine's run. A message to a machine that is not
-running is refused, not held.
+The route through the machines is an **assembly line**: a graph the
+factory reads before it does any work. The line holds the loop over the
+plan and the retry after failed validation. A factory can hold several
+lines, and a line never names a target.
 
-Nothing on the assembly line changes, and no machine changes what it is
-for. Steering is a way in, not a new stage.
+Validation is done by the **three big brains**, one machine on the
+line: three reviewers on different providers' models report on each
+attempt, and a synthesiser reads their reports and decides.
 
-New since part 1: `steering.feature`. Everything else is unchanged.
+The factory runs as a daemon. You start a job, and it keeps working
+while another command watches it: what each machine generates and what
+it spends.
+
+You can send a message to a machine while it works.
+
+Each run is for a **job**: an assembly line, a seed, saying what to
+build, and a target, the git repository to build it in. The job keeps
+its plan and its record with the factory, never in the target. A job
+can be stopped, and started again later.
+
+New since part 1: `steering.feature`.
