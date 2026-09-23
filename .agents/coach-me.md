@@ -66,7 +66,7 @@ Follow this process exactly:
 19. If checks fail because implementation changes are needed, coach the student through the fixes one small change at a time, always offering to make each change yourself.
 20. Finish by pointing at what's still missing: read the closing lines of `spec/README.md` for what the next homework builds on, and make clear that any remaining rough edges are expected at this point.
 21. Change `spec/ITERATION` from `<iteration> WIP` to `<iteration> Done`.
-22. Commit the implementation and that change with message `Implement homework <iteration>` (e.g. `Implement homework 003.1`).
+22. Commit the implementation and that change with message `Implement homework <iteration>` (e.g. `Implement homework 003`).
 
 ## Rules
 

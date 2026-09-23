@@ -1,6 +1,6 @@
-# Homework 4, part 2 — Steering
+# Homework 6 — Steering
 
-*Do this after part 1.*
+*Also set after day 4. Do this after homework 5.*
 
 Read `FACTORY.md`, then the feature files in `features/`.
 
@@ -22,7 +22,7 @@ homework.
 
 ## The commands you'll end up with
 
-On top of part 1's, one more — again, the exact shape is yours:
+On top of homework 5's, one more — again, the exact shape is yours:
 
 ```sh
 $ ./factory say tetris doer "use curses, not print"

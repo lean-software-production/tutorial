@@ -20,8 +20,15 @@ Validation is done by the **three big brains**, one machine on the
 line: three reviewers on different providers' models report on each
 attempt, and a synthesiser reads their reports and decides.
 
+The factory runs as a daemon. You start a job, and it keeps working
+while another command watches it: what each machine generates and what
+it spends.
+
 Each run is for a **job**: an assembly line, a seed, saying what to
 build, and a target, the git repository to build it in. The job keeps
-its plan with the factory, never in the target.
+its plan and its record with the factory, never in the target. A job
+can be stopped, and started again later.
 
-New since part 1: the three big brains replaces the validator.
+New since iteration 4: `monitoring.feature` and `observability.feature`;
+the factory runs as a daemon, one job at a time, and jobs can be
+stopped.

@@ -1,11 +1,11 @@
-# Homework 4, part 1 — Watching
+# Homework 5 — Watching
 
-*Set after day 4. Two parts again; do this one first.*
+*Set after day 4. Two homeworks again; this is the first.*
 
 Read `FACTORY.md`, then the feature files in `features/`. Together they
 are the whole spec of the factory at this point, not just the new parts.
 
-The factory builds the same software it built for homework 3. What is new
+The factory builds the same software it built for homework 4. What is new
 is that you can watch it: what every machine generates, and what every
 machine costs.
 
@@ -49,4 +49,4 @@ scrollback is gone, and it belongs to the terminal that started the run.
 A record you can attach to late, catch up on, and still read tomorrow is
 a different piece of machinery.
 
-Do part 2 after this one.
+Do homework 6 after this one.

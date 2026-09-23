@@ -1,6 +1,6 @@
-# Homework 3, part 2 — Fan out
+# Homework 4 — Fan out
 
-*Do this after part 1.*
+*Also set after day 3. Do this after homework 3.*
 
 Read `FACTORY.md`, then the feature files in `features/`.
 

@@ -1,6 +1,6 @@
-# Homework 3, part 1 — The assembly line
+# Homework 3 — The assembly line
 
-*Set after day 3. This is the weekend, so there are two parts.*
+*Set after day 3. This is the weekend, so there are two homeworks; this is the first.*
 
 Read `FACTORY.md`, then the feature files in `features/`. Together they
 are the whole spec of the factory at this point, not just the new parts.
@@ -28,4 +28,4 @@ the acceptance criteria clean, not because it is the only way — if you
 would rather express the assembly line some other way, say so and do that
 instead.
 
-Do part 2 after this one.
+Do homework 4 after this one.

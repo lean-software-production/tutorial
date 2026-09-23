@@ -1,4 +1,4 @@
-# Homework 5 — Skills
+# Homework 7 — Skills
 
 *Set after day 5.*
 
@@ -22,6 +22,6 @@ you always want the doer to do, and something you want a reviewer to look
 for. Give one of them a script in `scripts/` and see what your gate makes
 of it.
 
-The three-step loading is the other half of the homework, and homework 4
+The three-step loading is the other half of the homework, and homework 5
 is how you check it. Watch a job: a machine that has not activated a skill
 should not be paying for that skill's instructions.
