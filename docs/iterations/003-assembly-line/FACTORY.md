@@ -13,12 +13,13 @@ configuration.
 
 The route through the machines is an **assembly line**: a graph the
 factory reads before it does any work. The line holds the loop over the
-plan and the retry after failed validation. A factory can hold several
-lines, and a line never names a target.
+plan and the retry after failed validation. The factory has one
+assembly line, kept in its own folder.
 
-Each run is for a **job**: an assembly line, a seed, saying what to
-build, and a target, the folder to build it in. The job keeps
-its plan with the factory, never in the target.
+The factory sits in a folder of its own inside the codebase it builds,
+and builds in the folder around it. Its seed, saying what to build, is
+`seeds/tetris.md` in the codebase. It keeps its one plan in its own
+folder.
 
 New since iteration 2: `assembly-line.feature`. The pass is gone — the
 line says what runs next — and each machine's agent is set in its

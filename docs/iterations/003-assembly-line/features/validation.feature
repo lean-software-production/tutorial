@@ -3,8 +3,7 @@ Feature: Validation
   How the factory decides the doer's work is good enough.
 
   Background:
-    Given the factory keeps its jobs in a new, empty folder
-    And every target is a new folder
+    Given a copy of the factory, in a folder of its own inside a new codebase
 
   Rule: A validator checks the work the doer just produced
 

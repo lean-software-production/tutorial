@@ -3,20 +3,28 @@ Feature: Planning
   How the factory turns a seed into a plan, and keeps that plan true.
 
   Background:
-    Given the factory keeps its jobs in a new, empty folder
-    And every target is a new folder
+    Given a copy of the factory, in a folder of its own inside a new codebase
 
   Rule: The seed is the only input to the work
 
-    The job's name and its target are for the factory: where to keep the
-    job's plan, and where to build. What to build comes from the seed
-    alone.
+    What to build comes from the seed alone.
 
     @real-agent
     Example: The work is given a seed and nothing else
       Given a seed describing a game of Tetris that runs in the terminal
       When the factory runs to completion
-      Then the coding agent has built Tetris in the target
+      Then the coding agent has built Tetris in the codebase
+
+  Rule: The seed is seeds/tetris.md in the codebase
+
+    The factory always looks there. There is no other seed to choose.
+
+    Example: There is no seed
+      Given nothing at seeds/tetris.md in the codebase
+      And no plan
+      When the factory runs one pass
+      Then it reports that it has no seed
+      And there is no plan
 
   Rule: The factory creates the plan from the seed
 
@@ -33,24 +41,16 @@ Feature: Planning
       When the factory runs one pass
       Then the plan still has those four tasks
 
-  Rule: A job keeps its plan with the factory, not in the target
+  Rule: The factory keeps its plan in its own folder
 
-    Example: The first pass of a job named "tetris"
-      Given a job named "tetris" with a seed, a target and no plan
-      When the factory runs one pass of the "tetris" job
-      Then the plan is in the factory's jobs folder, under tetris
-      And there is no plan in the target
+    There is one plan: plan.md, next to the factory. The work the factory
+    commits to the codebase never includes it.
 
-  Rule: The factory can keep its jobs somewhere else
-
-    By default a job's folder is in jobs/ in the factory. The factory can
-    be told to keep its jobs in another folder instead, so that a test run
-    never touches the jobs a person started.
-
-    Example: Jobs kept in another folder
-      When the factory runs one pass of a new job named "tetris"
-      Then the plan is in the folder it was told to use, under tetris
-      And there is nothing new in jobs/ in the factory
+    Example: The first pass
+      Given no plan
+      When the factory runs one pass
+      Then the plan is plan.md in the factory's folder
+      And there is no plan anywhere else in the codebase
 
   Rule: The factory maintains the plan
 
@@ -63,40 +63,3 @@ Feature: Planning
       Given a plan whose first task is done
       When the factory runs one pass
       Then the plan shows the first two tasks as done
-
-  Rule: A job remembers its seed and its target
-
-    The seed and the target are given when a job starts. After that, its
-    name is enough.
-
-    Example: The "tetris" job's second pass
-      Given a job named "tetris" started with a Tetris seed and a target
-      And its plan has its first task done
-      When the factory runs one pass of the "tetris" job, given only its name
-      Then the doer works on the second task, from the Tetris seed
-      And the work lands in that same target
-
-  Rule: A job's settings cannot be changed once it has started
-
-    Naming a job again with its original seed and target is fine, and
-    so is naming it alone. Naming it with different ones is refused.
-
-    Example: The "tetris" job is given a different target
-      Given a job named "tetris" started with a Tetris seed and a target
-      When the factory runs one pass of the "tetris" job with a different target
-      Then the factory refuses
-      And it says the "tetris" job already has a target
-
-    Example: The "tetris" job is given the same settings again
-      Given a job named "tetris" started with a Tetris seed and a target
-      When the factory runs one pass of the "tetris" job with that same seed and target
-      Then the factory runs it as usual
-
-  Rule: Each job has its own plan and its own target
-
-    Example: Two jobs side by side
-      Given a job named "tetris" whose seed describes Tetris
-      And a job named "snake" whose seed describes Snake, with a different target
-      When the factory runs one pass of each
-      Then each job has its own plan
-      And each target holds only its own job's work

@@ -12,14 +12,9 @@ the planner becomes a machine of its own on it.
 That takes the pass with it. There is no more running one pass: the
 factory runs the assembly line, and the line says what happens next.
 
-Once the route is data, one factory can hold more than one line. Write a
-second one — the same line without the validator will do — and have each
-job say which line it runs:
-
-```sh
-$ ./factory --job tetris --line lines/careful.dot --seed ../seeds/tetris.md --target ..
-$ ./factory --job snake  --line lines/quick.dot   --seed ../seeds/snake.md --target ../../snake
-```
+Your factory has one assembly line, kept in its own folder. Take the
+validator out of it and the factory should still run, doing the work
+unchecked — without a change to your code.
 
 `assembly-line.feature` is prescriptive about Graphviz. That is to keep
 the acceptance criteria clean, not because it is the only way — if you

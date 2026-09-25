@@ -15,8 +15,7 @@ Feature: The coding agent
   other example may use a stand-in.
 
   Background:
-    Given the factory keeps its jobs in a new, empty folder
-    And every target is a new folder
+    Given a copy of the factory, in a folder of its own inside a new codebase
 
   Rule: A machine uses pi unless its configuration names another agent
 
@@ -34,23 +33,23 @@ Feature: The coding agent
       And a doer whose agent cannot be run
       When the factory runs
       Then it reports that the doer could not run its agent
-      And there are no new commits in the target
+      And there are no new commits in the codebase
 
   Rule: The plan is what the planner's agent wrote
 
     Example: A stand-in planner that plans two tasks
-      Given a job with no plan
+      Given no plan
       And a planner configured with the plan-alpha-beta stand-in
       When the factory runs
       Then the plan has the tasks "alpha" and "beta", and no others
 
-  Rule: The target holds what the doer's agent wrote
+  Rule: The codebase holds what the doer's agent wrote
 
     Example: A stand-in doer that writes one file
       Given a plan with three tasks, none of them done
       And a doer configured with the write-sentinel stand-in
       When the factory runs
-      Then each new commit in the target contains SENTINEL and nothing else
+      Then each new commit in the codebase contains SENTINEL and nothing else
 
   Rule: The doer's agent is given the task and the seed
 
@@ -68,7 +67,7 @@ Feature: The coding agent
       And a validator configured with the never-satisfied stand-in
       When the factory runs
       Then the doer has made three attempts at the first task
-      And there are no new commits in the target
+      And there are no new commits in the codebase
 
   Rule: What gets built follows the seed
 
@@ -78,6 +77,6 @@ Feature: The coding agent
     @real-agent
     Example: A Tetris with different details
       Given a seed describing Tetris on a board 8 columns wide, started with "npm run play"
-      When the factory runs the job with real agents
-      Then "npm run play" in the target starts Tetris
+      When the factory runs with real agents
+      Then "npm run play" in the codebase starts Tetris
       And its board is 8 columns wide

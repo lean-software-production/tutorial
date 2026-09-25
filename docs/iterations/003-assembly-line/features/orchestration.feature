@@ -5,43 +5,27 @@ Feature: Orchestration
   not care how validation is done.
 
   Background:
-    Given the factory keeps its jobs in a new, empty folder
-    And every target is a new folder
+    Given a copy of the factory, in a folder of its own inside a new codebase
 
-  Rule: The factory works in the target it is given
+  Rule: The factory works in the codebase around it
 
-    The target is the folder a job builds the product in. It sits in a
-    git repository that the factory commits its work to.
+    The factory sits in a folder of its own inside the codebase it builds,
+    and builds in the folder around it. The codebase is a git repository;
+    the factory commits its work there, and leaves its own folder out of
+    those commits.
+
+    A new codebase, for an example, is a new git repository with a copy
+    of the factory in it. That is how an example keeps out of the codebase
+    you are building.
 
   Rule: The factory runs the machines its assembly line gives it
 
     Example: An assembly line with no validator on it
-      Given an assembly line on which the doer goes straight to plan_complete
+      Given the validator has been taken out of the factory's assembly line
       And a plan with three tasks, none of them done
       When the factory runs
       Then all three tasks have been done
       And nothing has validated the work
-
-  Rule: Each job runs the assembly line it is given
-
-    A factory can hold more than one assembly line. Which one a job runs
-    is chosen when the job starts; a line never names a target.
-
-    Example: Two lines, one factory
-      Given an assembly line "careful" on which the doer's work is validated
-      And an assembly line "quick" on which the doer goes straight to plan_complete
-      When the factory runs the "tetris" job on "careful"
-      And the factory runs the "snake" job on "quick"
-      Then the "tetris" job's work has been validated
-      And nothing has validated the "snake" job's work
-
-  Rule: An assembly line works on any target
-
-    Example: One line, two targets
-      Given an assembly line "careful"
-      When the factory runs the "tetris" job on "careful" against one target
-      And the factory runs the "snake" job on "careful" against another
-      Then each target holds only its own job's work
 
   Rule: The factory does no work on an assembly line it refuses
 

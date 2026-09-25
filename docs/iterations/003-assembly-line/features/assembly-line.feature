@@ -1,17 +1,17 @@
 Feature: Assembly line
 
   The assembly line is the route through the factory's machines, written
-  as a Graphviz graph the factory reads before it does any work. These
-  rules are about the line itself — which lines the factory will accept —
-  not about running along one. Running is in orchestration.feature.
+  as a Graphviz graph the factory reads before it does any work. The
+  factory has one assembly line, kept in its own folder. These rules are
+  about the line itself — which lines the factory will accept — not about
+  running along one. Running is in orchestration.feature.
 
   start and finish mark where the line begins and ends. Every other node
   names a machine. A retry edge carries the limit on how many attempts it
   may be taken.
 
   Background:
-    Given the factory keeps its jobs in a new, empty folder
-    And every target is a new folder
+    Given a copy of the factory, in a folder of its own inside a new codebase
     And this assembly line:
       """
       digraph assembly_line {

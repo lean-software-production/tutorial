@@ -8,21 +8,19 @@ homework is a mock or a placeholder.
 
 ## What you're building
 
-Each run of the factory is for a **job**. You name the job, and the first
-time you run it you give it a seed (what to build) and a target (the folder
-to build it in — for Tetris, the `tetris/` folder your factory sits in).
-The job remembers both; after that, its name is enough. On each pass, the factory:
+Your factory lives in `tetris/.factory`, inside the codebase it builds,
+and it only ever builds that one: the `tetris/` folder around it. On each
+pass, the factory:
 
-1. Reads the seed — the sample is the `spec.md` in this folder, which
-   fetch-iteration copies into `tetris/seeds/tetris.md` (it says:
-   build Tetris in the terminal, started with `npm start`, fitting inside
-   24 rows).
-2. If the job has no `plan.md` yet, writes it in the job's folder,
-   `jobs/<name>/`: the spec broken into a few tasks. If it does, leaves it
-   alone.
+1. Reads the seed, `tetris/seeds/tetris.md` — fetch-iteration copies
+   the `spec.md` in this folder there (it says: build Tetris in the
+   terminal, started with `npm start`, fitting inside 24 rows).
+2. If there is no `plan.md` yet, writes it next to the factory: the seed
+   broken into a few tasks. If there is one, leaves it alone.
 3. Picks the first not-done task and hands it to a coding agent, which
-   implements *that task* in real code, in the target.
-4. Marks the task done in `plan.md` and commits the work to the target.
+   implements *that task* in real code, in `tetris/`.
+4. Marks the task done in `plan.md` and commits the work — but not the
+   factory's own folder — to the repository.
 
 The seed and the plan live in files, not in your code. Each pass is
 stateless: it reads the files, does one thing, writes the files back. The
@@ -35,38 +33,34 @@ work by the end, run from `tetris/.factory`, using `./factory` as a
 stand-in:
 
 ```sh
-# first run — a new job, no plan yet, so the factory plans instead of building
-$ ./factory --job tetris --seed ../seeds/tetris.md --target ..
-created jobs/tetris/plan.md (4 tasks) from ../seeds/tetris.md
+# first run — no plan yet, so the factory plans instead of building
+$ ./factory
+created plan.md (4 tasks) from ../seeds/tetris.md
 
-# next run — the job remembers its seed and target; one pass, one task,
-# one commit in the target
-$ ./factory --job tetris
+# next run — one pass, one task, one commit
+$ ./factory
 task 1 done: set up the project
 $ git -C .. log --oneline
 # one new commit
 
 # run to completion
-$ ./factory --job tetris --all
+$ ./factory --all
 task 2 done: ...
 task 3 done: ...
 task 4 done: ...
 factory stopped — plan complete
-
-# swap the agent for a run — here a stand-in, for a quick check
-$ ./factory --job scratch --seed ../seeds/tetris.md --target ../../scratch --agent stand-ins/plan-alpha-beta
-created jobs/scratch/plan.md (2 tasks) from ../seeds/tetris.md
 
 # the payoff: a real, playable Tetris
 $ cd .. && npm start
 ```
 
 Your task names and count will differ; the point is that real code appears
-in the target, one task per pass, and `npm start` runs Tetris.
+in `tetris/`, one task per pass, and `npm start` runs Tetris.
 
-Once it works, start a second job with a different seed and a new target —
-the factory should build whatever the new seed describes, without
-disturbing the first job.
+To try a stand-in agent, do what the checks do: make a new git
+repository, copy the factory into a folder of its own inside it, put a
+seed at `seeds/tetris.md`, and run the copy there. That way the stand-in
+never touches your Tetris.
 
 ## Rules
 
@@ -78,8 +72,8 @@ files; the factory is a short loop around one agent call. The reference
 version is a few lines, and the language is irrelevant:
 
 ```text
-if the job has no plan:  ask the agent to write one from the seed
-otherwise:               hand the next task to the agent, in the target
+if there is no plan:     ask the agent to write one from the seed
+otherwise:               hand the next task to the agent, in the codebase
                          mark the task done, commit
 ```
 
