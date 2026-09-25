@@ -1,7 +1,5 @@
 # Homework 5 — Watching
 
-*Set after day 4. Two homeworks again; this is the first.*
-
 Read `FACTORY.md`, then the feature files in `features/`. Together they
 are the whole spec of the factory at this point, not just the new parts.
 
@@ -48,5 +46,3 @@ prints as it goes, and printing is not this: it is gone when the
 scrollback is gone, and it belongs to the terminal that started the run.
 A record you can attach to late, catch up on, and still read tomorrow is
 a different piece of machinery.
-
-Do homework 6 after this one.

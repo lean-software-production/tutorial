@@ -1,7 +1,5 @@
 # Homework 1 — Basic unvalidated loop
 
-*Set after day 1, following the Ralph loop demo.*
-
 Build a **Ralph loop**: a small program (your "factory") that turns a seed
 into a plan, then works the plan one task at a time, driving a coding
 agent to do the real work. By the end, running your factory enough times

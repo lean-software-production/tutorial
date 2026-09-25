@@ -1,7 +1,5 @@
 # Homework 3 — The assembly line
 
-*Set after day 3. This is the weekend, so there are two homeworks; this is the first.*
-
 Read `FACTORY.md`, then the feature files in `features/`. Together they
 are the whole spec of the factory at this point, not just the new parts.
 
@@ -27,5 +25,3 @@ $ ./factory --job snake  --line lines/quick.dot   --seed ../seeds/snake.md --tar
 the acceptance criteria clean, not because it is the only way — if you
 would rather express the assembly line some other way, say so and do that
 instead.
-
-Do homework 4 after this one.

@@ -1,7 +1,5 @@
 # Homework 4 — Fan out
 
-*Also set after day 3. Do this after homework 3.*
-
 Read `FACTORY.md`, then the feature files in `features/`.
 
 Now that the route is an assembly line, swapping a machine on it is a

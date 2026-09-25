@@ -1,7 +1,5 @@
 # Homework 2 — Checking the work
 
-*Set after day 2.*
-
 Read `FACTORY.md`, then the feature files in `features/`, and make them
 true of the factory you built for homework 1. Together they are the whole
 spec, not just the new parts: the rules you already satisfied are still

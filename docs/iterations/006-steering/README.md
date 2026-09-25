@@ -1,7 +1,5 @@
 # Homework 6 — Steering
 
-*Also set after day 4. Do this after homework 5.*
-
 Read `FACTORY.md`, then the feature files in `features/`.
 
 You can see what the machines are doing. Now you can answer them. While a

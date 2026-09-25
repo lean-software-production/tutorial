@@ -1,7 +1,5 @@
 # Homework 7 — Skills
 
-*Set after day 5.*
-
 Read `FACTORY.md`, then the feature files in `features/`. Together they
 are the whole spec of the factory at this point, not just the new parts.
 
