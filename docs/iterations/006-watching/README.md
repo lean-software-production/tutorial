@@ -1,9 +1,9 @@
-# Homework 5 — Watching
+# Homework 6 — Watching
 
 Read `FACTORY.md`, then the feature files in `features/`. Together they
 are the whole spec of the factory at this point, not just the new parts.
 
-The factory builds the same software it built for homework 4. What is new
+The factory builds the same software it built for homework 5. What is new
 is that you can watch it: what every machine generates, and what every
 machine costs.
 

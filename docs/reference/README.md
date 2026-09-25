@@ -5,7 +5,7 @@ and none of it is the lexicon. A term in here is a candidate, not a decision:
 bring it to us before it appears in a spec.
 
 - **Agent Skills**, <https://agentskills.io> — the open skill format,
-  originally Anthropic's. Iteration 5's homework is an implementation of
+  originally Anthropic's. Iteration 8's homework is an implementation of
   it. The specification page carries the frontmatter fields and the
   three-tier loading; `/client-implementation/adding-skills-support`
   covers discovery and activation from the harness side.

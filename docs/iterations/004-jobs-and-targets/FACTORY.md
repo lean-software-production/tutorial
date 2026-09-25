@@ -4,8 +4,8 @@
 disagree, the features win.*
 
 The factory builds software from a seed. A planner writes the plan,
-then a doer makes it one task at a time and the three big brains checks
-each attempt, until the plan is complete.
+then a doer makes it one task at a time and a validator checks each
+attempt, until the plan is complete.
 
 The factory writes none of its machines' work itself. Each machine calls
 a coding agent — `pi` by default, or another named in the machine's
@@ -16,19 +16,9 @@ factory reads before it does any work. The line holds the loop over the
 plan and the retry after failed validation. A factory can hold several
 lines, and a line never names a target.
 
-Validation is done by the **three big brains**, one machine on the
-line: three reviewers on different providers' models report on each
-attempt, and a synthesiser reads their reports and decides.
-
-The factory runs as a daemon. You start a job, and it keeps working
-while another command watches it: what each machine generates and what
-it spends.
-
 Each run is for a **job**: an assembly line, a seed, saying what to
 build, and a target, the folder to build it in. The job keeps
-its plan and its record with the factory, never in the target. A job
-can be stopped, and started again later.
+its plan with the factory, never in the target.
 
-New since iteration 4: `monitoring.feature` and `observability.feature`;
-the factory runs as a daemon, one job at a time, and jobs can be
-stopped.
+New since iteration 3: jobs. The target, the seed and the line are no
+longer fixed; each job names its own, and a factory holds several lines.

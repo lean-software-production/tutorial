@@ -1,0 +1,105 @@
+Feature: Planning
+
+  How the planner turns a seed into a plan, and how the plan is kept true.
+
+  Background:
+    Given the factory keeps its jobs in a new, empty folder
+    And every target is a new folder
+
+  Rule: The seed is the assembly line's only input
+
+    The job's name and its target are inputs to the orchestrator: where to
+    keep the job's state, and where to build. The assembly line itself is
+    given the seed and nothing else.
+
+    @real-agent
+    Example: The assembly line is given a seed and nothing else
+      Given a seed describing a game of Tetris that runs in the terminal
+      When the factory runs
+      Then the machines' agents have built Tetris in the target
+
+  Rule: The planner writes the plan from the seed
+
+    Example: A seed with no plan yet
+      Given a seed describing a game of Tetris
+      And no plan
+      When the factory runs
+      Then the planner has written a plan before the doer started
+      And every task in it comes from the seed
+
+  Rule: The planner keeps a plan that already exists
+
+    Example: A plan with four tasks
+      Given a plan with four tasks, none of them done
+      When the factory runs
+      Then the plan still has those four tasks
+
+  Rule: A job keeps its plan with the factory, not in the target
+
+    Example: The first run of a job named "tetris"
+      Given a job named "tetris" with a seed, a target and no plan
+      When the factory runs the "tetris" job
+      Then the plan is in the factory's jobs folder, under tetris
+      And there is no plan in the target
+
+  Rule: The factory can keep its jobs somewhere else
+
+    By default a job's folder is in jobs/ in the factory. The factory can
+    be told to keep its jobs in another folder instead, so that a test run
+    never touches the jobs a person started.
+
+    Example: Jobs kept in another folder
+      When the factory runs a new job named "tetris"
+      Then the plan is in the folder it was told to use, under tetris
+      And there is nothing new in jobs/ in the factory
+
+  Rule: The factory maintains the plan
+
+    Example: The factory stops part-way through
+      Given a plan with three tasks, none of them done
+      And validation that is never satisfied by the second task
+      When the factory runs
+      Then the plan shows the first task as done
+      And the second and third as not done
+
+    Example: A run carries on from the last
+      Given a plan whose first task is done
+      When the factory runs
+      Then the doer starts on the second task
+
+  Rule: A job remembers its assembly line, its seed and its target
+
+    The line, the seed and the target are given when a job starts. After
+    that, its name is enough.
+
+    Example: The "tetris" job, run again
+      Given a job named "tetris" started on the "careful" line with a Tetris seed and a target
+      And its plan has its first task done
+      When the factory runs the "tetris" job, given only its name
+      Then the doer starts on the second task, on the "careful" line
+      And the work lands in that same target
+
+  Rule: A job's settings cannot be changed once it has started
+
+    Naming a job again with its original line, seed and target is fine,
+    and so is naming it alone. Naming it with different ones is refused.
+
+    Example: The "tetris" job is given a different target
+      Given a job named "tetris" started with a Tetris seed and a target
+      When the factory runs the "tetris" job with a different target
+      Then the factory refuses
+      And it says the "tetris" job already has a target
+
+    Example: The "tetris" job is given the same settings again
+      Given a job named "tetris" started with a Tetris seed and a target
+      When the factory runs the "tetris" job with that same seed and target
+      Then the factory runs it as usual
+
+  Rule: Each job has its own plan and its own target
+
+    Example: Two jobs, one after the other
+      Given a job named "tetris" whose seed describes Tetris
+      And a job named "snake" whose seed describes Snake, with a different target
+      When the factory runs each of them
+      Then each job has its own plan
+      And each target holds only its own job's work

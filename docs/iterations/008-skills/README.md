@@ -1,4 +1,4 @@
-# Homework 7 — Skills
+# Homework 8 — Skills
 
 Read `FACTORY.md`, then the feature files in `features/`. Together they
 are the whole spec of the factory at this point, not just the new parts.
@@ -20,6 +20,6 @@ you always want the doer to do, and something you want a reviewer to look
 for. Give one of them a script in `scripts/` and see what your gate makes
 of it.
 
-The three-step loading is the other half of the homework, and homework 5
+The three-step loading is the other half of the homework, and homework 6
 is how you check it. Watch a job: a machine that has not activated a skill
 should not be paying for that skill's instructions.

@@ -26,9 +26,14 @@ it spends.
 
 You can send a message to a machine while it works.
 
+A machine can have **skills**: folders of instructions that sit beside
+it and go with it to every line. A machine reads a skill only when it
+judges the task needs it, and may run only the commands its activated
+skills name.
+
 Each run is for a **job**: an assembly line, a seed, saying what to
 build, and a target, the folder to build it in. The job keeps
 its plan and its record with the factory, never in the target. A job
 can be stopped, and started again later.
 
-New since iteration 5: `steering.feature`.
+New since iteration 7: `skills.feature` and `command-execution.feature`.
