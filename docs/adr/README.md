@@ -16,7 +16,6 @@ decided, when, and why. Each record follows [adr_template.md](adr_template.md).
 | ADR | Title | Status |
 |---|---|---|
 | [0001](0001-use-adrs.md) | use ADRs | accepted |
-| [0002](0002-students-work-across-three-repositories.md) | students work across three repositories | proposed |
 
 ## Not in here
 

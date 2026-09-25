@@ -5,13 +5,13 @@ iterations one homework at a time, as directed by your instructor.
 
 ## Get started
 
-1. Clone this repo. It is the course: read-only, and `git pull` it for new
-   homeworks and fixes.
-2. Fire up your favourite coding agent harness (Claude Code, Codex, Pi,
-   etc) in it and say "coach me". It sets up your own factory repo next
-   to this one.
-3. Open your harness in your factory repo and say "coach me" again. That
-   is where you work from then on.
+1. Fork or clone
+   [capstone-project-starter](https://github.com/lean-software-production/capstone-project-starter).
+   That is where you work. You don't need to clone this repo.
+2. `cd tetris/.factory` and fire up your favourite coding agent harness
+   (Claude Code, Codex, Pi, etc) there.
+3. Say "fetch iteration" to pull the first homework into `spec/`, then
+   "coach me".
 
 ## Where things live
 

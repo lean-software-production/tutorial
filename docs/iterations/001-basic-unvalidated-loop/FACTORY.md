@@ -12,7 +12,7 @@ The factory writes no project code and no plan itself. A coding agent
 does — `pi` by default, or another chosen for the run.
 
 Each run is for a **job**: a seed, saying what to build, and a target,
-the git repository to build it in. The job keeps its plan with the
+the folder to build it in. The job keeps its plan with the
 factory, never in the target.
 
 Running one pass does one task, or writes the plan. Running to

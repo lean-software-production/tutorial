@@ -10,8 +10,8 @@
 | 006 | [Steering](006-steering/README.md) | Day 4 |
 | 007 | [Skills](007-skills/README.md) | Day 5 |
 
-Your progress is kept in your own factory repo (`spec/ITERATION`), not
-here. Coaching works through these in order.
+Your progress is kept in your starter repo (`tetris/.factory/ITERATION`),
+not here. `fetch-iteration` works through these in order.
 
 ## Spec structure
 

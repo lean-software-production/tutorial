@@ -12,7 +12,7 @@ The factory writes no project code, no plan and no verdict itself. A
 coding agent does — `pi` by default, or others chosen for the run.
 
 Each run is for a **job**: a seed, saying what to build, and a target,
-the git repository to build it in. The job keeps its plan with the
+the folder to build it in. The job keeps its plan with the
 factory, never in the target.
 
 New since iteration 1: `validation.feature`, and passes that end on

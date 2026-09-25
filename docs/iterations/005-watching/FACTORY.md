@@ -25,7 +25,7 @@ while another command watches it: what each machine generates and what
 it spends.
 
 Each run is for a **job**: an assembly line, a seed, saying what to
-build, and a target, the git repository to build it in. The job keeps
+build, and a target, the folder to build it in. The job keeps
 its plan and its record with the factory, never in the target. A job
 can be stopped, and started again later.
 

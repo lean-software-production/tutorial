@@ -19,8 +19,8 @@ second one — the same line without the validator will do — and have each
 job say which line it runs:
 
 ```sh
-$ ./factory --job tetris --line lines/careful.dot --seed seeds/tetris.md --target ../targets/tetris
-$ ./factory --job snake  --line lines/quick.dot   --seed seeds/snake.md --target ../targets/snake
+$ ./factory --job tetris --line lines/careful.dot --seed ../seeds/tetris.md --target ..
+$ ./factory --job snake  --line lines/quick.dot   --seed ../seeds/snake.md --target ../../snake
 ```
 
 `assembly-line.feature` is prescriptive about Graphviz. That is to keep

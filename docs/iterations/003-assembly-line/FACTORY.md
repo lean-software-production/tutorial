@@ -17,7 +17,7 @@ plan and the retry after failed validation. A factory can hold several
 lines, and a line never names a target.
 
 Each run is for a **job**: an assembly line, a seed, saying what to
-build, and a target, the git repository to build it in. The job keeps
+build, and a target, the folder to build it in. The job keeps
 its plan with the factory, never in the target.
 
 New since iteration 2: `assembly-line.feature`. The pass is gone — the

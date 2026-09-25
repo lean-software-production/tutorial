@@ -21,7 +21,7 @@ line: three reviewers on different providers' models report on each
 attempt, and a synthesiser reads their reports and decides.
 
 Each run is for a **job**: an assembly line, a seed, saying what to
-build, and a target, the git repository to build it in. The job keeps
+build, and a target, the folder to build it in. The job keeps
 its plan with the factory, never in the target.
 
 New since iteration 3: the three big brains replaces the validator.

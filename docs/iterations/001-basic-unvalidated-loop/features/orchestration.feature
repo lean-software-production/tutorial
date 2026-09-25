@@ -9,14 +9,8 @@ Feature: Orchestration
 
   Rule: The factory works in the target it is given
 
-    The target is the codebase a job builds: its own git repository,
-    holding only the product.
-
-    Example: The target is not a git repository yet
-      Given a seed and a target folder that is not a git repository
-      When the factory runs one pass
-      Then the target is a git repository
-      And it has a starting commit
+    The target is the folder a job builds the product in. It sits in a
+    git repository that the factory commits its work to.
 
   Rule: Each pass does one task, then stops
 

@@ -11,12 +11,12 @@ homework is a mock or a placeholder.
 ## What you're building
 
 Each run of the factory is for a **job**. You name the job, and the first
-time you run it you give it a seed (what to build) and a target (the git
-repository to build it in — kept separate from your factory's own repo).
+time you run it you give it a seed (what to build) and a target (the folder
+to build it in — for Tetris, the `tetris/` folder your factory sits in).
 The job remembers both; after that, its name is enough. On each pass, the factory:
 
 1. Reads the seed — the sample is the `spec.md` in this folder, which
-   coaching copies into your factory repo as `seeds/tetris.md` (it says:
+   fetch-iteration copies into `tetris/seeds/tetris.md` (it says:
    build Tetris in the terminal, started with `npm start`, fitting inside
    24 rows).
 2. If the job has no `plan.md` yet, writes it in the job's folder,
@@ -33,18 +33,19 @@ rules below pin down the rest.
 ## The commands you'll end up with
 
 The exact command name is your choice. This is the shape of what should
-work by the end, using `./factory` as a stand-in:
+work by the end, run from `tetris/.factory`, using `./factory` as a
+stand-in:
 
 ```sh
 # first run — a new job, no plan yet, so the factory plans instead of building
-$ ./factory --job tetris --seed seeds/tetris.md --target ../targets/tetris
-created jobs/tetris/plan.md (4 tasks) from seeds/tetris.md
+$ ./factory --job tetris --seed ../seeds/tetris.md --target ..
+created jobs/tetris/plan.md (4 tasks) from ../seeds/tetris.md
 
 # next run — the job remembers its seed and target; one pass, one task,
 # one commit in the target
 $ ./factory --job tetris
 task 1 done: set up the project
-$ git -C ../targets/tetris log --oneline
+$ git -C .. log --oneline
 # one new commit
 
 # run to completion
@@ -55,11 +56,11 @@ task 4 done: ...
 factory stopped — plan complete
 
 # swap the agent for a run — here a stand-in, for a quick check
-$ ./factory --job scratch --seed seeds/tetris.md --target ../targets/scratch --agent ../tutorial/stand-ins/plan-alpha-beta
-created jobs/scratch/plan.md (2 tasks) from seeds/tetris.md
+$ ./factory --job scratch --seed ../seeds/tetris.md --target ../../scratch --agent stand-ins/plan-alpha-beta
+created jobs/scratch/plan.md (2 tasks) from ../seeds/tetris.md
 
 # the payoff: a real, playable Tetris
-$ cd ../targets/tetris && npm start
+$ cd .. && npm start
 ```
 
 Your task names and count will differ; the point is that real code appears

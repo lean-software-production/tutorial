@@ -1,5 +1,7 @@
 # Agent instructions
 
-## Coaching workflow
-
-- When the user says "coach me", asks to be coached, or wants to work through their next homework with guidance, read and follow `.agents/coach-me.md`. Run from here, in the course repo, it sets up the student's own factory repo; the coaching itself happens there.
+This repo holds the course's iterations (`docs/iterations/`) and stand-in
+agents (`stand-ins/`). Students don't work here: they work in their copy of
+[capstone-project-starter](https://github.com/lean-software-production/capstone-project-starter),
+whose `fetch-iteration` skill downloads each iteration from this repo's
+`main` branch on GitHub.
