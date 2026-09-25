@@ -1,0 +1,15 @@
+# Read by the Tutor BB plugin (lean-software-production/devcontainer-features,
+# src/tutor). It lists the homeworks in order; everything else is read from
+# each homework's folder. Coaching without BB ignores this file.
+id: software-factory
+title: Build a software factory
+coach: .agents/coach-me.md
+lexicon: docs/lexicon.yaml
+homeworks:
+  - { id: "001", title: Basic unvalidated loop, set: Day 1, dir: docs/iterations/001-basic-unvalidated-loop }
+  - { id: "002", title: Checking the work, set: Day 2, dir: docs/iterations/002-checking-the-work }
+  - { id: "003", title: The assembly line, set: Day 3, dir: docs/iterations/003-assembly-line }
+  - { id: "004", title: Fan out, set: Day 3, dir: docs/iterations/004-fan-out }
+  - { id: "005", title: Watching, set: Day 4, dir: docs/iterations/005-watching }
+  - { id: "006", title: Steering, set: Day 4, dir: docs/iterations/006-steering }
+  - { id: "007", title: Skills, set: Day 5, dir: docs/iterations/007-skills }

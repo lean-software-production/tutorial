@@ -68,12 +68,29 @@ Follow this process exactly:
 21. Change `spec/ITERATION` from `<iteration> WIP` to `<iteration> Done`.
 22. Commit the implementation and that change with message `Implement homework <iteration>` (e.g. `Implement homework 003`).
 
+## Per-example progress
+
+A factory coached through BB's Tutor also has `spec/PROGRESS.yaml`, recording which Examples in `spec/features/` already hold. If it is there, read it at step 6 and don't re-coach Examples marked `passing`. When you confirm an Example holds (step 17 or 18), you may record it the same way, and commit it with your other changes:
+
+```yaml
+iteration: "003"
+examples:
+  assembly-line/the-factory-refuses-an-assembly-line-naming-a-machine-it-does-not-have/a-misspelt-validator:
+    status: passing        # pending | not-yet | passing | skipped
+    evidence: |
+      $ ./factory --job tetris --line lines/typo.dot ...
+      refused: no machine called "validater"
+    at: 2026-09-25T10:12:00Z
+```
+
+Keys are `<feature file name>/<Rule>/<Example>`, each lower-cased with runs of other characters turned into `-`. Leave any fields you don't recognise as they are. If the file is missing, carry on without it.
+
 ## Rules
 
 - Never edit, commit or pull in the course repo unless the student asks you to pull.
 - Do not start more than one iteration.
 - Do not read or look ahead at other iterations' specs in the course. Coach the current iteration only.
-- Do not edit anything in `spec/` except `spec/ITERATION` — the rest is the spec, not yours to change.
+- Do not edit anything in `spec/` except `spec/ITERATION` and `spec/PROGRESS.yaml` — the rest is the spec, not yours to change.
 - Do not edit implementation files unless the student asks you to, and even then only implement the next baby step.
 - Break the implementation into small baby steps. Prefer outside-in: start with the smallest visible behaviour that proves the new capability, even if parts are hard-coded, then replace the hard-coded pieces one at a time.
 - Keep the factory minimal: a short loop driving the agent, with state on disk. The intelligence lives in the agent and the files, not the factory. Do not encode the plan or the seed in code, do not build a framework, and do not add defensive code or hardening — this is a learning exercise.
