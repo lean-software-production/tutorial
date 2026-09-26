@@ -5,6 +5,10 @@ Feature: Orchestration
 
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
+    And a seed describing a game of Tetris
+    And the planner's agent is the plan-alpha-beta stand-in
+    And the doer's agent is the do-next stand-in
+    And the validator's agent is the always-satisfied stand-in
 
   Rule: The factory works in the codebase around it
 
@@ -22,8 +26,8 @@ Feature: Orchestration
     Example: Three tasks remain
       Given a plan with three tasks, none of them done
       When the factory runs one pass
-      Then the first task has been done and validated
-      And the other two have not
+      Then the plan shows the first task as done
+      And the plan shows the other two as not done
       And the factory has stopped
 
   Rule: A pass ends when validation is satisfied
@@ -31,16 +35,15 @@ Feature: Orchestration
     Example: The work is right first time
       Given a plan with three tasks, none of them done
       When the factory runs one pass
-      Then the doer has done the first task
-      And validation is satisfied
-      And the pass has ended
+      Then the doer has been called once
+      And there is one new commit
 
     Example: The work is wrong first time
       Given a plan with three tasks, none of them done
-      And a doer whose first attempt does not satisfy validation
+      And the validator's agent is the not-satisfied-once stand-in
       When the factory runs one pass
-      Then the doer has run again
-      And the pass ends once validation is satisfied
+      Then the doer has been called twice
+      And there is one new commit
 
   Rule: A pass gives up after a set number of attempts
 
@@ -52,13 +55,14 @@ Feature: Orchestration
     where it is, for whoever comes looking.
 
     Example: Validation is never satisfied
-      Given a factory allowing at most three attempts per pass
-      And validation that is never satisfied
+      Given a plan with three tasks, none of them done
+      And the factory allows at most three attempts per pass
+      And the validator's agent is the never-satisfied stand-in
       When the factory runs one pass
-      Then the doer has made three attempts
-      And the factory has stopped
+      Then the doer has been called three times
       And it reports that the pass hit its limit
       And there are no new commits
+      And the factory has stopped
 
   Rule: The factory commits a pass that ends with validation satisfied
 
@@ -66,6 +70,7 @@ Feature: Orchestration
       Given a plan with three tasks, none of them done
       When the factory runs one pass
       Then there is one new commit
+      And it contains the work for the first task
 
     Example: Finished work is not redone
       Given a plan whose first task is done
@@ -73,16 +78,21 @@ Feature: Orchestration
       Then there is one new commit
       And it contains the work for the second task
 
-  Rule: The factory stops when the plan is complete
+  Rule: The factory stops when the planner says the plan is complete
+
+    The planner keeps the plan, so only the planner knows when it is
+    complete. It says so by answering PLAN COMPLETE.
 
     Example: Work remains
       Given a plan with three tasks, none of them done
       When the factory runs to completion
-      Then all three tasks have been done
+      Then the plan shows every task as done
+      And there are three new commits
       And the factory has stopped
 
     Example: Every task is already done
       Given a plan in which every task is done
       When the factory runs to completion
-      Then the factory stops without doing any work
+      Then the doer has not been called
       And there are no new commits
+      And the factory has stopped

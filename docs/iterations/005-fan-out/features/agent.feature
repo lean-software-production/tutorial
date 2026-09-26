@@ -1,74 +1,82 @@
 Feature: The coding agent
 
   No machine's work is written by the factory. The planner's plan, the
-  doer's code and every reviewer's report and the synthesiser's verdict all come from a coding agent — an
-  LLM-driven tool such as pi — that the machine calls. Each machine's
+  doer's code, every reviewer's report and the synthesiser's verdict all
+  come from a coding agent — an LLM-driven tool such as pi — that the
+  machine calls. Each machine's
   agent is part of that machine's configuration; pi is the default.
 
-  Several examples give a machine a stand-in agent: one of the small
-  programs the course ships in `stand-ins/`, which take what the machine
-  hands them and do something simple and predictable. That shows what the
-  machine gives its agent and what it does with the answer, and it makes
-  checks fast — other features' examples may use a stand-in too. A
-  stand-in is configured from outside, the same way pi is; the factory
-  never contains one. Examples tagged @real-agent need a real agent; any
-  other example may use a stand-in.
+  Most examples give a machine a stand-in agent: one of the small programs
+  the course ships in `stand-ins/`, which take what the machine hands them
+  and do something simple and predictable. That shows what the machine
+  gives its agent and what it does with the answer, and it makes checks
+  fast. A stand-in is configured from outside, the same way pi is; the
+  factory never contains one. Examples tagged @real-agent need a real
+  agent; every other example runs with stand-ins.
 
   Background:
-    Given the factory keeps its jobs in a new, empty folder
-    And every target is a new folder
+    Given a copy of the factory
+    And a new target, with a seed describing a game of Tetris
+    And an assembly line "careful" on which the doer's work is validated
+    And a job named "tetris", on the "careful" line, with that seed and target
+    And the planner's agent is the plan-alpha-beta stand-in
+    And the doer's agent is the do-next stand-in
+    And every reviewer's agent is the always-satisfied stand-in
+    And the synthesiser's agent is the always-satisfied stand-in
 
   Rule: A machine uses pi unless its configuration names another agent
 
-    Example: The doer is configured with a stand-in
-      Given the doer's configuration names a stand-in agent
-      And the planner's names no agent
-      When the factory runs
-      Then the planner has called pi
-      And the doer has called the stand-in, and not pi
+    Example: The synthesiser's configuration names no agent
+      Given a plan with three tasks, none of them done
+      And no agent is chosen for the synthesiser
+      When the factory runs the "tetris" job
+      Then pi has been called
+      And the do-next stand-in has been called
 
   Rule: Without an agent, a machine does no work
 
     Example: The doer's agent cannot be run
       Given a plan with three tasks, none of them done
-      And a doer whose agent cannot be run
-      When the factory runs
-      Then it reports that the doer could not run its agent
-      And there are no new commits in the target
+      And the doer's agent cannot be run
+      When the factory runs the "tetris" job
+      Then it reports that it could not run the agent
+      And there are no new commits
 
   Rule: The plan is what the planner's agent wrote
 
-    Example: A stand-in planner that plans two tasks
-      Given a job with no plan
-      And a planner configured with the plan-alpha-beta stand-in
-      When the factory runs
+    Example: A stand-in that plans two tasks
+      Given no plan
+      When the factory runs the "tetris" job
       Then the plan has the tasks "alpha" and "beta", and no others
 
   Rule: The target holds what the doer's agent wrote
 
-    Example: A stand-in doer that writes one file
+    Example: A stand-in that writes a file for each task
       Given a plan with three tasks, none of them done
-      And a doer configured with the write-sentinel stand-in
-      When the factory runs
-      Then each new commit in the target contains SENTINEL and nothing else
+      When the factory runs the "tetris" job
+      Then there are three new commits
+      And each new commit contains the work for one task
 
-  Rule: The doer's agent is given the task and the seed
+  Rule: The doer's agent is pointed at the plan and the seed
 
-    Example: A stand-in doer that records what it is given
-      Given a plan whose first task is done and whose second is "add a score display"
-      And a doer configured with the record-input stand-in
-      When the factory runs
-      Then the stand-in was given "add a score display"
-      And it was pointed at the seed
+    The factory cannot hand the doer a task: it never reads the plan. It
+    tells the doer where the plan and the seed are, and the doer does the
+    rest.
+
+    Example: What the doer's agent is given
+      Given a plan with three tasks, none of them done
+      When the factory runs the "tetris" job
+      Then the doer's agent was pointed at the plan and at the seed
 
   Rule: Validation is what the synthesiser's agent decided
 
     Example: A stand-in that is never satisfied
-      Given an assembly line whose retry edge allows at most three attempts
-      And a synthesiser configured with the never-satisfied stand-in
-      When the factory runs
-      Then the doer has made three attempts at the first task
-      And there are no new commits in the target
+      Given a plan with three tasks, none of them done
+      And the "careful" line's retry edge allows at most three attempts
+      And the synthesiser's agent is the never-satisfied stand-in
+      When the factory runs the "tetris" job
+      Then the doer has been called three times
+      And there are no new commits
 
   Rule: What gets built follows the seed
 
@@ -77,7 +85,8 @@ Feature: The coding agent
 
     @real-agent
     Example: A Tetris with different details
-      Given a seed describing Tetris on a board 8 columns wide, started with "npm run play"
-      When the factory runs the job with real agents
+      Given every agent is pi
+      And a seed describing Tetris on a board 8 columns wide, started with "npm run play"
+      When the factory runs the "tetris" job
       Then "npm run play" in the target starts Tetris
       And its board is 8 columns wide

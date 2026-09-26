@@ -3,8 +3,14 @@ Feature: Observability
   Reading what the machines generate.
 
   Background:
-    Given the factory keeps its jobs in a new, empty folder
-    And every target is a new folder
+    Given a copy of the factory
+    And a new target, with a seed describing a game of Tetris
+    And an assembly line "careful" on which the doer's work is validated
+    And a job named "tetris", on the "careful" line, with that seed and target
+    And the planner's agent is the plan-alpha-beta stand-in
+    And the doer's agent is the do-next stand-in
+    And every reviewer's agent is the always-satisfied stand-in
+    And the synthesiser's agent is the always-satisfied stand-in
 
   Rule: What a machine generates can be read while it is generating it
 

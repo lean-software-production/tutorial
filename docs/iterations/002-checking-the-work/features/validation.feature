@@ -4,14 +4,18 @@ Feature: Validation
 
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
+    And a seed describing a game of Tetris
+    And the planner's agent is the plan-alpha-beta stand-in
+    And the doer's agent is the do-next stand-in
+    And the validator's agent is the always-satisfied stand-in
 
   Rule: A validator checks the work the doer just produced
 
     Example: Earlier work is not rechecked
-      Given a plan whose first task is done and validated
-      When the doer makes its first attempt at the second task
-      Then a validator checks the work of that attempt
-      And it does not report findings about the first task
+      Given a plan whose first task is done
+      When the factory runs one pass
+      Then the validator's agent was given the work for the second task
+      And it was not given the work for the first task
 
   Rule: What a validator looks for is chosen, not fixed
 
@@ -20,24 +24,42 @@ Feature: Validation
     security. The factory does not care which. It is the choice that
     teaches, so this spec leaves it open on purpose.
 
-    Example: A validator that looks at testability
-      Given a validator with a lens of testability
-      When the doer makes an attempt at a task
-      Then its findings are about testability
+    Example: The lens goes to the validator
+      Given a plan with three tasks, none of them done
+      And the validator's lens is testability
+      When the factory runs one pass
+      Then the validator's agent was given "testability"
 
+    @real-agent
+    Example: A validator that looks at testability
+      Given every agent is pi
+      And the validator's lens is testability
+      When the factory runs one pass
+      Then the validator's findings are about testability
+
+    @real-agent
     Example: A validator that looks at something else
-      Given a validator with a lens of internationalisation
-      When the doer makes an attempt at a task
-      Then its findings are about internationalisation
+      Given every agent is pi
+      And the validator's lens is internationalisation
+      When the factory runs one pass
+      Then the validator's findings are about internationalisation
+
+  Rule: A validator's findings go back to the doer
+
+    Example: The first attempt is not good enough
+      Given a plan with three tasks, none of them done
+      And the validator's agent is the not-satisfied-once stand-in
+      When the factory runs one pass
+      Then the doer's agent was given the validator's findings
 
   Rule: A validator reports findings, and changes neither the plan nor the work
 
+    @real-agent
     Example: The first task's work is untestable
-      Given a plan with three tasks, none of them done
-      And a validator that finds the first task's work untestable
-      When the doer makes its first attempt at the first task
-      Then the doer is given that finding
-      And no validator has changed the plan or the work
+      Given every agent is pi
+      And the validator's lens is testability
+      When the doer's first attempt at a task is untestable
+      Then the validator has changed neither the plan nor the work
 
   Rule: The doer records each finding as a subtask of the task in progress
 
@@ -45,16 +67,10 @@ Feature: Validation
     that task. It does not become a new task in the plan, and the task is
     not done until its subtasks are.
 
+    @real-agent
     Example: A finding on the first task
-      Given a plan with three tasks, none of them done
-      And a validator that finds the first task's work untestable
-      When the doer makes its first attempt at the first task
-      Then the first task has a subtask for that finding
-      And the plan still has three tasks
-
-    Example: The next attempt deals with the subtask
-      Given a plan whose first task has a subtask for a finding
-      And a validator that is satisfied by the doer's second attempt
-      When the doer makes its second attempt at the first task
-      Then it has done that subtask
-      And the first task is done and validated
+      Given every agent is pi
+      And the validator's lens is testability
+      When the doer's first attempt at a task is untestable
+      Then that task has a subtask for the finding
+      And the plan has no new task

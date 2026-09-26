@@ -41,5 +41,5 @@ Your factory already has a line and a plan from homework 3. Move them
 where they now belong — the line into `lines/`, the plan into
 `jobs/tetris/` — or start the tetris job afresh.
 
-The factory can also be told to keep its jobs somewhere other than
-`jobs/`. That is how the checks now keep out of the jobs you started.
+The checks still run against a copy of your factory. From here on the
+copy builds in new targets beside it, not in the folder around it.

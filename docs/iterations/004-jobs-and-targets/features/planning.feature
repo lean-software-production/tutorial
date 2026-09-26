@@ -1,83 +1,106 @@
 Feature: Planning
 
-  How the planner turns a seed into a plan, and how the plan is kept true.
+  How the planner makes the plan from the seed, and keeps it true.
 
   Background:
-    Given the factory keeps its jobs in a new, empty folder
-    And every target is a new folder
+    Given a copy of the factory
+    And a new target, with a seed describing a game of Tetris
+    And an assembly line "careful" on which the doer's work is validated
+    And a job named "tetris", on the "careful" line, with that seed and target
+    And the planner's agent is the plan-alpha-beta stand-in
+    And the doer's agent is the do-next stand-in
+    And the validator's agent is the always-satisfied stand-in
 
   Rule: The seed is the assembly line's only input
 
-    The job's name and its target are inputs to the orchestrator: where to
-    keep the job's state, and where to build. The assembly line itself is
-    given the seed and nothing else.
+    What to build comes from the seed alone. The assembly line is given
+    the seed and nothing else.
 
     @real-agent
     Example: The assembly line is given a seed and nothing else
-      Given a seed describing a game of Tetris that runs in the terminal
-      When the factory runs
-      Then the machines' agents have built Tetris in the target
+      Given every agent is pi
+      When the factory runs the "tetris" job
+      Then Tetris has been built in the target
 
-  Rule: The planner writes the plan from the seed
+  Rule: A job's seed must exist
+
+    Example: The seed has gone
+      Given the seed has been deleted
+      And no plan
+      When the factory runs the "tetris" job
+      Then it reports that there is no seed
+      And no agent has been called
+      And there is no plan
+
+  Rule: The planner writes the plan before any work is done
 
     Example: A seed with no plan yet
-      Given a seed describing a game of Tetris
+      Given no plan
+      When the factory runs the "tetris" job
+      Then the planner was called before the doer
+      And the plan shows every task as done
+
+    Example: A plan already exists
+      Given a plan with three tasks, none of them done
+      When the factory runs the "tetris" job
+      Then the plan still has those three tasks
+
+    @real-agent
+    Example: The plan comes from the seed
+      Given every agent is pi
       And no plan
-      When the factory runs
-      Then the planner has written a plan before the doer started
-      And every task in it comes from the seed
-
-  Rule: The planner keeps a plan that already exists
-
-    Example: A plan with four tasks
-      Given a plan with four tasks, none of them done
-      When the factory runs
-      Then the plan still has those four tasks
+      When the factory runs the "tetris" job
+      Then every task in the plan comes from the seed
 
   Rule: A job keeps its plan with the factory, not in the target
 
+    Each job has a folder of its own, in jobs/ in the factory, and its
+    plan is plan.md there.
+
     Example: The first run of a job named "tetris"
-      Given a job named "tetris" with a seed, a target and no plan
+      Given no plan
       When the factory runs the "tetris" job
-      Then the plan is in the factory's jobs folder, under tetris
+      Then the plan is plan.md in the factory's jobs folder, under tetris
       And there is no plan in the target
 
-  Rule: The factory can keep its jobs somewhere else
+  Rule: The planner keeps the plan, and the factory never reads it
 
-    By default a job's folder is in jobs/ in the factory. The factory can
-    be told to keep its jobs in another folder instead, so that a test run
-    never touches the jobs a person started.
-
-    Example: Jobs kept in another folder
-      When the factory runs a new job named "tetris"
-      Then the plan is in the folder it was told to use, under tetris
-      And there is nothing new in jobs/ in the factory
-
-  Rule: The factory maintains the plan
-
-    Example: The factory stops part-way through
-      Given a plan with three tasks, none of them done
-      And validation that is never satisfied by the second task
-      When the factory runs
-      Then the plan shows the first task as done
-      And the second and third as not done
+    The planner writes the plan. Once a task's work is committed, the
+    planner marks it done, and it answers PLAN COMPLETE when no task is
+    left. The doer works from the plan too. The factory only knows whether
+    there is a plan, and what the machines' agents answer.
 
     Example: A run carries on from the last
       Given a plan whose first task is done
-      When the factory runs
-      Then the doer starts on the second task
+      When the factory runs the "tetris" job
+      Then the plan shows every task as done
+      And there are two new commits
+
+    Example: Work that gave up is not recorded
+      Given a plan with three tasks, none of them done
+      And the "careful" line's retry edge allows at most three attempts
+      And the validator's agent is the never-satisfied stand-in
+      When the factory runs the "tetris" job
+      Then the plan shows every task as not done
+
+    Example: A plan no factory could parse
+      Given the planner's agent is the plan-in-prose stand-in
+      And the doer's agent is the plan-in-prose stand-in
+      And no plan
+      When the factory runs the "tetris" job
+      Then the work for alpha and beta has been committed
 
   Rule: A job remembers its assembly line, its seed and its target
 
     The line, the seed and the target are given when a job starts. After
     that, its name is enough.
 
-    Example: The "tetris" job, run again
-      Given a job named "tetris" started on the "careful" line with a Tetris seed and a target
-      And its plan has its first task done
+    Example: The "tetris" job, run again by name
+      Given the "tetris" job has been started
+      And a plan whose first task is done
       When the factory runs the "tetris" job, given only its name
-      Then the doer starts on the second task, on the "careful" line
-      And the work lands in that same target
+      Then there are two new commits
+      And the validator has been called twice
 
   Rule: A job's settings cannot be changed once it has started
 
@@ -85,21 +108,24 @@ Feature: Planning
     and so is naming it alone. Naming it with different ones is refused.
 
     Example: The "tetris" job is given a different target
-      Given a job named "tetris" started with a Tetris seed and a target
-      When the factory runs the "tetris" job with a different target
+      Given the "tetris" job has been started
+      And a new target, with a seed describing a game of Tetris
+      When the factory runs the "tetris" job with that target
       Then the factory refuses
       And it says the "tetris" job already has a target
 
     Example: The "tetris" job is given the same settings again
-      Given a job named "tetris" started with a Tetris seed and a target
-      When the factory runs the "tetris" job with that same seed and target
-      Then the factory runs it as usual
+      Given the "tetris" job has been started
+      And a plan with three tasks, none of them done
+      When the factory runs the "tetris" job
+      Then there are three new commits
 
   Rule: Each job has its own plan and its own target
 
     Example: Two jobs, one after the other
-      Given a job named "tetris" whose seed describes Tetris
-      And a job named "snake" whose seed describes Snake, with a different target
-      When the factory runs each of them
+      Given a new target, with a seed describing a game of Snake
+      And a job named "snake", on the "careful" line, with that seed and target
+      When the factory runs the "tetris" job
+      And the factory runs the "snake" job
       Then each job has its own plan
       And each target holds only its own job's work

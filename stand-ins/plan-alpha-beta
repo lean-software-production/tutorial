@@ -1,10 +1,13 @@
 #!/bin/sh
+# A planner. With no plan, writes one: alpha, then beta. With a plan, ticks
+# every task whose work is committed, and answers PLAN COMPLETE when no
+# task is left.
 . "$(dirname "$0")/_read-prompt.sh"
-plan='- [ ] alpha
-- [ ] beta'
-path=$(printf '%s\n' "$prompt" | grep -o '[^[:space:]`"'"'"']*plan\.md' | head -n 1)
-if [ -n "$path" ]; then
-  mkdir -p "$(dirname "$path")"
-  printf '%s\n' "$plan" > "$path"
-fi
-printf '%s\n' "$plan"
+. "$(dirname "$0")/_plan.sh"
+if [ -z "$plan_path" ]; then printf '%s\n' "$new_plan"; exit 0; fi
+if [ ! -f "$plan_path" ]; then write_new_plan; printf '%s\n' "$new_plan"; exit 0; fi
+tasks=$(unticked)
+printf '%s\n' "$tasks" | while IFS= read -r task; do
+  [ -n "$task" ] && is_committed "$task" && tick "$task"
+done
+if [ -z "$(first_unticked)" ]; then echo "PLAN COMPLETE"; else cat "$plan_path"; fi

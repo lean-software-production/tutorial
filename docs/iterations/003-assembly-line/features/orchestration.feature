@@ -1,11 +1,15 @@
 Feature: Orchestration
 
-  How the factory runs along its assembly line: which task is next, when
-  a task is finished, when to give up and when to stop. These rules do
-  not care how validation is done.
+  How the factory runs along its assembly line: when a task is finished,
+  when to give up and when to stop. These rules do not care how
+  validation is done.
 
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
+    And a seed describing a game of Tetris
+    And the planner's agent is the plan-alpha-beta stand-in
+    And the doer's agent is the do-next stand-in
+    And the validator's agent is the always-satisfied stand-in
 
   Rule: The factory works in the codebase around it
 
@@ -21,42 +25,44 @@ Feature: Orchestration
   Rule: The factory runs the machines its assembly line gives it
 
     Example: An assembly line with no validator on it
-      Given the validator has been taken out of the factory's assembly line
+      Given the validator has been taken out, so the doer goes straight to the planner
       And a plan with three tasks, none of them done
       When the factory runs
-      Then all three tasks have been done
-      And nothing has validated the work
+      Then the plan shows every task as done
+      And the validator has not been called
 
   Rule: The factory does no work on an assembly line it refuses
 
     Example: The assembly line names a machine the factory does not have
-      Given an assembly line naming a machine the factory does not have
+      Given "validator" is misspelt "validater" throughout the assembly line
+      And a plan with three tasks, none of them done
       When the factory runs
-      Then it stops before doing any work
+      Then no agent has been called
       And there are no new commits
 
-  Rule: The doer works on one task at a time, in plan order
+  Rule: The doer works on one task at a time
+
+    Which task comes next is the planner's business, not the factory's.
 
     Example: Three tasks remain
       Given a plan with three tasks, none of them done
       When the factory runs
-      Then the second task was started only once the first was done and validated
-      And the third only once the second was
+      Then there are three new commits
+      And each new commit contains the work for one task
 
   Rule: A task is finished when validation is satisfied
 
     Example: The work is right first time
       Given a plan with three tasks, none of them done
-      And validation that is satisfied by every first attempt
       When the factory runs
-      Then the doer has made one attempt at each task
+      Then the doer has been called three times
 
     Example: The work is wrong first time
       Given a plan with three tasks, none of them done
-      And validation that is not satisfied by the first attempt at the first task
+      And the validator's agent is the not-satisfied-once stand-in
       When the factory runs
-      Then the doer has made two attempts at the first task
-      And the second task was started only once the second attempt satisfied validation
+      Then the doer has been called four times
+      And there are three new commits
 
   Rule: A task gives up after a set number of attempts
 
@@ -68,37 +74,43 @@ Feature: Orchestration
     left where it is, for whoever comes looking.
 
     Example: Validation is never satisfied
-      Given an assembly line whose retry edge allows at most three attempts
-      And a plan with three tasks, none of them done
-      And validation that is never satisfied by the first task
+      Given a plan with three tasks, none of them done
+      And the assembly line's retry edge allows at most three attempts
+      And the validator's agent is the never-satisfied stand-in
       When the factory runs
-      Then the doer has made three attempts at the first task
-      And the factory has stopped without starting the second
-      And it reports that the first task hit its limit
+      Then the doer has been called three times
+      And it reports that a task hit its limit
       And there are no new commits
+      And the factory has stopped
 
   Rule: The factory commits each time a task is finished
 
     Example: Three tasks, three commits
       Given a plan with three tasks, none of them done
       When the factory runs
-      Then there are three new commits, one for each task
+      Then there are three new commits
 
     Example: Finished work is not redone
       Given a plan whose first task is done
       When the factory runs
-      Then no new commit contains work for the first task
+      Then there are two new commits
+      And no new commit contains the work for the first task
 
-  Rule: The factory stops when the plan is complete
+  Rule: The factory stops when the planner says the plan is complete
+
+    The planner keeps the plan, so only the planner knows when it is
+    complete. It says so by answering PLAN COMPLETE, and the line goes to
+    finish.
 
     Example: Work remains
       Given a plan with three tasks, none of them done
       When the factory runs
-      Then all three tasks have been done
+      Then the plan shows every task as done
       And the factory has stopped
 
     Example: Every task is already done
       Given a plan in which every task is done
       When the factory runs
-      Then the doer never runs
+      Then the doer has not been called
       And there are no new commits
+      And the factory has stopped

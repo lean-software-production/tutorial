@@ -1,0 +1,4 @@
+#!/bin/sh
+. "$(dirname "$0")/_read-prompt.sh"
+echo "SATISFIED"
+echo "The always-satisfied stand-in is always satisfied."

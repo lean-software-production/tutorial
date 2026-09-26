@@ -4,10 +4,12 @@ Read `FACTORY.md`, then the feature files in `features/`. Together they
 are the whole spec of the factory at this point, not just the new parts.
 
 The factory does the same work it did for homework 2. What changes is
-where the route lives. Until now it was hidden: the plan-or-work branch in
-your prompt, the retry in your code, and the looping in the pass. All of
-it comes out into an **assembly line** — a graph the factory reads — and
-the planner becomes a machine of its own on it.
+where the route lives. Until now it was hidden in your code: the order of
+planner, doer and validator, the retry, and the looping in the pass. All
+of it comes out into an **assembly line** — a graph the factory reads —
+and the planner, the doer and the validator become machines on it. The
+planner decides whether there is more to do; the line says where each
+answer goes.
 
 That takes the pass with it. There is no more running one pass: the
 factory runs the assembly line, and the line says what happens next.

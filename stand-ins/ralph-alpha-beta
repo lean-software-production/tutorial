@@ -1,0 +1,13 @@
+#!/bin/sh
+# A whole Ralph loop's agent in one call. With no plan, writes one: alpha,
+# then beta. Otherwise does the first task not ticked and ticks it, or
+# answers PLAN COMPLETE when no task is left.
+. "$(dirname "$0")/_read-prompt.sh"
+. "$(dirname "$0")/_plan.sh"
+if [ -z "$plan_path" ]; then printf '%s\n' "$new_plan"; exit 0; fi
+if [ ! -f "$plan_path" ]; then write_new_plan; printf '%s\n' "$new_plan"; exit 0; fi
+task=$(first_unticked)
+if [ -z "$task" ]; then echo "PLAN COMPLETE"; exit 0; fi
+do_task "$task"
+tick "$task"
+echo "$task"

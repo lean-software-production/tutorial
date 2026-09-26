@@ -1,0 +1,21 @@
+#!/bin/sh
+# Keeps a plan in prose that no factory could parse, and plays any part:
+# writes the plan if there is none, otherwise builds whichever of alpha and
+# beta is not committed yet, and answers PLAN COMPLETE once both are.
+. "$(dirname "$0")/_read-prompt.sh"
+. "$(dirname "$0")/_plan.sh"
+if [ -z "$plan_path" ]; then echo "Build alpha first, then beta."; exit 0; fi
+if [ ! -f "$plan_path" ]; then
+  mkdir -p "$(dirname "$plan_path")"
+  echo "Build alpha first, then beta. Nothing is built yet." > "$plan_path"
+  cat "$plan_path"; exit 0
+fi
+for task in alpha beta; do
+  if ! is_committed "$task"; then
+    [ -e "$task" ] || do_task "$task"
+    echo "Build alpha first, then beta. Working on $task now." > "$plan_path"
+    echo "building $task"; exit 0
+  fi
+done
+echo "Alpha and beta are both built; nothing is left." > "$plan_path"
+echo "PLAN COMPLETE"
