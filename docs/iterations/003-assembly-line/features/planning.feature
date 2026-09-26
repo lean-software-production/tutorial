@@ -5,9 +5,9 @@ Feature: Planning
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
     And a seed describing a game of Tetris
-    And the planner's agent is the plan-alpha-beta stand-in
-    And the doer's agent is the do-next stand-in
-    And the validator's agent is the always-satisfied stand-in
+    And the planner is the plan-alpha-beta stand-in
+    And the doer is the do-next stand-in
+    And the validator is the always-satisfied stand-in
 
   Rule: The seed is the assembly line's only input
 
@@ -16,7 +16,7 @@ Feature: Planning
 
     @real-agent
     Example: The assembly line is given a seed and nothing else
-      Given every agent is pi
+      Given every machine runs pi
       When the factory runs
       Then Tetris has been built in the codebase
 
@@ -47,7 +47,7 @@ Feature: Planning
 
     @real-agent
     Example: The plan comes from the seed
-      Given every agent is pi
+      Given every machine runs pi
       And no plan
       When the factory runs
       Then every task in the plan comes from the seed
@@ -66,9 +66,9 @@ Feature: Planning
   Rule: The planner keeps the plan, and the factory never reads it
 
     The planner writes the plan. Once a task's work is committed, the
-    planner marks it done, and it answers PLAN COMPLETE when no task is
+    planner marks it done, and its result says whether any task is
     left. The doer works from the plan too. The factory only knows whether
-    there is a plan, and what the machines' agents answer.
+    there is a plan, and the machines' results.
 
     Example: A run carries on from the last
       Given a plan whose first task is done
@@ -78,14 +78,14 @@ Feature: Planning
 
     Example: Work that gave up is not recorded
       Given a plan with three tasks, none of them done
-      And the assembly line's retry edge allows at most three attempts
-      And the validator's agent is the never-satisfied stand-in
+      And the factory allows at most three attempts at a task
+      And the validator is the never-satisfied stand-in
       When the factory runs
       Then the plan shows every task as not done
 
     Example: A plan no factory could parse
-      Given the planner's agent is the plan-in-prose stand-in
-      And the doer's agent is the plan-in-prose stand-in
+      Given the planner is the plan-in-prose stand-in
+      And the doer is the plan-in-prose stand-in
       And no plan
       When the factory runs
       Then the work for alpha and beta has been committed

@@ -45,7 +45,9 @@ Feature: Orchestration
   Rule: The factory stops when the agent says the plan is complete
 
     The agent keeps the plan, so only the agent knows when it is
-    complete. It says so by answering PLAN COMPLETE.
+    complete. It says so in its result: a small piece of JSON describing
+    the job it did, such as {"complete": true}. The factory reads the
+    result's fields; it never looks for words in what the agent says.
 
     Example: Work remains
       Given a plan with three tasks, none of them done
@@ -58,5 +60,15 @@ Feature: Orchestration
       Given a plan in which every task is done
       When the factory runs to completion
       Then the agent has been called once
+      And there are no new commits
+      And the factory has stopped
+
+  Rule: The factory stops at a result it cannot read
+
+    Example: The agent answers in prose
+      Given a plan with three tasks, none of them done
+      And the agent is the unreadable-result stand-in
+      When the factory runs one pass
+      Then it reports that it could not read the agent's result
       And there are no new commits
       And the factory has stopped

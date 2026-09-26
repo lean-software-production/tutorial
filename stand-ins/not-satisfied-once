@@ -1,14 +1,13 @@
 #!/bin/sh
-# Not satisfied the first time it is called, satisfied every time after.
-# It remembers in $STAND_IN_STATE (default ${TMPDIR:-/tmp}/stand-in-state).
+# A validator that is not satisfied the first time it is called, and is
+# satisfied every time after. It remembers in $STAND_IN_STATE (default
+# ${TMPDIR:-/tmp}/stand-in-state).
 . "$(dirname "$0")/_read-prompt.sh"
 state="${STAND_IN_STATE:-${TMPDIR:-/tmp}/stand-in-state}"
 mkdir -p "$state"
 if [ -e "$state/not-satisfied-once" ]; then
-  echo "SATISFIED"
-  echo "The not-satisfied-once stand-in is satisfied now."
+  echo '{"satisfied": true, "findings": []}'
 else
   : > "$state/not-satisfied-once"
-  echo "NOT SATISFIED"
-  echo "The not-satisfied-once stand-in is never satisfied the first time."
+  echo '{"satisfied": false, "findings": ["The not-satisfied-once stand-in is never satisfied the first time."]}'
 fi

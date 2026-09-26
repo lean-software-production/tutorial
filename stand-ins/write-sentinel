@@ -1,4 +1,5 @@
 #!/bin/sh
+# Writes a file called SENTINEL in the current directory, and nothing else.
 . "$(dirname "$0")/_read-prompt.sh"
 echo "written by the write-sentinel stand-in" > SENTINEL
-echo "wrote SENTINEL"
+echo '{"wrote": "SENTINEL"}'

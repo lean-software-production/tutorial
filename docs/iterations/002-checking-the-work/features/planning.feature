@@ -5,9 +5,9 @@ Feature: Planning
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
     And a seed describing a game of Tetris
-    And the planner's agent is the plan-alpha-beta stand-in
-    And the doer's agent is the do-next stand-in
-    And the validator's agent is the always-satisfied stand-in
+    And the planner is the plan-alpha-beta stand-in
+    And the doer is the do-next stand-in
+    And the validator is the always-satisfied stand-in
 
   Rule: The seed is the only input to the work
 
@@ -15,7 +15,7 @@ Feature: Planning
 
     @real-agent
     Example: The work is given a seed and nothing else
-      Given every agent is pi
+      Given every machine runs pi
       When the factory runs to completion
       Then Tetris has been built in the codebase
 
@@ -48,7 +48,7 @@ Feature: Planning
 
     @real-agent
     Example: The plan comes from the seed
-      Given every agent is pi
+      Given every machine runs pi
       And no plan
       When the factory runs one pass
       Then every task in the plan comes from the seed
@@ -67,9 +67,9 @@ Feature: Planning
   Rule: The planner keeps the plan, and the factory never reads it
 
     The planner writes the plan. Once a task's work is committed, the
-    planner marks it done, and it answers PLAN COMPLETE when no task is
+    planner marks it done, and its result says whether any task is
     left. The doer works from the plan too. The factory only knows whether
-    there is a plan, and what the agents answer.
+    there is a plan, and the machines' results.
 
     Example: A pass records the work it did
       Given a plan with three tasks, none of them done
@@ -84,13 +84,13 @@ Feature: Planning
     Example: Work that gave up is not recorded
       Given a plan with three tasks, none of them done
       And the factory allows at most three attempts per pass
-      And the validator's agent is the never-satisfied stand-in
+      And the validator is the never-satisfied stand-in
       When the factory runs one pass
       Then the plan shows every task as not done
 
     Example: A plan no factory could parse
-      Given the planner's agent is the plan-in-prose stand-in
-      And the doer's agent is the plan-in-prose stand-in
+      Given the planner is the plan-in-prose stand-in
+      And the doer is the plan-in-prose stand-in
       And no plan
       When the factory runs to completion
       Then the work for alpha and beta has been committed

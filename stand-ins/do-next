@@ -1,9 +1,9 @@
 #!/bin/sh
 # A doer. Does the first task in the plan that is not ticked, by writing a
-# file with its name, and answers with the task. Never touches the plan.
+# file with its name. Never touches the plan. Its result names the task.
 . "$(dirname "$0")/_read-prompt.sh"
 . "$(dirname "$0")/_plan.sh"
 task=$( [ -f "$plan_path" ] && first_unticked )
-if [ -z "$task" ]; then echo "nothing to do"; exit 0; fi
+if [ -z "$task" ]; then echo '{"task": null}'; exit 0; fi
 do_task "$task"
-echo "$task"
+printf '{"task": %s}\n' "$(json_string "$task")"

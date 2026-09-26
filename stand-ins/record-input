@@ -2,4 +2,4 @@
 # Records everything it was given, then does nothing.
 STAND_IN_RECORD="${STAND_IN_RECORD:-${TMPDIR:-/tmp}/stand-in-record.txt}"
 . "$(dirname "$0")/_read-prompt.sh"
-echo "recorded to $STAND_IN_RECORD"
+printf '{"recorded": %s}\n' "$(json_string "$STAND_IN_RECORD")"

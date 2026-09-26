@@ -7,9 +7,9 @@ Feature: Orchestration
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
     And a seed describing a game of Tetris
-    And the planner's agent is the plan-alpha-beta stand-in
-    And the doer's agent is the do-next stand-in
-    And the validator's agent is the always-satisfied stand-in
+    And the planner is the plan-alpha-beta stand-in
+    And the doer is the do-next stand-in
+    And the validator is the always-satisfied stand-in
 
   Rule: The factory works in the codebase around it
 
@@ -59,7 +59,7 @@ Feature: Orchestration
 
     Example: The work is wrong first time
       Given a plan with three tasks, none of them done
-      And the validator's agent is the not-satisfied-once stand-in
+      And the validator is the not-satisfied-once stand-in
       When the factory runs
       Then the doer has been called four times
       And there are three new commits
@@ -68,15 +68,16 @@ Feature: Orchestration
 
     An attempt is the doer producing work and validation deciding on it.
     A doer and a validator can oscillate, each attempt introducing a new
-    problem, so a task cannot be allowed to run forever. The limit belongs
-    with the retry it bounds, so it is an attribute of the retry edge on
-    the assembly line. A task that gives up is not committed: the work is
-    left where it is, for whoever comes looking.
+    problem, so a task cannot be allowed to run forever. The limit is the
+    orchestrator's, not the line's: the line only routes. How it is set is
+    up to the student — a flag, a setting, whatever suits what they
+    built. A task that gives up is not committed: the work is left where
+    it is, for whoever comes looking.
 
     Example: Validation is never satisfied
       Given a plan with three tasks, none of them done
-      And the assembly line's retry edge allows at most three attempts
-      And the validator's agent is the never-satisfied stand-in
+      And the factory allows at most three attempts at a task
+      And the validator is the never-satisfied stand-in
       When the factory runs
       Then the doer has been called three times
       And it reports that a task hit its limit
@@ -99,8 +100,8 @@ Feature: Orchestration
   Rule: The factory stops when the planner says the plan is complete
 
     The planner keeps the plan, so only the planner knows when it is
-    complete. It says so by answering PLAN COMPLETE, and the line goes to
-    finish.
+    complete. It says so in its result, {"complete": true}, and the line
+    goes to finish.
 
     Example: Work remains
       Given a plan with three tasks, none of them done
@@ -114,3 +115,24 @@ Feature: Orchestration
       Then the doer has not been called
       And there are no new commits
       And the factory has stopped
+
+  Rule: The line routes on each machine's result
+
+    Each machine answers with a result: JSON describing the job it did.
+    The factory takes the edge whose label matches it, and never looks
+    for words in what a machine says.
+
+    Example: The validator answers in prose
+      Given a plan with three tasks, none of them done
+      And the validator is the unreadable-result stand-in
+      When the factory runs
+      Then it reports that it could not read the validator's result
+      And there are no new commits
+      And the factory has stopped
+
+    Example: A label the result does not have
+      Given a plan with three tasks, none of them done
+      And the edges from validator are labelled "approved" and "not approved"
+      When the factory runs
+      Then it reports that the result of validator has no field "approved"
+      And there are no new commits

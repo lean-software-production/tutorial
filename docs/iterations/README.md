@@ -42,7 +42,9 @@ These hold for every homework.
   fails after a fetch is what is new.
 - Your factory drives a real coding agent, and the agent does the work:
   the plans, the code and the verdicts. The plan belongs to the agents:
-  the factory never reads it, and acts only on what they answer. `pi` is the default; any coding
+  the factory never reads it. Each machine answers with a result — a
+  line of JSON describing the job it did — and the factory routes on
+  the result's fields, never on the words. `pi` is the default; any coding
   agent will do. The factory writes none of the work itself and fakes
   none of it — `agent.feature` is how that is checked, with the stand-ins
   in [`stand-ins/`](../../stand-ins/README.md).

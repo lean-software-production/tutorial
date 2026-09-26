@@ -9,18 +9,25 @@ Once a task's work is committed, the planner marks it done, and it says
 when the plan is complete.
 
 The factory writes none of its machines' work itself, and never reads
-the plan. Each machine calls a coding agent — `pi` by default, or
-another named in the machine's configuration.
+the plan. A machine has a name and a harness that runs it: `pi` by
+default, or another named in the machine's configuration. Each machine
+answers with a result: JSON describing the job it did.
 
 The route through the machines is an **assembly line**: a graph the
-factory reads before it does any work. The planner decides whether there
-is more to do; the line holds the loop back to it and the retry after
-failed validation. A factory can hold several lines, and a line never
-names a target.
+factory reads before it does any work. An edge only routes: its label
+names a field of the result of the machine it leaves. The planner
+decides whether there is more to do; the line holds the loop back to it
+and the retry after failed validation, and the factory limits how many
+attempts a task gets. Lines live in the target, in `.assembly-lines/`,
+with the machines they name in `.assembly-lines/.machines/`. A target
+can hold several lines, and every line in it that names the doer runs
+the same doer. A line never names a target.
 
-Each run is for a **job**: an assembly line, a seed, saying what to
-build, and a target, the folder to build it in. The job keeps its plan
-with the factory, never in the target.
+Each run is for a **job**: one of the target's assembly lines, a seed,
+saying what to build, and a target, the codebase to build it in. The
+factory has a codebase of its own, outside any target. The job keeps its
+plan with the factory, never in the target.
 
-New since iteration 3: jobs. The target, the seed and the line are no
-longer fixed; each job names its own, and a factory holds several lines.
+New since iteration 3: jobs, and targets that hold their own lines and
+machines. The factory moves out of what it builds, into a codebase of
+its own.

@@ -15,3 +15,6 @@ if [ -n "${STAND_IN_LOG:-}" ]; then basename "$0" >> "$STAND_IN_LOG"; fi
 if [ -n "${STAND_IN_RECORD:-}" ]; then
   printf -- '--- %s\n%s\n' "$(basename "$0")" "$prompt" >> "$STAND_IN_RECORD"
 fi
+
+# json_string VALUE: print VALUE as a JSON string.
+json_string() { printf '"%s"' "$(printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g')"; }

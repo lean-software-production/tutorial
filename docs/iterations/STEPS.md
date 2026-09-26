@@ -26,37 +26,42 @@ it to students.
 
 ### Jobs and lines
 
-- `an assembly line {string} on which the doer's work is validated` — 004+. The line in `assembly-line.feature`'s Background.
-- `an assembly line {string} on which the doer goes straight to the planner` — 004+. The same line, without the validator.
-- `a job named {string}, on the {string} line, with that seed and target` — 004+. The latest target and its seed. The first job named is the current one.
+- `the target has the machines planner, doer and validator` — 004. Their configurations, in the latest target's `.assembly-lines/.machines/`.
+- `the target has the machines planner, doer and three_big_brains` — 005+.
+- `the target has an assembly line {string} on which the doer's work is validated` — 004+. The line in `assembly-line.feature`'s Background, in the latest target's `.assembly-lines/`.
+- `the target has an assembly line {string} on which the doer goes straight to the planner` — 004+. The same line, without the validator.
+- `the {string} line has been copied into the target` — 004+. From the target that has it, into the latest.
+- `a job named {string}, on the {string} line, with that seed and target` — 004+. The latest target and its seed; the line is one of that target's. The first job named is the current one.
 - `the {string} job has been started` — 004+. It has run once, with all its settings.
-- `this assembly line` — 003+. The graph that follows, as the line under test.
+- `this assembly line` — 003+. The graph that follows, as the line under test: in the factory's folder through 003, in the latest target from 004.
 - `the validator has been taken out, so the doer goes straight to the planner` — 003.
 - `the validator has been taken out of the {string} line, so the doer goes straight to the planner` — 004.
 - `the three big brains has been taken out of the {string} line, so the doer goes straight to the planner` — 005+.
 - `{string} is misspelt {string} throughout the assembly line` — 003+.
 - `{string} is misspelt {string} throughout the {string} line` — 004+.
 - `the edge from {word} to {word} has been taken out` — 003+.
+- `the edges from {word} are labelled {string} and {string}` — 003+. Its two labelled edges, in place of `satisfied` and `not satisfied`.
 - `three_big_brains has been replaced by validator throughout the assembly line` — 005+.
 
-### Agents
+### Machines and their harnesses
 
-- `the agent is the {word} stand-in` — 001. The one agent.
+001 has one agent, "the agent". From 002 the planner, the doer and the
+validator are machines, named by those words; from 005, so are the
+reviewers and the synthesiser.
+
+- `the {word} is the {word} stand-in` — 001+. The machine (or 001's agent) is run by that stand-in: chosen on the command line through 002, in the machine's configuration from 003.
+- `every reviewer is the {word} stand-in` — 005+.
+- `the {word} cannot be run` — 001+. Its harness is a path where no program exists.
+- `no harness is chosen` — 001–002. pi, for every machine.
+- `no harness is chosen for the {word}` — 003+. pi, for that machine.
 - `the agent is pi` — 001, `@real-agent`.
-- `the agent cannot be run` — 001. A path where no program exists.
-- `no agent is chosen` — 001–002. pi, for every agent.
-- `every agent is pi` — 002+, `@real-agent`.
-- `the {word}'s agent is the {word} stand-in` — 002+. planner, doer or validator; from 005, reviewer or synthesiser for the three big brains. Chosen on the command line in 002, and in the machine's configuration from 003.
-- `every reviewer's agent is the {word} stand-in` — 005+.
-- `the {word}'s agent cannot be run` — 002+.
-- `no agent is chosen for the {word}` — 003+. pi, for that machine.
+- `every machine runs pi` — 002+, `@real-agent`.
 - `the validator's lens is {word}` — 002+.
 
 ### Limits
 
 - `the factory allows at most three attempts per pass` — 002.
-- `the assembly line's retry edge allows at most three attempts` — 003.
-- `the {string} line's retry edge allows at most three attempts` — 004+.
+- `the factory allows at most three attempts at a task` — 003+. The orchestrator's limit; the line only routes.
 
 ### The plan
 
@@ -68,7 +73,7 @@ task's work is a file with its name.
 - `a plan with three tasks, none of them done` — 001+.
 - `a plan whose first task is done` — 001+.
 - `a plan in which every task is done` — 001+.
-- `a plan for each job with three tasks, none of them done` — 004+.
+- `a plan for each job with three tasks of its own, none of them done` — 004+. Each job's tasks are named after the job.
 
 ## When
 
@@ -131,7 +136,9 @@ target.
 - `it accepts it` — 003+. The line under test.
 - `it refuses it` — 003+.
 - `it reports that there is no seed` — 001+.
-- `it reports that it could not run the agent` — 001+.
+- `it reports that it could not run the {word}` — 001+. The agent in 001; a machine from 002.
+- `it reports that it could not read the {word}'s result` — 001+. Its answer was not a result.
+- `it reports that the result of {word} has no field {string}` — 003+. A label on the line names a field the machine's result lacks.
 - `it reports that the pass hit its limit` — 002.
 - `it reports that a task hit its limit` — 003+.
 - `it reports that it has no machine called {string}` — 003+.
@@ -140,7 +147,8 @@ target.
 
 ### Agents
 
-Counted over the latest run, from the stand-ins' `$STAND_IN_LOG`.
+Counted over the latest run, from the stand-ins' `$STAND_IN_LOG`. A
+machine is counted by the stand-in it runs.
 
 - `no agent has been called` — 001+.
 - `the agent has been called once` — 001.
@@ -158,13 +166,12 @@ Counted over the latest run, from the stand-ins' `$STAND_IN_LOG`.
 - `the three big brains was called for the {string} job` — 005+.
 - `the three big brains was not called for the {string} job` — 005+.
 
-What an agent was given, from the stand-ins' `$STAND_IN_RECORD`:
+What a machine (or 001's agent) was given, from the stand-ins' `$STAND_IN_RECORD`:
 
-- `the agent was pointed at the plan and at the seed` — 001.
-- `the {word}'s agent was pointed at the plan and at the seed` — 002+.
-- `the {word}'s agent was given the work for the {word} task` — 002+.
+- `the {word} was pointed at the plan and at the seed` — 001+.
+- `the {word} was given the work for the {word} task` — 002+.
 - `it was not given the work for the {word} task` — 002+.
-- `the {word}'s agent was given {string}` — 002+.
-- `the {word}'s agent was given the validator's findings` — 002+.
+- `the {word} was given {string}` — 002+.
+- `the {word} was given the validator's findings` — 002+. The findings in the validator's result.
 - `the validator has changed neither the plan nor the work` — 002+, `@real-agent`.
 - `the validator's findings are about {word}` — 002+, `@real-agent`.

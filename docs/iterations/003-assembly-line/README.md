@@ -14,6 +14,18 @@ answer goes.
 That takes the pass with it. There is no more running one pass: the
 factory runs the assembly line, and the line says what happens next.
 
+Each machine now has a name, and a configuration kept in your factory's
+folder under that name: what harness runs it (`pi`, unless it names
+another) and anything else it needs, such as the validator's lens. The
+line's nodes are those names.
+
+An edge only routes. Its label names a field of the result the machine
+before it answered with: `satisfied` is taken when the validator's
+result says `"satisfied": true`, `not satisfied` when it says false. So
+the machines' results, not their words, decide where the line goes. The
+retry limit is not on the line: it is the factory's, a setting of your
+choice.
+
 Your factory has one assembly line, kept in its own folder. Take the
 validator out of it and the factory should still run, doing the work
 unchecked — without a change to your code.

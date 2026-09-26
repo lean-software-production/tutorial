@@ -20,7 +20,7 @@ as a stand-in:
 
 ```sh
 # start a job — you get your terminal back
-$ ./factory --job tetris --line lines/careful.dot --seed ../seeds/tetris.md --target ..
+$ ./factory --job tetris --target ../tetris --line careful --seed ../tetris/seeds/tetris.md
 started job tetris
 
 # attach to it, now or later — catches you up, then follows live
@@ -30,7 +30,7 @@ doer       | ...
 tokens     doer 12.4k in / 3.1k out   anthropic 15.5k   google 4.2k   openai 3.9k   job 23.6k
 
 # a second job while one is running is refused
-$ ./factory --job snake --line lines/quick.dot --seed ../seeds/snake.md --target ../../snake
+$ ./factory --job snake --target ../snake --line quick --seed ../tetris/seeds/snake.md
 refused: job tetris is running
 
 # stop the job (the factory stays up); start it again later by name alone

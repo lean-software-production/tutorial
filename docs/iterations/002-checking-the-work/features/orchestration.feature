@@ -6,9 +6,9 @@ Feature: Orchestration
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
     And a seed describing a game of Tetris
-    And the planner's agent is the plan-alpha-beta stand-in
-    And the doer's agent is the do-next stand-in
-    And the validator's agent is the always-satisfied stand-in
+    And the planner is the plan-alpha-beta stand-in
+    And the doer is the do-next stand-in
+    And the validator is the always-satisfied stand-in
 
   Rule: The factory works in the codebase around it
 
@@ -40,7 +40,7 @@ Feature: Orchestration
 
     Example: The work is wrong first time
       Given a plan with three tasks, none of them done
-      And the validator's agent is the not-satisfied-once stand-in
+      And the validator is the not-satisfied-once stand-in
       When the factory runs one pass
       Then the doer has been called twice
       And there is one new commit
@@ -57,7 +57,7 @@ Feature: Orchestration
     Example: Validation is never satisfied
       Given a plan with three tasks, none of them done
       And the factory allows at most three attempts per pass
-      And the validator's agent is the never-satisfied stand-in
+      And the validator is the never-satisfied stand-in
       When the factory runs one pass
       Then the doer has been called three times
       And it reports that the pass hit its limit
@@ -81,7 +81,7 @@ Feature: Orchestration
   Rule: The factory stops when the planner says the plan is complete
 
     The planner keeps the plan, so only the planner knows when it is
-    complete. It says so by answering PLAN COMPLETE.
+    complete. It says so in its result: {"complete": true}.
 
     Example: Work remains
       Given a plan with three tasks, none of them done
@@ -94,5 +94,19 @@ Feature: Orchestration
       Given a plan in which every task is done
       When the factory runs to completion
       Then the doer has not been called
+      And there are no new commits
+      And the factory has stopped
+
+  Rule: The factory stops at a result it cannot read
+
+    Each machine answers with a result: JSON describing the job it did.
+    The factory reads the planner's and the validator's results to decide
+    what happens next, and never looks for words in what they say.
+
+    Example: The validator answers in prose
+      Given a plan with three tasks, none of them done
+      And the validator is the unreadable-result stand-in
+      When the factory runs one pass
+      Then it reports that it could not read the validator's result
       And there are no new commits
       And the factory has stopped

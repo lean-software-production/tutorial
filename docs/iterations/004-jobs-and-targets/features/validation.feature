@@ -5,18 +5,19 @@ Feature: Validation
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
-    And an assembly line "careful" on which the doer's work is validated
+    And the target has the machines planner, doer and validator
+    And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
-    And the planner's agent is the plan-alpha-beta stand-in
-    And the doer's agent is the do-next stand-in
-    And the validator's agent is the always-satisfied stand-in
+    And the planner is the plan-alpha-beta stand-in
+    And the doer is the do-next stand-in
+    And the validator is the always-satisfied stand-in
 
   Rule: A validator checks the work the doer just produced
 
     Example: Earlier work is not rechecked
       Given a plan whose first task is done
       When the factory runs the "tetris" job
-      Then the validator's agent was given the work for the second task
+      Then the validator was given the work for the second task
       And it was not given the work for the first task
 
   Rule: What a validator looks for is chosen, not fixed
@@ -30,18 +31,18 @@ Feature: Validation
       Given a plan with three tasks, none of them done
       And the validator's lens is testability
       When the factory runs the "tetris" job
-      Then the validator's agent was given "testability"
+      Then the validator was given "testability"
 
     @real-agent
     Example: A validator that looks at testability
-      Given every agent is pi
+      Given every machine runs pi
       And the validator's lens is testability
       When the factory runs the "tetris" job
       Then the validator's findings are about testability
 
     @real-agent
     Example: A validator that looks at something else
-      Given every agent is pi
+      Given every machine runs pi
       And the validator's lens is internationalisation
       When the factory runs the "tetris" job
       Then the validator's findings are about internationalisation
@@ -50,15 +51,15 @@ Feature: Validation
 
     Example: The first attempt is not good enough
       Given a plan with three tasks, none of them done
-      And the validator's agent is the not-satisfied-once stand-in
+      And the validator is the not-satisfied-once stand-in
       When the factory runs the "tetris" job
-      Then the doer's agent was given the validator's findings
+      Then the doer was given the validator's findings
 
   Rule: A validator reports findings, and changes neither the plan nor the work
 
     @real-agent
     Example: The first task's work is untestable
-      Given every agent is pi
+      Given every machine runs pi
       And the validator's lens is testability
       When the doer's first attempt at a task is untestable
       Then the validator has changed neither the plan nor the work
@@ -71,7 +72,7 @@ Feature: Validation
 
     @real-agent
     Example: A finding on the first task
-      Given every agent is pi
+      Given every machine runs pi
       And the validator's lens is testability
       When the doer's first attempt at a task is untestable
       Then that task has a subtask for the finding

@@ -11,8 +11,11 @@ committed, the planner marks the task done, and it says when the plan is
 complete.
 
 The factory writes no project code, no plan and no verdict itself, and
-never reads the plan. Coding agents do — `pi` by default, or others
-chosen for the run.
+never reads the plan. Its three machines do — the planner, the doer and
+the validator — each run by a harness: `pi` by default, or another
+chosen for the run. Each machine answers with a result, a line of JSON
+describing the job it did, and the factory reads the planner's and the
+validator's results to decide what happens next.
 
 The factory sits in a folder of its own inside the codebase it builds,
 and builds in the folder around it. Its seed, saying what to build, is

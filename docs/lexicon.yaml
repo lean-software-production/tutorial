@@ -266,7 +266,7 @@ sub-agent:
 target:
   term: "Target"
   definition: |-
-    The codebase a *job* works on: its own git repository, holding only the product. The target is chosen when the job starts; an *assembly line* never names one, so the same line can work on any number of targets, new or existing.
+    The codebase a *job* works on: its own git repository, holding the product and, beside it, the *assembly lines* and *machines* that build it. The target is chosen when the job starts, and the job runs one of the target's lines. An assembly line never names a target, so the same line, copied into another codebase, can build there too.
 
 token:
   term: "Token"

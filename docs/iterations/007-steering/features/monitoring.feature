@@ -5,12 +5,13 @@ Feature: Monitoring
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
-    And an assembly line "careful" on which the doer's work is validated
+    And the target has the machines planner, doer and three_big_brains
+    And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
-    And the planner's agent is the plan-alpha-beta stand-in
-    And the doer's agent is the do-next stand-in
-    And every reviewer's agent is the always-satisfied stand-in
-    And the synthesiser's agent is the always-satisfied stand-in
+    And the planner is the plan-alpha-beta stand-in
+    And the doer is the do-next stand-in
+    And every reviewer is the always-satisfied stand-in
+    And the synthesiser is the always-satisfied stand-in
 
   Rule: Tokens are counted for each machine
 

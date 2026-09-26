@@ -64,8 +64,8 @@ Feature: Planning
   Rule: The agent keeps the plan, and the factory never reads it
 
     The agent picks the next task, does it and marks it done, all from
-    its prompt. The factory only knows whether there is a plan, and what
-    the agent answers.
+    its prompt. The factory only knows whether there is a plan, and the
+    agent's result.
 
     Example: A pass records the work it did
       Given a plan with three tasks, none of them done

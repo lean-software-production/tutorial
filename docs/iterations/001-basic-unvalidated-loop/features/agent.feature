@@ -2,8 +2,9 @@ Feature: The coding agent
 
   The factory writes no project code and no plan. Both come from a coding
   agent — an LLM-driven tool such as pi — that the factory calls. Every
-  call it makes goes to that agent. pi is the default; another agent can
-  be chosen on the command line for a run.
+  call it makes goes to that agent, and the agent answers each one with a
+  result: JSON describing the job it did. pi is the default; another agent
+  can be chosen on the command line for a run.
 
   Most examples swap in a stand-in agent: one of the small programs the
   course ships in `stand-ins/`, which take what the factory hands them and
@@ -20,8 +21,8 @@ Feature: The coding agent
 
   Rule: pi is the agent unless another is chosen
 
-    Example: No agent is chosen
-      Given no agent is chosen
+    Example: No harness is chosen
+      Given no harness is chosen
       When the factory runs one pass
       Then pi has been called
 
