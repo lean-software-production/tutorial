@@ -61,10 +61,13 @@ $ cd .. && npm start
 What the agent says will differ; the point is that real code appears in
 `tetris/`, one task per pass, and `npm start` runs Tetris.
 
-To try a stand-in agent, do what the checks do: make a new git
-repository, copy the factory into a folder of its own inside it, put a
-seed at `seeds/tetris.md`, and run the copy there. That way the stand-in
-never touches your Tetris.
+The feature files are your tests, too: start by setting up a Gherkin
+runner for them in your factory's language (see the
+[ground rules](../README.md#ground-rules)), and build until they pass.
+Each example runs against a copy of your factory in a new git
+repository, with stand-in agents from `stand-ins/` — so the checks never
+touch your Tetris, and never need a real agent. The examples tagged
+`@real-agent` are the exception: try those by hand, with pi.
 
 ## Rules
 

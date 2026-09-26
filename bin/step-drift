@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+"""Check the steps of the iterations' feature files against docs/iterations/STEPS.md.
+
+Every step in the iterations named on the command line (default: all of
+them) must match a phrase in the catalogue. Then, for each pair of
+consecutive iterations, list the steps the later one adds and drops, so
+each difference can be checked as meaningful.
+
+    bin/step-drift            # every iteration
+    bin/step-drift 001 004    # 001 to 004
+"""
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent / "docs" / "iterations"
+KEYWORDS = ("Given", "When", "Then")
+
+
+def steps(folder):
+    """The steps in an iteration's features, as (keyword, text), And/But resolved."""
+    found = set()
+    for feature in sorted((folder / "features").glob("*.feature")):
+        keyword = None
+        for line in feature.read_text().splitlines():
+            m = re.match(r"\s+(Given|When|Then|And|But) (.*)$", line)
+            if not m:
+                continue
+            if m.group(1) in KEYWORDS:
+                keyword = m.group(1)
+            found.add((keyword, m.group(2).rstrip(":")))
+    return found
+
+
+def catalogue():
+    """The phrases in STEPS.md, as (keyword, pattern text, regex)."""
+    phrases, keyword = [], None
+    for line in (ROOT / "STEPS.md").read_text().splitlines():
+        heading = re.match(r"## (Given|When|Then)\b", line)
+        if heading:
+            keyword = heading.group(1)
+            continue
+        m = re.match(r"- `([^`]+)`", line)
+        if m and keyword:
+            text = m.group(1)
+            regex = re.escape(text)
+            regex = regex.replace(re.escape("{string}"), r'"[^"]*"')
+            regex = regex.replace(re.escape("{word}"), r"\S+")
+            regex = regex.replace(re.escape("{int}"), r"\d+")
+            phrases.append((keyword, text, re.compile(regex + "$")))
+    return phrases
+
+
+def main(args):
+    folders = sorted(p for p in ROOT.iterdir() if p.is_dir() and re.match(r"\d{3}-", p.name))
+    if args:
+        lo, hi = (args + args)[:2]
+        folders = [f for f in folders if lo <= f.name[:3] <= hi]
+    phrases = catalogue()
+    ok = True
+    for folder in folders:
+        for keyword, text in sorted(steps(folder)):
+            if not any(k == keyword and r.match(text) for k, _, r in phrases):
+                print(f"{folder.name[:3]}: not in STEPS.md: {keyword} {text}")
+                ok = False
+    for before, after in zip(folders, folders[1:]):
+        a, b = steps(before), steps(after)
+        added, dropped = sorted(b - a), sorted(a - b)
+        print(f"\n{before.name[:3]} -> {after.name[:3]}: {len(added)} added, {len(dropped)} dropped")
+        for k, t in added:
+            print(f"  + {k} {t}")
+        for k, t in dropped:
+            print(f"  - {k} {t}")
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
