@@ -24,7 +24,9 @@ factory, and the agent:
    `"complete": true` once no task is left.
 
 All of that is in your prompt; ask for the result there, or use your
-harness's structured output if it has one. The factory never reads the
+harness's structured output if it has one. Real agents don't always
+answer exactly as asked — one may put the JSON in a code fence — so take
+the last line of the answer that is JSON. The factory never reads the
 plan: it commits what the agent did — but not the factory's own folder —
 and stops when the agent's result says the plan is complete. It never
 looks for words in what the agent says.
