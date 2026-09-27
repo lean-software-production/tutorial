@@ -3,8 +3,7 @@
 Build a **Ralph loop**: a small program (your "factory") that turns a seed
 into a plan, then works the plan one task at a time, driving a coding
 agent to do the real work. By the end, running your factory enough times
-builds a real, playable game of Tetris in the terminal. Nothing in this
-homework is a mock or a placeholder.
+builds a real, playable game of Tetris in the terminal.
 
 ## What you're building
 
@@ -24,9 +23,7 @@ factory, and the agent:
    `"complete": true` once no task is left.
 
 All of that is in your prompt; ask for the result there, or use your
-harness's structured output if it has one. Real agents don't always
-answer exactly as asked — one may put the JSON in a code fence — so take
-the last line of the answer that is JSON. The factory never reads the
+harness's structured output if it has one. The factory never reads the
 plan: it commits what the agent did — but not the factory's own folder —
 and stops when the agent's result says the plan is complete. It never
 looks for words in what the agent says.
@@ -75,33 +72,13 @@ repository, so the checks never touch your Tetris.
 
 ## Test doubles
 
-Most examples say what the agent does in them: "the agent plans the tasks
-alpha and beta", "the agent answers in prose, with no result". Making that
-true is your step definitions' job, and the usual way is a **test
-double** (a stub, a mock, a stand-in): a small program that takes what
-your factory hands it and does that one simple thing, fast and the same
-every time. Choose it as the agent from outside, the way you would choose
-pi. Your factory never contains one. The feature files never mention
-them: they say what the agent does, and how a check makes it so is yours.
+Working with agents takes time. LLMs are slow. We want test suites to be fast.
 
-Your own coding agent can write the doubles from the examples. A few
-rules keep them honest, and your checks reliable:
+The usual way to do that is test doubles (stubs, mocks, spies, etc.). It may be
+beneficial to create test doubles to replace machines for speed. Test frameworks,
+or occasionally separate libraries, provide very effective test doubles with clean APIs.
 
-- A double does what the example says, and nothing clever.
-- Each call records what it was given in a file of its own, so a check
-  can see what your factory handed it; and it logs that it was called, so
-  a check can count calls and see their order.
-- Whatever a double keeps between calls lives in a folder for that one
-  example, removed when the example ends.
-- Nothing waits a set time. When a check needs something to happen, it
-  waits for it to happen.
-- A double answers with a result whether it was asked for one or not; a
-  real agent does not. That is why `agent.feature` checks what your
-  factory asks for: it is the one part of your prompt a double cannot
-  test for you.
-
-The examples tagged `@real-agent` run pi, not a double: try those by
-hand. They are the check that your doubles and the real thing agree.
+We have a tag, `@real-agent`, to signify examples that should use a real agent.
 
 ## Rules
 

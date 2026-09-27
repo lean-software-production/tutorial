@@ -32,5 +32,6 @@ unchecked — without a change to your code.
 
 `assembly-line.feature` is prescriptive about Graphviz. That is to keep
 the acceptance criteria clean, not because it is the only way — if you
-would rather express the assembly line some other way, say so and do that
-instead.
+would rather express the assembly line some other way, go ahead.
+The only thing you need to remember is you'll have to carry over any changes
+you make to the feature files across the future iterations

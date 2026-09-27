@@ -34,15 +34,15 @@ for whatever you call it:
 
 ```sh
 # a new job: its target, its line and its seed
-$ ./factory --job tetris --target ../tetris --line careful --seed ../tetris/seeds/tetris.md
+$ ./factory --job tetrisjob --target ../tetris --line careful --seed ../tetris/seeds/tetris.md
 
 # after that, its name is enough
-$ ./factory --job tetris
+$ ./factory --job tetrisjob
 
 # a second target: a new codebase, with a line and machines of its own
 $ git init ../snake
 $ cp -r ../tetris/.assembly-lines ../snake/
-$ ./factory --job snake --target ../snake --line quick --seed ../tetris/seeds/snake.md
+$ ./factory --job snakejobname --target ../snake --line quick --seed ../tetris/seeds/snake.md
 ```
 
 The factory should build whatever the new seed describes, without

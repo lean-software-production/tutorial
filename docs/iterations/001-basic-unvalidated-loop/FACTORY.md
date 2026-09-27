@@ -1,8 +1,5 @@
 # The factory, as of this iteration
 
-*A summary. The feature files in `features/` are the spec; where the two
-disagree, the features win.*
-
 The factory builds software from a seed, one task at a time. On each
 pass it calls a coding agent, which writes a plan from the seed if there
 is none, and otherwise does the next task and marks it done. The factory

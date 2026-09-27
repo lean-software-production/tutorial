@@ -1,8 +1,5 @@
 # The factory, as of this iteration
 
-*A summary. The feature files in `features/` are the spec; where the two
-disagree, the features win.*
-
 The factory builds software from a seed, one task at a time. A planner
 keeps the plan, a doer does each task and a validator checks it. The
 validator only reports; the doer records each finding and tries again,

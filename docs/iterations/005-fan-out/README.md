@@ -32,26 +32,15 @@ The reviewers being alike is the three big brains' choice, not something
 fanning out needs: each branch is run as that machine would be run
 anywhere, with its own prompt.
 
-A note on words: the three reviewers assess and report; they do not
+The three reviewers assess and report; they do not
 decide. The synthesiser decides, and the line routes on its result, as it
 did on the validator's.
-
-The examples still run most of the factory on a line with a single
-validator, and bring in the three big brains only where a fan out is the
-point. Your own target's line is yours: put the three big brains on it
-when you want it there.
 
 ## Checks that see machines at work
 
 Some examples need a machine caught part-way through its work: three
-reviewers working at the same time, say. Never do that with a wait of a
-set length. On a slow machine it is too short, on a fast one it proves
-nothing, and either way the check sometimes fails for no reason.
+reviewers working at the same time, say.
 
-Hold the double instead. It waits for a signal from the check (a file
-appearing in the example's folder will do) and goes on only when the
-check lets it. To see three reviewers working at once, hold all three
-and let them go only once all three have begun. A factory that runs
-them one after another never gets there, every time. Have a held double
-give up if the example's folder is removed, so none outlives its
-example.
+When using test doubles, it would be good to set their state manually
+in the test, instead of running something that has a sleep or other runtime.
+It saves you from potential race conditions.

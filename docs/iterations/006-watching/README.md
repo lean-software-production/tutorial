@@ -70,8 +70,4 @@ a different piece of machinery.
 
 ## Your doubles speak ACP too
 
-A double is chosen as a harness like any other, so from here on it is an
-ACP agent. For each `session/prompt` it streams what it says as
-`agent_message_chunk` updates, answers with a `usage` that is not zero,
-and stops on `session/cancel`. Write that once, as a small wrapper that
-any of your doubles can run behind.
+Your test doubles, which used to replace machines, now replace "machines that communicate via ACP".
