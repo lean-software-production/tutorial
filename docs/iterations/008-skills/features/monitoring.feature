@@ -11,10 +11,10 @@ Feature: Monitoring
     And the target has the machines planner, doer and three_big_brains
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
-    And the planner is the plan-alpha-beta stand-in
-    And the doer is the do-next stand-in
-    And every reviewer is the rubber-stamp stand-in
-    And the synthesiser is the always-satisfied stand-in
+    And the planner plans the tasks alpha and beta
+    And the doer does the next task in the plan
+    And every reviewer is always satisfied
+    And the synthesiser is always satisfied
 
   Rule: Tokens are counted for each machine
 
@@ -42,7 +42,7 @@ Feature: Monitoring
 
     Example: The doer attempts the task again
       Given a plan with one task, not done
-      And the synthesiser is the not-satisfied-once stand-in
+      And the synthesiser is not satisfied the first time
       And I am watching the "tetris" job as it runs
       When the "tetris" job has run to the end
       Then what I watched showed the doer's tokens go up

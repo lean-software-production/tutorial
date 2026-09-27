@@ -5,9 +5,9 @@ Feature: Validation
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
     And a seed describing a game of Tetris
-    And the planner is the plan-alpha-beta stand-in
-    And the doer is the do-next stand-in
-    And the validator is the always-satisfied stand-in
+    And the planner plans the tasks alpha and beta
+    And the doer does the next task in the plan
+    And the validator is always satisfied
 
   Rule: A validator checks the work the doer just produced
 
@@ -48,7 +48,7 @@ Feature: Validation
 
     Example: The first attempt is not good enough
       Given a plan with three tasks, none of them done
-      And the validator is the not-satisfied-once stand-in
+      And the validator is not satisfied the first time
       When the factory runs
       Then the doer was given the validator's findings
 

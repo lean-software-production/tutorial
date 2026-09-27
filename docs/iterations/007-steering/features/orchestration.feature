@@ -4,16 +4,20 @@ Feature: Orchestration
   when to give up and when to stop. These rules do not care how validation
   is done.
 
+  A machine an example sees at work, part-way through or in a job just
+  started, goes on working until the example says it finishes, or the job
+  is stopped or run to the end.
+
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
     And the target has the machines planner, doer and three_big_brains
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
-    And the planner is the plan-alpha-beta stand-in
-    And the doer is the do-next stand-in
-    And every reviewer is the rubber-stamp stand-in
-    And the synthesiser is the always-satisfied stand-in
+    And the planner plans the tasks alpha and beta
+    And the doer does the next task in the plan
+    And every reviewer is always satisfied
+    And the synthesiser is always satisfied
 
   Rule: The factory works in the target it is given
 
@@ -37,8 +41,7 @@ Feature: Orchestration
     finished.
 
     Example: Starting a job
-      Given the doer is the scripted stand-in
-      And a plan with one task, "say working; wait", not done
+      Given a plan with one task, not done
       When I start the "tetris" job
       Then the command has returned while the "tetris" job is running
       And the factory is running
@@ -46,8 +49,7 @@ Feature: Orchestration
   Rule: The factory runs one job at a time
 
     Example: A second job while one is running
-      Given the doer is the scripted stand-in
-      And a plan with one task, "wait", not done
+      Given a plan with one task, not done
       And the "tetris" job is running, with the doer part-way through an attempt
       And a new target, with a seed describing a game of Snake
       And the target has the machines planner, doer and three_big_brains
@@ -120,7 +122,7 @@ Feature: Orchestration
 
     Example: The work is wrong first time
       Given a plan with three tasks, none of them done
-      And the synthesiser is the not-satisfied-once stand-in
+      And the synthesiser is not satisfied the first time
       When the factory runs the "tetris" job
       Then the doer has been called four times
       And there are three new commits
@@ -138,7 +140,7 @@ Feature: Orchestration
     Example: Validation is never satisfied
       Given a plan with three tasks, none of them done
       And the factory allows at most three attempts at a task
-      And the synthesiser is the never-satisfied stand-in
+      And the synthesiser is never satisfied
       When the factory runs the "tetris" job
       Then the doer has been called three times
       And it reports that a task hit its limit
@@ -185,7 +187,7 @@ Feature: Orchestration
 
     Example: The synthesiser answers in prose
       Given a plan with three tasks, none of them done
-      And the synthesiser is the unreadable-result stand-in
+      And the synthesiser answers in prose, with no result
       When the factory runs the "tetris" job
       Then it reports that it could not read the synthesiser's result
       And there are no new commits
@@ -201,8 +203,7 @@ Feature: Orchestration
   Rule: Stopping a job leaves the factory running
 
     Example: Stopping the "tetris" job
-      Given the doer is the scripted stand-in
-      And a plan with one task, "wait", not done
+      Given a plan with one task, not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I stop the "tetris" job
       Then the "tetris" job is not running
@@ -211,8 +212,7 @@ Feature: Orchestration
   Rule: Stopping the factory stops its job too
 
     Example: Stopping the factory while a job runs
-      Given the doer is the scripted stand-in
-      And a plan with one task, "wait", not done
+      Given a plan with one task, not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I stop the factory
       Then the factory is not running
@@ -228,9 +228,8 @@ Feature: Orchestration
     same, and no more is asked of it.
 
     Example: The doer is mid-attempt
-      Given the doer is the scripted stand-in
-      And a plan with one task, "say started; wait", not done
-      And the "tetris" job is running, with the doer part-way through an attempt
+      Given a plan with one task, not done
+      And the "tetris" job is running, with the doer part-way through an attempt, having said "started"
       When I stop the "tetris" job
       Then the plan shows every task as not done
       And there are no new commits
@@ -238,11 +237,9 @@ Feature: Orchestration
   Rule: A stopped job carries on when it is started again
 
     Example: Starting the "tetris" job again
-      Given the doer is the scripted stand-in
-      And a plan with one task, "say started; wait", not done
-      And the "tetris" job is running, with the doer part-way through an attempt
+      Given a plan with one task, not done
+      And the "tetris" job is running, with the doer part-way through an attempt, having said "started"
       And I have stopped the "tetris" job
-      When the held stand-ins are let go
-      And the factory runs the "tetris" job, given only its name
+      When the factory runs the "tetris" job, given only its name
       Then the plan shows every task as done
       And there is one new commit

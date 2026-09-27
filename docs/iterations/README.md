@@ -36,8 +36,8 @@ These hold for every homework.
   Gherkin runner (cucumber-js, behave, godog, Cucumber for Ruby or the
   JVM, …), write the step definitions, and build the factory until the
   suite passes. Examples tagged `@real-agent` need a real agent and are
-  left out of the everyday run; every other example runs with the
-  stand-ins. A step keeps its words from one homework to the next unless
+  left out of the everyday run; every other example runs with test
+  doubles, which you write (homework 1 explains). A step keeps its words from one homework to the next unless
   its meaning changes, so your step definitions carry over, and what
   fails after a fetch is what is new.
 - Your factory drives a real coding agent, and the agent does the work:
@@ -46,5 +46,5 @@ These hold for every homework.
   line of JSON describing the job it did — and the factory routes on
   the result's fields, never on the words. `pi` is the default; any coding
   agent will do. The factory writes none of the work itself and fakes
-  none of it — `agent.feature` is how that is checked, with the stand-ins
-  in [`stand-ins/`](../../stand-ins/README.md).
+  none of it — `agent.feature`, and from homework 2 `machine.feature`, is
+  how that is checked.

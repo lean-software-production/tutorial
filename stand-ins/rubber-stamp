@@ -1,5 +1,0 @@
-#!/bin/sh
-# A reviewer that approves whatever it is given: always-satisfied, under a
-# name of its own, so a check can count reviewers apart from the synthesiser.
-. "$(dirname "$0")/_read-prompt.sh"
-echo '{"satisfied": true, "findings": []}'

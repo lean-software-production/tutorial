@@ -6,18 +6,15 @@ Feature: The coding agent
   result: JSON describing the job it did. pi is the default; another agent
   can be chosen on the command line for a run.
 
-  Most examples swap in a stand-in agent: one of the small programs the
-  course ships in `stand-ins/`, which take what the factory hands them and
-  do something simple and predictable. That shows what the factory gives
-  the agent and what it does with the answer, and it makes checks fast. A
-  stand-in is chosen from outside, the same way pi is; the factory never
-  contains one. Examples tagged @real-agent need a real agent; every other
-  example runs with stand-ins.
+  Most examples say what the agent does in them: it plans the tasks alpha
+  and beta, say, or writes a file called SENTINEL. That shows what the
+  factory gives the agent and what it does with the answer. Examples
+  tagged @real-agent run a real agent.
 
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
     And a seed describing a game of Tetris
-    And the agent is the ralph-alpha-beta stand-in
+    And the agent plans the tasks alpha and beta, and does one task a pass
 
   Rule: pi is the agent unless another is chosen
 
@@ -26,9 +23,9 @@ Feature: The coding agent
       When the factory runs one pass
       Then pi has been called
 
-    Example: A stand-in is chosen for the run
+    Example: Another harness is chosen for the run
       When the factory runs one pass
-      Then the ralph-alpha-beta stand-in has been called
+      Then the chosen agent has been called
       And pi has not been called
 
   Rule: Without an agent, nothing is built
@@ -43,16 +40,16 @@ Feature: The coding agent
 
   Rule: The plan is what the agent wrote
 
-    Example: A stand-in that plans two tasks
+    Example: An agent that plans two tasks
       Given no plan
       When the factory runs one pass
       Then the plan has the tasks "alpha" and "beta", and no others
 
   Rule: The codebase holds what the agent wrote
 
-    Example: A stand-in that writes one file
+    Example: An agent that writes one file
       Given a plan with three tasks, none of them done
-      And the agent is the write-sentinel stand-in
+      And the agent writes a file called SENTINEL
       When the factory runs one pass
       Then there is one new commit
       And it contains SENTINEL and nothing else
@@ -67,6 +64,29 @@ Feature: The coding agent
       Given a plan with three tasks, none of them done
       When the factory runs one pass
       Then the agent was pointed at the plan and at the seed
+
+  Rule: The agent is asked for the result the factory reads
+
+    The factory tells the agent what its result must say: whether the plan
+    is complete, in the field "complete". Nothing but that question makes
+    an agent answer with a result.
+
+    Example: What the agent is asked for
+      Given a plan with three tasks, none of them done
+      When the factory runs one pass
+      Then the agent was asked for a result with the field "complete"
+
+  Rule: The result is the last line of the answer that is JSON
+
+    An agent may say anything before its result. The factory reads only
+    the last line of the answer that parses as JSON.
+
+    Example: The agent talks before its result
+      Given a plan in which every task is done
+      And the agent says "nothing left to do" before its result
+      When the factory runs to completion
+      Then the agent has been called once
+      And the factory has stopped
 
   Rule: What gets built follows the seed
 

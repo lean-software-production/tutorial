@@ -1,3 +1,0 @@
-#!/bin/sh
-# do-next, over ACP: see agent.mjs.
-exec node "$(dirname "$0")/agent.mjs" do-next "$@"

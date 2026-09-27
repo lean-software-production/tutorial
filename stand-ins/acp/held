@@ -1,3 +1,0 @@
-#!/bin/sh
-# held, over ACP: see agent.mjs.
-exec node "$(dirname "$0")/agent.mjs" held "$@"

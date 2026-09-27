@@ -6,7 +6,7 @@ Feature: Orchestration
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
     And a seed describing a game of Tetris
-    And the agent is the ralph-alpha-beta stand-in
+    And the agent plans the tasks alpha and beta, and does one task a pass
 
   Rule: The factory works in the codebase around it
 
@@ -67,7 +67,7 @@ Feature: Orchestration
 
     Example: The agent answers in prose
       Given a plan with three tasks, none of them done
-      And the agent is the unreadable-result stand-in
+      And the agent answers in prose, with no result
       When the factory runs one pass
       Then it reports that it could not read the agent's result
       And there are no new commits

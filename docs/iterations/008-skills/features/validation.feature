@@ -16,10 +16,10 @@ Feature: Validation
     And the target has the machines planner, doer and three_big_brains
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
-    And the planner is the plan-alpha-beta stand-in
-    And the doer is the do-next stand-in
-    And every reviewer is the rubber-stamp stand-in
-    And the synthesiser is the always-satisfied stand-in
+    And the planner plans the tasks alpha and beta
+    And the doer does the next task in the plan
+    And every reviewer is always satisfied
+    And the synthesiser is always satisfied
 
   Rule: The same work goes to every reviewer at once
 
@@ -35,13 +35,14 @@ Feature: Validation
 
   Rule: The reviewers run at the same time
 
-    Held reviewers wait until they are let go. If the reviewers ran one
-    after another, the second would never start while the first is held.
+    No reviewer waits for another to finish before it starts. Reviewers
+    that each wait until all three have begun can only finish if they run
+    at the same time.
 
-    Example: Three held reviewers
+    Example: Reviewers that wait for each other
       Given a plan with one task, not done
-      And every reviewer is the held stand-in
-      When the factory runs the "tetris" job, letting the reviewers go once all three are running
+      And no reviewer finishes until all three have begun
+      When the factory runs the "tetris" job
       Then every reviewer has been called once
       And there is one new commit
 
@@ -49,7 +50,7 @@ Feature: Validation
 
     Example: The reports disagree
       Given a plan with one task, not done
-      And the second reviewer is the numbered-report stand-in
+      And the second reviewer is not satisfied, with the finding "report 1"
       When the factory runs the "tetris" job
       Then the synthesiser was given "report 1"
       And there is one new commit
@@ -57,7 +58,7 @@ Feature: Validation
     Example: Nobody but the synthesiser decides
       Given a plan with three tasks, none of them done
       And the factory allows at most three attempts at a task
-      And the synthesiser is the never-satisfied stand-in
+      And the synthesiser is never satisfied
       When the factory runs the "tetris" job
       Then the doer has been called three times
       And there are no new commits
@@ -66,7 +67,7 @@ Feature: Validation
 
     Example: What the synthesiser is given
       Given a plan with one task, not done
-      And every reviewer is the numbered-report stand-in
+      And every reviewer is not satisfied, with a finding of its own: "report 1", "report 2" or "report 3"
       When the factory runs the "tetris" job
       Then the synthesiser was given "report 1", "report 2" and "report 3"
       And it was not given the work for the first task
@@ -75,8 +76,8 @@ Feature: Validation
 
     Example: The synthesiser rejects the doer's first attempt
       Given a plan with one task, not done
-      And every reviewer is the numbered-report stand-in
-      And the synthesiser is the not-satisfied-once stand-in
+      And every reviewer is not satisfied, with a finding of its own: "report 1", "report 2" or "report 3"
+      And the synthesiser is not satisfied the first time
       When the factory runs the "tetris" job
       Then the doer was given the validator's findings
       And it was not given "report 1"

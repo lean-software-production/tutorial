@@ -38,8 +38,8 @@ back. The rules below pin down the rest.
 ## The commands you'll end up with
 
 The exact command name is your choice. This is the shape of what should
-work by the end, run from `tetris/.factory`, using `./factory` as a
-stand-in:
+work by the end, run from `tetris/.factory`, with `./factory` for
+whatever you call it:
 
 ```sh
 # first run — no plan yet, so the agent writes one instead of building
@@ -71,9 +71,37 @@ The feature files are your tests, too: start by setting up a Gherkin
 runner for them in your factory's language (see the
 [ground rules](../README.md#ground-rules)), and build until they pass.
 Each example runs against a copy of your factory in a new git
-repository, with stand-in agents from `stand-ins/` — so the checks never
-touch your Tetris, and never need a real agent. The examples tagged
-`@real-agent` are the exception: try those by hand, with pi.
+repository, so the checks never touch your Tetris.
+
+## Test doubles
+
+Most examples say what the agent does in them: "the agent plans the tasks
+alpha and beta", "the agent answers in prose, with no result". Making that
+true is your step definitions' job, and the usual way is a **test
+double** (a stub, a mock, a stand-in): a small program that takes what
+your factory hands it and does that one simple thing, fast and the same
+every time. Choose it as the agent from outside, the way you would choose
+pi. Your factory never contains one. The feature files never mention
+them: they say what the agent does, and how a check makes it so is yours.
+
+Your own coding agent can write the doubles from the examples. A few
+rules keep them honest, and your checks reliable:
+
+- A double does what the example says, and nothing clever.
+- Each call records what it was given in a file of its own, so a check
+  can see what your factory handed it; and it logs that it was called, so
+  a check can count calls and see their order.
+- Whatever a double keeps between calls lives in a folder for that one
+  example, removed when the example ends.
+- Nothing waits a set time. When a check needs something to happen, it
+  waits for it to happen.
+- A double answers with a result whether it was asked for one or not; a
+  real agent does not. That is why `agent.feature` checks what your
+  factory asks for: it is the one part of your prompt a double cannot
+  test for you.
+
+The examples tagged `@real-agent` run pi, not a double: try those by
+hand. They are the check that your doubles and the real thing agree.
 
 ## Rules
 

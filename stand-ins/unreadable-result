@@ -1,6 +1,0 @@
-#!/bin/sh
-# Does some work, writing a file called UNREADABLE, then answers in prose,
-# not with a result: nothing a factory can route on.
-. "$(dirname "$0")/_read-prompt.sh"
-echo "written by the unreadable-result stand-in" > UNREADABLE
-echo "I did the work, more or less. Everything looks fine to me."

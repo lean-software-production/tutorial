@@ -26,7 +26,6 @@ an ACP agent from here on:
 - Codex: `codex-acp` (npm `@agentclientprotocol/codex-acp`)
 - pi: `pi-rpc-acp`, the small bridge over pi's RPC mode in your starter
   repo
-- the stand-ins: `stand-ins/acp/<stand-in>`
 
 What the factory reads: the `agent_message_chunk` updates, as what the
 machine generates; the last line of that text, as its result; and the
@@ -37,8 +36,8 @@ bridge.
 
 ## The commands you'll end up with
 
-The exact commands are your choice. This is the shape, using `./factory`
-as a stand-in:
+The exact commands are your choice. This is the shape, with `./factory`
+for whatever you call it:
 
 ```sh
 # start a job — you get your terminal back
@@ -68,3 +67,11 @@ prints as it goes, and printing is not this: it is gone when the
 scrollback is gone, and it belongs to the terminal that started the run.
 A record you can attach to late, catch up on, and still read tomorrow is
 a different piece of machinery.
+
+## Your doubles speak ACP too
+
+A double is chosen as a harness like any other, so from here on it is an
+ACP agent. For each `session/prompt` it streams what it says as
+`agent_message_chunk` updates, answers with a `usage` that is not zero,
+and stops on `session/cancel`. Write that once, as a small wrapper that
+any of your doubles can run behind.

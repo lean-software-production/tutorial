@@ -12,24 +12,24 @@ Feature: Command execution
     And the target has the machines planner, doer and three_big_brains
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
-    And the planner is the plan-alpha-beta stand-in
-    And the doer is the do-next stand-in
-    And every reviewer is the rubber-stamp stand-in
-    And the synthesiser is the always-satisfied stand-in
+    And the planner plans the tasks alpha and beta
+    And the doer does the next task in the plan
+    And every reviewer is always satisfied
+    And the synthesiser is always satisfied
 
   Rule: A machine may run a command an activated skill names
 
     Example: The skill says to run the test suite
       Given the doer has a skill "tdd" whose instructions say to run "pytest -q"
-      And the doer is the scripted stand-in
-      And a plan with one task, "read tdd; run pytest -q", not done
+      And a plan with one task, not done
+      And the doer activates "tdd" and asks to run "pytest -q"
       When the factory runs the "tetris" job
       Then the factory ran "pytest -q" for the doer
 
     Example: The skill says to run one of its own scripts
       Given the doer has a skill "coverage" whose instructions say to run "scripts/coverage.py --min 80"
-      And the doer is the scripted stand-in
-      And a plan with one task, "read coverage; run scripts/coverage.py --min 80", not done
+      And a plan with one task, not done
+      And the doer activates "coverage" and asks to run "scripts/coverage.py --min 80"
       When the factory runs the "tetris" job
       Then the factory ran "scripts/coverage.py --min 80" for the doer
 
@@ -41,8 +41,8 @@ Feature: Command execution
 
     Example: The same program, different arguments
       Given the doer has a skill "tdd" whose instructions say to run "pytest -q"
-      And the doer is the scripted stand-in
-      And a plan with one task, "read tdd; run pytest tests/test_board.py -x", not done
+      And a plan with one task, not done
+      And the doer activates "tdd" and asks to run "pytest tests/test_board.py -x"
       When the factory runs the "tetris" job
       Then the factory ran "pytest tests/test_board.py -x" for the doer
 
@@ -50,8 +50,8 @@ Feature: Command execution
 
     Example: A command the skill never mentions
       Given the doer has a skill "tdd" whose instructions say to run "pytest -q"
-      And the doer is the scripted stand-in
-      And a plan with one task, "read tdd; run rm -rf build", not done
+      And a plan with one task, not done
+      And the doer activates "tdd" and asks to run "rm -rf build"
       When the factory runs the "tetris" job
       Then the factory refused "rm -rf build" for the doer
       And the doer was told that no activated skill names it
@@ -61,8 +61,8 @@ Feature: Command execution
 
     Example: Before any skill is activated
       Given the doer has a skill "tdd" whose instructions say to run "pytest -q"
-      And the doer is the scripted stand-in
-      And a plan with one task, "run pytest -q", not done
+      And a plan with one task, not done
+      And the doer asks to run "pytest -q"
       When the factory runs the "tetris" job
       Then the factory refused "pytest -q" for the doer
 
@@ -70,9 +70,9 @@ Feature: Command execution
 
     Example: The next attempt starts closed
       Given the doer has a skill "tdd" whose instructions say to run "pytest -q"
-      And the doer is the scripted stand-in
-      And a plan with one task, "on attempt 1: read tdd; run pytest -q", not done
-      And the synthesiser is the not-satisfied-once stand-in
+      And a plan with one task, not done
+      And the doer activates "tdd" on its first attempt only, and asks to run "pytest -q" on every attempt
+      And the synthesiser is not satisfied the first time
       When the factory runs the "tetris" job
       Then the factory ran "pytest -q" for the doer once
       And the factory refused "pytest -q" for the doer once

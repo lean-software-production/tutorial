@@ -7,9 +7,9 @@ Feature: Orchestration
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
     And a seed describing a game of Tetris
-    And the planner is the plan-alpha-beta stand-in
-    And the doer is the do-next stand-in
-    And the validator is the always-satisfied stand-in
+    And the planner plans the tasks alpha and beta
+    And the doer does the next task in the plan
+    And the validator is always satisfied
 
   Rule: The factory works in the codebase around it
 
@@ -59,7 +59,7 @@ Feature: Orchestration
 
     Example: The work is wrong first time
       Given a plan with three tasks, none of them done
-      And the validator is the not-satisfied-once stand-in
+      And the validator is not satisfied the first time
       When the factory runs
       Then the doer has been called four times
       And there are three new commits
@@ -77,7 +77,7 @@ Feature: Orchestration
     Example: Validation is never satisfied
       Given a plan with three tasks, none of them done
       And the factory allows at most three attempts at a task
-      And the validator is the never-satisfied stand-in
+      And the validator is never satisfied
       When the factory runs
       Then the doer has been called three times
       And it reports that a task hit its limit
@@ -124,7 +124,7 @@ Feature: Orchestration
 
     Example: The validator answers in prose
       Given a plan with three tasks, none of them done
-      And the validator is the unreadable-result stand-in
+      And the validator answers in prose, with no result
       When the factory runs
       Then it reports that it could not read the validator's result
       And there are no new commits

@@ -1,4 +1,0 @@
-#!/bin/sh
-# A validator that is always satisfied.
-. "$(dirname "$0")/_read-prompt.sh"
-echo '{"satisfied": true, "findings": []}'

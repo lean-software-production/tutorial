@@ -15,10 +15,10 @@ Feature: Skills
     And the target has the machines planner, doer and three_big_brains
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
-    And the planner is the plan-alpha-beta stand-in
-    And the doer is the do-next stand-in
-    And every reviewer is the rubber-stamp stand-in
-    And the synthesiser is the always-satisfied stand-in
+    And the planner plans the tasks alpha and beta
+    And the doer does the next task in the plan
+    And every reviewer is always satisfied
+    And the synthesiser is always satisfied
 
   Rule: A machine's skills are the ones that sit beside it
 
@@ -103,8 +103,8 @@ Feature: Skills
 
     Example: Reading back
       Given the doer has the skills "tdd" and "commit-style"
-      And the doer is the scripted stand-in
-      And a plan with one task, "read tdd", not done
+      And a plan with one task, not done
+      And the doer activates "tdd"
       When the factory runs the "tetris" job
       And I read the "tetris" job's record
       Then it shows that the doer activated "tdd"

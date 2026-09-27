@@ -1,9 +1,0 @@
-#!/bin/sh
-# A reviewer that is held: it prints "waiting", then waits until it is let
-# go (see hold, in _read-prompt.sh), prints anything it heard, and is
-# satisfied. A check can see it running for as long as it likes.
-. "$(dirname "$0")/_read-prompt.sh"
-echo "waiting"
-hold
-hear
-echo '{"satisfied": true, "findings": []}'

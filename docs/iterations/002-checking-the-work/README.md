@@ -11,3 +11,7 @@ Before you start, pick what your validator should look for. Testability,
 single responsibility, usability, internationalisation, security — any
 lens will do, and the interesting part is what your factory does with the
 findings. Choose one and write it down.
+
+Your doubles now play three machines. A validator's double answers with
+whether it is satisfied and, if not, why: the fields `satisfied` and
+`findings` that `machine.feature` has your factory ask for.

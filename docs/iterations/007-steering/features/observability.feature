@@ -5,23 +5,27 @@ Feature: Observability
   job's record: every line, which machine it came from, and what each
   machine spent.
 
+  A machine an example sees at work, part-way through or in a job just
+  started, goes on working until the example says it finishes, or the job
+  is stopped or run to the end.
+
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
     And the target has the machines planner, doer and three_big_brains
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
-    And the planner is the plan-alpha-beta stand-in
-    And the doer is the do-next stand-in
-    And every reviewer is the rubber-stamp stand-in
-    And the synthesiser is the always-satisfied stand-in
+    And the planner plans the tasks alpha and beta
+    And the doer does the next task in the plan
+    And every reviewer is always satisfied
+    And the synthesiser is always satisfied
 
   Rule: What a machine generates can be read while it is generating it
 
     Example: The doer is working
-      Given the doer is the scripted stand-in
-      And a plan with one task, "say first line; wait; say second line", not done
-      And the "tetris" job is running, with the doer part-way through an attempt
+      Given a plan with one task, not done
+      And the doer says "first line", then "second line"
+      And the "tetris" job is running, with the doer part-way through an attempt, having said "first line"
       When I watch the "tetris" job
       Then I see "first line" from the doer
       And I do not see "second line"
@@ -38,7 +42,6 @@ Feature: Observability
 
     Example: During fan out
       Given a plan with one task, not done
-      And every reviewer is the held stand-in
       And the "tetris" job is running, with every reviewer part-way through
       When I watch the "tetris" job
       Then it shows reviewer_1, reviewer_2 and reviewer_3 as running
@@ -46,9 +49,8 @@ Feature: Observability
   Rule: Attaching late catches you up
 
     Example: Well into the job
-      Given the doer is the scripted stand-in
-      And a plan with one task, "say started; wait", not done
-      And the "tetris" job is running, with the doer part-way through an attempt
+      Given a plan with one task, not done
+      And the "tetris" job is running, with the doer part-way through an attempt, having said "started"
       When I watch the "tetris" job
       Then I see what the planner generated
       And I see "started" from the doer
@@ -56,8 +58,7 @@ Feature: Observability
   Rule: Watching shows when a job is stopped
 
     Example: The job is stopped while I watch
-      Given the doer is the scripted stand-in
-      And a plan with one task, "wait", not done
+      Given a plan with one task, not done
       And the "tetris" job is running, with the doer part-way through an attempt
       And I am watching the "tetris" job
       When I stop the "tetris" job

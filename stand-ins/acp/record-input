@@ -1,3 +1,0 @@
-#!/bin/sh
-# record-input, over ACP: see agent.mjs.
-exec node "$(dirname "$0")/agent.mjs" record-input "$@"

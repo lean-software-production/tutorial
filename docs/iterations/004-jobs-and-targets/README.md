@@ -29,8 +29,8 @@ job say which line it runs.
 
 ## The commands you'll end up with
 
-The exact shape is your choice. Run from `factory/`, using `./factory`
-as a stand-in:
+The exact shape is your choice. Run from `factory/`, with `./factory`
+for whatever you call it:
 
 ```sh
 # a new job: its target, its line and its seed

@@ -5,7 +5,7 @@ Feature: Planning
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
     And a seed describing a game of Tetris
-    And the agent is the ralph-alpha-beta stand-in
+    And the agent plans the tasks alpha and beta, and does one task a pass
 
   Rule: The seed is the only input to the work
 
@@ -78,7 +78,7 @@ Feature: Planning
       Then the plan shows the first two tasks as done
 
     Example: A plan no factory could parse
-      Given the agent is the plan-in-prose stand-in
+      Given the agent keeps its plan in prose
       And no plan
       When the factory runs to completion
       Then the work for alpha and beta has been committed

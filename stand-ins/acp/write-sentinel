@@ -1,3 +1,0 @@
-#!/bin/sh
-# write-sentinel, over ACP: see agent.mjs.
-exec node "$(dirname "$0")/agent.mjs" write-sentinel "$@"

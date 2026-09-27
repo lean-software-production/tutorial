@@ -35,3 +35,10 @@ of it.
 The three-step loading is the other half of the homework, and homework 6
 is how you check it. Watch a job: a machine that has not activated a skill
 should not be paying for that skill's instructions.
+
+## Doubles that read and ask
+
+A double activates a skill the way a real agent does: it reads the
+`SKILL.md`, as an ACP tool call whose `locations` name the file. And it
+asks to run a command by calling the `run_command` tool on the MCP server
+your factory named in `session/new`, never by running it itself.

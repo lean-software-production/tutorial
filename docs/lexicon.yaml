@@ -65,6 +65,11 @@ doer-validator-loop:
   definition: |-
     The pairing run repeatedly: the doer produces output, the validator checks it against the criteria for done, the findings go back to the doer, and the cycle repeats until the validator has nothing significant left to report. In practice this settles within a few passes, but set a maximum iteration count anyway — a doer and validator can oscillate, each pass introducing a new problem. [→ adversarial-agents](building-blocks/adversarial-agents.md)
 
+double-test-double:
+  term: "Double (test double)"
+  definition: |-
+    A small program that takes a real component's place in a check and does one simple, predictable thing: a machine that is never satisfied, a doer that stays part-way through until the check lets it go. Also called a *stub*, a *mock* or a *stand-in*. It is chosen from outside, the way the real one is, and the thing under test never contains it. A double says what the check needs and nothing more, so it can agree with your code while disagreeing with the real component; a check against the real thing is what catches that. Students write their own; the feature files say what a machine does, never that a double does it.
+
 eval:
   term: "Eval"
   definition: |-

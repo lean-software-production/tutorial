@@ -1,3 +1,0 @@
-#!/bin/sh
-# plan-in-prose, over ACP: see agent.mjs.
-exec node "$(dirname "$0")/agent.mjs" plan-in-prose "$@"

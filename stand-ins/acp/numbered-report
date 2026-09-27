@@ -1,3 +1,0 @@
-#!/bin/sh
-# numbered-report, over ACP: see agent.mjs.
-exec node "$(dirname "$0")/agent.mjs" numbered-report "$@"

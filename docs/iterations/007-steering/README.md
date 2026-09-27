@@ -34,3 +34,9 @@ delivered to doer
 $ ./factory say tetris reviewer_1 "be strict about error handling"
 refused: doer is what is running
 ```
+
+## Doubles that hear
+
+A double that is being steered shows what it heard in what it generates,
+at the point it heard it, so a check can tell whether a message arrived
+before or after something the machine said.

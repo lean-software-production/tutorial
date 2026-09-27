@@ -5,9 +5,9 @@ Feature: Planning
   Background:
     Given a copy of the factory, in a folder of its own inside a new codebase
     And a seed describing a game of Tetris
-    And the planner is the plan-alpha-beta stand-in
-    And the doer is the do-next stand-in
-    And the validator is the always-satisfied stand-in
+    And the planner plans the tasks alpha and beta
+    And the doer does the next task in the plan
+    And the validator is always satisfied
 
   Rule: The seed is the only input to the work
 
@@ -84,13 +84,13 @@ Feature: Planning
     Example: Work that gave up is not recorded
       Given a plan with three tasks, none of them done
       And the factory allows at most three attempts per pass
-      And the validator is the never-satisfied stand-in
+      And the validator is never satisfied
       When the factory runs one pass
       Then the plan shows every task as not done
 
     Example: A plan no factory could parse
-      Given the planner is the plan-in-prose stand-in
-      And the doer is the plan-in-prose stand-in
+      Given the planner keeps its plan in prose
+      And the doer keeps its plan in prose
       And no plan
       When the factory runs to completion
       Then the work for alpha and beta has been committed
