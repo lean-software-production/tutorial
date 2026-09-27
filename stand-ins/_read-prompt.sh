@@ -29,3 +29,13 @@ hear() {
   sed 's/^/heard: /' "$STAND_IN_INBOX"
   : > "$STAND_IN_INBOX"
 }
+
+# hold: wait until the check lets held stand-ins go on, by making the file
+# $STAND_IN_STATE/go. No stand-in ever waits a set time: a check decides
+# when things move, so nothing depends on how fast anything runs. A held
+# stand-in also gives up if the folder is removed, so none outlives a check.
+hold() {
+  state="${STAND_IN_STATE:-${TMPDIR:-/tmp}/stand-in-state}"
+  mkdir -p "$state"
+  while [ -d "$state" ] && [ ! -e "$state/go" ]; do sleep 0.05; done
+}

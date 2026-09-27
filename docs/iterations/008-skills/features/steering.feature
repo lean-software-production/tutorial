@@ -20,9 +20,10 @@ Feature: Steering
 
     Example: The doer is mid-attempt
       Given the doer is the scripted stand-in
-      And a plan with one task, "say started; sleep 2; say finished", not done
+      And a plan with one task, "say started; wait; say finished", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I say "use curses, not print" to the doer
+      And the held stand-ins are let go
       And the "tetris" job has run to the end
       Then the doer heard "use curses, not print" before it said "finished"
       And there is one new commit
@@ -35,9 +36,10 @@ Feature: Steering
 
     Example: Three reviewers at once
       Given a plan with one task, not done
-      And every reviewer is the slow-satisfied stand-in, taking two seconds
+      And every reviewer is the held stand-in
       And the "tetris" job is running, with every reviewer part-way through
       When I say "be strict about error handling" to reviewer_2
+      And the held stand-ins are let go
       And the "tetris" job has run to the end
       Then reviewer_2 heard "be strict about error handling"
       And neither reviewer_1 nor reviewer_3 heard it
@@ -46,7 +48,7 @@ Feature: Steering
 
     Example: The machine named has not started
       Given the doer is the scripted stand-in
-      And a plan with one task, "sleep 2", not done
+      And a plan with one task, "wait", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I say "be strict about error handling" to reviewer_1
       Then the factory refuses
@@ -63,20 +65,21 @@ Feature: Steering
 
     Example: The next attempt has not heard it
       Given the doer is the scripted stand-in
-      And a plan with one task, "sleep 2", not done
+      And a plan with one task, "wait", not done
       And the synthesiser is the not-satisfied-once stand-in
       And the "tetris" job is running, with the doer part-way through an attempt
       When I say "use curses, not print" to the doer
+      And the held stand-ins are let go
       And the "tetris" job has run to the end
       Then the doer has been called twice
       And the doer heard "use curses, not print" once
 
     Example: The reviewers have not heard it either
       Given the doer is the scripted stand-in
-      And a plan with one task, "sleep 2", not done
-      And every reviewer is the slow-satisfied stand-in, taking two seconds
+      And a plan with one task, "wait", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I say "use curses, not print" to the doer
+      And the held stand-ins are let go
       And the "tetris" job has run to the end
       Then no reviewer heard "use curses, not print"
 
@@ -84,9 +87,10 @@ Feature: Steering
 
     Example: Reading back
       Given the doer is the scripted stand-in
-      And a plan with one task, "sleep 2", not done
+      And a plan with one task, "wait", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I say "use curses, not print" to the doer
+      And the held stand-ins are let go
       And the "tetris" job has run to the end
       And I read the "tetris" job's record
       Then it shows that the doer was told "use curses, not print"

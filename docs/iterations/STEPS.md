@@ -9,6 +9,10 @@ against this list, and shows what each iteration adds and drops.
 `{string}` is a quoted value, `{word}` a single word. The range says which
 iterations use the phrase; "001+" means from 001 on.
 
+No step waits a set time. A stand-in that has to be seen running is held
+until a step lets it go, and a step that waits for something waits for
+it to happen, not for a while.
+
 This file is for authors of the course. `fetch-iteration` does not copy
 it to students.
 
@@ -52,7 +56,6 @@ reviewers and the synthesiser.
 
 - `the {word} is the {word} stand-in` — 001+. The machine (or 001's agent) is run by that stand-in: chosen on the command line through 002, in the machine's configuration from 003, and from 006 as an ACP agent, `stand-ins/acp/<stand-in>`.
 - `every reviewer is the {word} stand-in` — 005+.
-- `every reviewer is the {word} stand-in, taking two seconds` — 005+. With `$STAND_IN_SLEEP` at 2.
 - `the second reviewer is the {word} stand-in` — 005+. reviewer_2 only.
 - `the reviewers' lens is {word}` — 005+.
 - `the reviewers run on Anthropic, Google and OpenAI models` — 006+. reviewer_1 to reviewer_3's configurations name those providers.
@@ -119,6 +122,8 @@ running, rather than running it to the end.
 - `the factory reads the assembly line` — 003+. Checks the line under test without running it.
 - `the doer's first attempt at a task is untestable` — 002+, `@real-agent`.
 - `the doer activates {string} and follows it` — 008, `@real-agent`.
+- `the factory runs the {string} job, letting the reviewers go once all three are running` — 005+. The job runs to the end, but the held reviewers go on only once all three are waiting: if they ran one after another, the second would never start.
+- `the held stand-ins are let go` — 006+. Makes `$STAND_IN_STATE/go`, so every held stand-in goes on.
 - `I start the {string} job` — 006+. The command returns while the job runs.
 - `the {string} job has run to the end` — 006+. Waits until it has.
 - `I stop the {string} job` — 006+.
@@ -195,7 +200,6 @@ target.
 - `every reviewer was given {string}` — 005+.
 - `the synthesiser was given {string}, {string} and {string}` — 005+.
 - `it was not given {string}` — 005+.
-- `the job took less than four seconds` — 005+.
 - `the reviewers' findings are about {word}` — 005+, `@real-agent`.
 - `no reviewer or synthesiser has changed the plan or the work` — 005+, `@real-agent`.
 

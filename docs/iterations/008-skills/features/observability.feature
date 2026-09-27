@@ -20,7 +20,7 @@ Feature: Observability
 
     Example: The doer is working
       Given the doer is the scripted stand-in
-      And a plan with one task, "say first line; sleep 3; say second line", not done
+      And a plan with one task, "say first line; wait; say second line", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I watch the "tetris" job
       Then I see "first line" from the doer
@@ -30,16 +30,15 @@ Feature: Observability
 
     Example: Three reviewers reporting at once
       Given a plan with one task, not done
-      And every reviewer is the slow-satisfied stand-in, taking two seconds
       When the factory runs the "tetris" job
       And I watch the "tetris" job
-      Then I see "checking" from reviewer_1, reviewer_2 and reviewer_3
+      Then I see "satisfied" from reviewer_1, reviewer_2 and reviewer_3
 
   Rule: Watching says which machines are running now
 
     Example: During fan out
       Given a plan with one task, not done
-      And every reviewer is the slow-satisfied stand-in, taking two seconds
+      And every reviewer is the held stand-in
       And the "tetris" job is running, with every reviewer part-way through
       When I watch the "tetris" job
       Then it shows reviewer_1, reviewer_2 and reviewer_3 as running
@@ -48,7 +47,7 @@ Feature: Observability
 
     Example: Well into the job
       Given the doer is the scripted stand-in
-      And a plan with one task, "say started; sleep 3", not done
+      And a plan with one task, "say started; wait", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I watch the "tetris" job
       Then I see what the planner generated
@@ -58,7 +57,7 @@ Feature: Observability
 
     Example: The job is stopped while I watch
       Given the doer is the scripted stand-in
-      And a plan with one task, "sleep 5", not done
+      And a plan with one task, "wait", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       And I am watching the "tetris" job
       When I stop the "tetris" job

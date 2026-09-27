@@ -38,7 +38,7 @@ Feature: Orchestration
 
     Example: Starting a job
       Given the doer is the scripted stand-in
-      And a plan with one task, "say working; sleep 2", not done
+      And a plan with one task, "say working; wait", not done
       When I start the "tetris" job
       Then the command has returned while the "tetris" job is running
       And the factory is running
@@ -47,7 +47,7 @@ Feature: Orchestration
 
     Example: A second job while one is running
       Given the doer is the scripted stand-in
-      And a plan with one task, "sleep 2", not done
+      And a plan with one task, "wait", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       And a new target, with a seed describing a game of Snake
       And the target has the machines planner, doer and three_big_brains
@@ -202,7 +202,7 @@ Feature: Orchestration
 
     Example: Stopping the "tetris" job
       Given the doer is the scripted stand-in
-      And a plan with one task, "sleep 5", not done
+      And a plan with one task, "wait", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I stop the "tetris" job
       Then the "tetris" job is not running
@@ -212,7 +212,7 @@ Feature: Orchestration
 
     Example: Stopping the factory while a job runs
       Given the doer is the scripted stand-in
-      And a plan with one task, "sleep 5", not done
+      And a plan with one task, "wait", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I stop the factory
       Then the factory is not running
@@ -229,7 +229,7 @@ Feature: Orchestration
 
     Example: The doer is mid-attempt
       Given the doer is the scripted stand-in
-      And a plan with one task, "say started; sleep 5", not done
+      And a plan with one task, "say started; wait", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I stop the "tetris" job
       Then the plan shows every task as not done
@@ -239,9 +239,10 @@ Feature: Orchestration
 
     Example: Starting the "tetris" job again
       Given the doer is the scripted stand-in
-      And a plan with one task, "say started; sleep 2", not done
+      And a plan with one task, "say started; wait", not done
       And the "tetris" job is running, with the doer part-way through an attempt
       And I have stopped the "tetris" job
-      When the factory runs the "tetris" job, given only its name
+      When the held stand-ins are let go
+      And the factory runs the "tetris" job, given only its name
       Then the plan shows every task as done
       And there is one new commit

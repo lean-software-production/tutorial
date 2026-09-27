@@ -16,6 +16,13 @@ last argument (flags such as `-p` are ignored), or on stdin. They run in
 whatever directory your factory runs them in, and their answer is what
 they print.
 
+No stand-in waits a set time. The ones that wait — `held`, and
+`scripted` at a `wait` step — wait until the check lets them go, by
+making the file `go` in `$STAND_IN_STATE`. A check decides when things
+move, so no example depends on how fast anything runs. They also give up
+if `$STAND_IN_STATE` is removed, so none outlives the check that started
+it: let them go, or remove the folder, when the check ends.
+
 If `$STAND_IN_LOG` is set, each stand-in appends its name to that file
 when it is called. That is how a check counts calls and sees their order.
 If `$STAND_IN_RECORD` is set, it names a folder, and each stand-in writes
@@ -48,9 +55,9 @@ result's fields, and routes on them.
 | `do-next` | A doer. Does the first task not ticked, and never touches the plan. Result: `{"task": …}`. |
 | `plan-in-prose` | Keeps its plan in prose that no factory could parse, and plays any part: writes the plan, builds whichever of `alpha` and `beta` is not committed yet. Result: `{"complete": …}`, true once both are committed. |
 | `rubber-stamp` | A reviewer that approves whatever it is given: `always-satisfied` under a name of its own, so a check can count reviewers apart from the synthesiser. |
-| `slow-satisfied` | A validator or reviewer that prints `checking`, takes `$STAND_IN_SLEEP` seconds (default 2), prints anything it heard, then is satisfied. |
+| `held` | A reviewer that prints `waiting`, then waits until it is let go, prints anything it heard, and is satisfied. |
 | `numbered-report` | A reviewer that is never satisfied, with a numbered finding — `report 1`, `report 2` and so on — so a check can tell reports apart. |
-| `scripted` | A doer that follows the steps written in its task, separated by `;`: `say <text>`, `sleep <seconds>`, `read <skill>` (that skill's `SKILL.md`, whose path the prompt names), `run <command>`, and `on attempt <n>: <step>`. After each step it prints anything it heard. Then it does the task. |
+| `scripted` | A doer that follows the steps written in its task, separated by `;`: `say <text>`, `wait`, `read <skill>` (that skill's `SKILL.md`, whose path the prompt names), `run <command>`, and `on attempt <n>: <step>`. After each step it prints anything it heard. Then it does the task. |
 | `always-satisfied` | A validator. Result: `{"satisfied": true, "findings": []}`, whatever it is asked to check. |
 | `not-satisfied-once` | A validator. Not satisfied, with a finding, the first time it is called; satisfied every time after. It remembers in `$STAND_IN_STATE` (default `${TMPDIR:-/tmp}/stand-in-state`). |
 | `never-satisfied` | A validator. Result: `{"satisfied": false, "findings": [...]}`, whatever it is asked to check. |

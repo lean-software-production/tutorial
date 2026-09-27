@@ -4,7 +4,7 @@
 # ";":
 #
 #   say <text>              print <text>, as a line it generates
-#   sleep <seconds>         wait
+#   wait                    wait until it is let go (see hold)
 #   read <skill>            read that skill's SKILL.md, whose path the
 #                           prompt names (under the ACP wrapper, a read)
 #   run <command>           ask to run <command> (under the ACP wrapper,
@@ -32,7 +32,7 @@ printf '%s\n' "$task" | tr ';' '\n' | while IFS= read -r step; do
   esac
   case "$step" in
     "say "*) printf '%s\n' "${step#say }" ;;
-    "sleep "*) sleep "${step#sleep }" ;;
+    wait) hold ;;
     "read "*)
       skill=${step#read }
       path=$(printf '%s\n' "$prompt" | grep -o "[^][[:space:]\`\"'()<>]*/$skill/SKILL\.md" | head -n 1)

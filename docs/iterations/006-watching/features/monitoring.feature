@@ -41,8 +41,7 @@ Feature: Monitoring
   Rule: The numbers keep up with the job
 
     Example: The doer attempts the task again
-      Given the doer is the scripted stand-in
-      And a plan with one task, "sleep 1", not done
+      Given a plan with one task, not done
       And the synthesiser is the not-satisfied-once stand-in
       And I am watching the "tetris" job as it runs
       When the "tetris" job has run to the end

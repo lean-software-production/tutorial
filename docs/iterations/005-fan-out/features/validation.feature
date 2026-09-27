@@ -35,12 +35,15 @@ Feature: Validation
 
   Rule: The reviewers run at the same time
 
-    Example: Three reviewers that each take two seconds
+    Held reviewers wait until they are let go. If the reviewers ran one
+    after another, the second would never start while the first is held.
+
+    Example: Three held reviewers
       Given a plan with one task, not done
-      And every reviewer is the slow-satisfied stand-in, taking two seconds
-      When the factory runs the "tetris" job
+      And every reviewer is the held stand-in
+      When the factory runs the "tetris" job, letting the reviewers go once all three are running
       Then every reviewer has been called once
-      And the job took less than four seconds
+      And there is one new commit
 
   Rule: One machine synthesises the reports and decides
 
