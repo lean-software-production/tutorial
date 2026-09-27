@@ -1,8 +1,8 @@
 Feature: Orchestration
 
   How the factory runs along its assembly line: when a task is finished,
-  when to give up and when to stop. These rules do not care how
-  validation is done.
+  when to give up and when to stop. These rules do not care how validation
+  is done.
 
   Background:
     Given a copy of the factory
@@ -12,7 +12,7 @@ Feature: Orchestration
     And a job named "tetris", on the "careful" line, with that seed and target
     And the planner is the plan-alpha-beta stand-in
     And the doer is the do-next stand-in
-    And every reviewer is the always-satisfied stand-in
+    And every reviewer is the rubber-stamp stand-in
     And the synthesiser is the always-satisfied stand-in
 
   Rule: The factory works in the target it is given
@@ -30,24 +30,32 @@ Feature: Orchestration
 
   Rule: The factory runs as a daemon
 
+    From here on the factory keeps running after the command that starts
+    a job returns, and it runs each machine as an ACP agent, speaking the
+    Agent Client Protocol to it over stdio. "The factory runs a job" still
+    means running it to the end: starting it, then waiting until it has
+    finished.
+
     Example: Starting a job
-      Given a job named "tetris" whose seed describes a game of Tetris
+      Given the doer is the scripted stand-in
+      And a plan with one task, "say working; sleep 2", not done
       When I start the "tetris" job
-      Then the factory goes on running after the command returns
-      And I can watch it
+      Then the command has returned while the "tetris" job is running
+      And the factory is running
 
   Rule: The factory runs one job at a time
 
     Example: A second job while one is running
-      Given a running job
-      When I start another job
-      Then it refuses
-      And the running job carries on untouched
-
-  Rule: The factory works in the target it is given
-
-    The target is the folder a job builds the product in. It sits in a
-    git repository that the factory commits its work to.
+      Given the doer is the scripted stand-in
+      And a plan with one task, "sleep 2", not done
+      And the "tetris" job is running, with the doer part-way through an attempt
+      And a new target, with a seed describing a game of Snake
+      And the target has the machines planner, doer and three_big_brains
+      And the "careful" line has been copied into the target
+      And a job named "snake", on the "careful" line, with that seed and target
+      When I start the "snake" job
+      Then the factory refuses
+      And the "tetris" job is running
 
   Rule: The factory runs the machines its assembly line gives it
 
@@ -193,18 +201,22 @@ Feature: Orchestration
   Rule: Stopping a job leaves the factory running
 
     Example: Stopping the "tetris" job
-      Given the "tetris" job is running
+      Given the doer is the scripted stand-in
+      And a plan with one task, "sleep 5", not done
+      And the "tetris" job is running, with the doer part-way through an attempt
       When I stop the "tetris" job
-      Then the "tetris" job is no longer running
-      And the factory is still running
+      Then the "tetris" job is not running
+      And the factory is running
 
   Rule: Stopping the factory stops its job too
 
     Example: Stopping the factory while a job runs
-      Given the "tetris" job is running
+      Given the doer is the scripted stand-in
+      And a plan with one task, "sleep 5", not done
+      And the "tetris" job is running, with the doer part-way through an attempt
       When I stop the factory
-      Then the factory is no longer running
-      And neither is the "tetris" job
+      Then the factory is not running
+      And the "tetris" job is not running
 
   Rule: A stop interrupts the work at once and leaves the job in a sane state
 
@@ -216,16 +228,20 @@ Feature: Orchestration
     same, and no more is asked of it.
 
     Example: The doer is mid-attempt
-      Given the "tetris" job's plan has three tasks, none of them done
-      And the doer is part-way through its first attempt at the first task
+      Given the doer is the scripted stand-in
+      And a plan with one task, "say started; sleep 5", not done
+      And the "tetris" job is running, with the doer part-way through an attempt
       When I stop the "tetris" job
-      Then the doer's attempt has been abandoned
-      And the plan shows the first task as not done
+      Then the plan shows every task as not done
       And there are no new commits
 
   Rule: A stopped job carries on when it is started again
 
     Example: Starting the "tetris" job again
-      Given I stopped the "tetris" job while the doer was working on the first task
-      When I start the "tetris" job again, by name alone
-      Then the doer starts on the first task
+      Given the doer is the scripted stand-in
+      And a plan with one task, "say started; sleep 2", not done
+      And the "tetris" job is running, with the doer part-way through an attempt
+      And I have stopped the "tetris" job
+      When the factory runs the "tetris" job, given only its name
+      Then the plan shows every task as done
+      And there is one new commit

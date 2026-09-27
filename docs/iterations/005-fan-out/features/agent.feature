@@ -4,10 +4,11 @@ Feature: Machines
   inside the three big brains, the reviewers and the synthesiser are
   machines. Each has a name, and a harness that runs it: a coding agent
   such as pi by default, or another named in the machine's configuration.
-  Machines are configured in the target, in .assembly-lines/.machines/,
-  under their names; every line in a target that names the doer runs the
-  same doer. A machine could as well be ordinary code. Whatever runs it, a
-  machine answers with a result: JSON describing the job it did.
+  Each machine has a folder of its own in the target,
+  .assembly-lines/.machines/<name>/, holding its configuration; every line
+  in a target that names the doer runs the same doer. A machine could as
+  well be ordinary code. Whatever runs it, a machine answers with a
+  result: JSON describing the job it did.
 
   Most examples run a machine with a stand-in: one of the small programs
   the course ships in `stand-ins/`, which take what the factory hands them
@@ -25,7 +26,7 @@ Feature: Machines
     And a job named "tetris", on the "careful" line, with that seed and target
     And the planner is the plan-alpha-beta stand-in
     And the doer is the do-next stand-in
-    And every reviewer is the always-satisfied stand-in
+    And every reviewer is the rubber-stamp stand-in
     And the synthesiser is the always-satisfied stand-in
 
   Rule: A machine runs pi unless its configuration names another harness

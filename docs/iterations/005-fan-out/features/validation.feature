@@ -4,6 +4,12 @@ Feature: Validation
   line that is one machine, the three big brains. This file is about what
   happens inside it.
 
+  The three big brains is a machine the factory runs itself: ordinary
+  code, not an agent. Its configuration names the machines it runs — three
+  reviewers, reviewer_1 to reviewer_3, and a synthesiser — each configured
+  in .assembly-lines/.machines/ like any other. It answers with the
+  synthesiser's result.
+
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
@@ -12,7 +18,7 @@ Feature: Validation
     And a job named "tetris", on the "careful" line, with that seed and target
     And the planner is the plan-alpha-beta stand-in
     And the doer is the do-next stand-in
-    And every reviewer is the always-satisfied stand-in
+    And every reviewer is the rubber-stamp stand-in
     And the synthesiser is the always-satisfied stand-in
 
   Rule: The same work goes to every reviewer at once
@@ -22,52 +28,63 @@ Feature: Validation
     three models are what we happen to fan out to.
 
     Example: Three reports on one attempt
-      When the doer makes an attempt at a task
-      Then all three reviewers have assessed the same work
-      And all three were given the same job
+      Given a plan with one task, not done
+      When the factory runs the "tetris" job
+      Then every reviewer has been called once
+      And every reviewer was given the same prompt
 
   Rule: The reviewers run at the same time
 
-    Example: Three reviewers that each take five seconds
-      Given three reviewers that each take five seconds to report
-      When the doer makes an attempt at a task
-      Then all three have reported
-      And validation took less than ten seconds
+    Example: Three reviewers that each take two seconds
+      Given a plan with one task, not done
+      And every reviewer is the slow-satisfied stand-in, taking two seconds
+      When the factory runs the "tetris" job
+      Then every reviewer has been called once
+      And the job took less than four seconds
 
   Rule: One machine synthesises the reports and decides
 
     Example: The reports disagree
-      Given two reviewers are satisfied and one is not
-      When the doer makes an attempt at a task
-      Then the synthesiser has read all three reports
-      And the synthesiser decides whether the attempt is satisfied
+      Given a plan with one task, not done
+      And the second reviewer is the numbered-report stand-in
+      When the factory runs the "tetris" job
+      Then the synthesiser was given "report 1"
+      And there is one new commit
 
     Example: Nobody but the synthesiser decides
-      Given every reviewer is satisfied
-      When the doer makes an attempt at a task
-      Then the attempt is satisfied because the synthesiser said so
+      Given a plan with three tasks, none of them done
+      And the factory allows at most three attempts at a task
+      And the synthesiser is the never-satisfied stand-in
+      When the factory runs the "tetris" job
+      Then the doer has been called three times
+      And there are no new commits
 
   Rule: The synthesiser decides from the reports, not the work
 
     Example: What the synthesiser is given
-      When the doer makes an attempt at a task
-      Then the synthesiser has been given the three reports
-      And it has not been given the work
+      Given a plan with one task, not done
+      And every reviewer is the numbered-report stand-in
+      When the factory runs the "tetris" job
+      Then the synthesiser was given "report 1", "report 2" and "report 3"
+      And it was not given the work for the first task
 
   Rule: A rejected attempt goes back to the doer with the synthesis
 
-    Example: The synthesiser rejects the first attempt
-      Given a synthesiser that rejects the doer's first attempt
-      When the doer makes its first attempt at a task
-      Then the doer is given the synthesiser's report, not the three separate ones
+    Example: The synthesiser rejects the doer's first attempt
+      Given a plan with one task, not done
+      And every reviewer is the numbered-report stand-in
+      And the synthesiser is the not-satisfied-once stand-in
+      When the factory runs the "tetris" job
+      Then the doer was given the validator's findings
+      And it was not given "report 1"
 
   Rule: The reviewers check the work the doer just produced
 
     Example: Earlier work is not rechecked
-      Given a plan whose first task is done and validated
-      When the doer makes its first attempt at the second task
-      Then the reviewers check the work of that attempt
-      And they do not report findings about the first task
+      Given a plan whose first task is done
+      When the factory runs the "tetris" job
+      Then every reviewer was given the work for the second task
+      And it was not given the work for the first task
 
   Rule: What the reviewers look for is chosen, not fixed
 
@@ -77,17 +94,26 @@ Feature: Validation
     not care which. It is the choice that teaches, so this spec leaves it
     open on purpose.
 
+    Example: The lens goes to every reviewer
+      Given a plan with one task, not done
+      And the reviewers' lens is testability
+      When the factory runs the "tetris" job
+      Then every reviewer was given "testability"
+
+    @real-agent
     Example: Reviewers that look at testability
-      Given reviewers with a lens of testability
-      When the doer makes an attempt at a task
-      Then their findings are about testability
+      Given every machine runs pi
+      And the reviewers' lens is testability
+      When the factory runs the "tetris" job
+      Then the reviewers' findings are about testability
 
   Rule: Validation changes neither the plan nor the work
 
+    @real-agent
     Example: The first task's work is untestable
-      Given a plan with three tasks, none of them done
-      And a synthesiser that finds the first task's work untestable
-      When the doer makes its first attempt at the first task
+      Given every machine runs pi
+      And the reviewers' lens is testability
+      When the doer's first attempt at a task is untestable
       Then no reviewer or synthesiser has changed the plan or the work
 
   Rule: The doer records each finding as a subtask of the task in progress
@@ -96,16 +122,10 @@ Feature: Validation
     that task. It does not become a new task in the plan, and the task is
     not done until its subtasks are.
 
+    @real-agent
     Example: A finding on the first task
-      Given a plan with three tasks, none of them done
-      And a synthesiser that finds the first task's work untestable
-      When the doer makes its first attempt at the first task
-      Then the first task has a subtask for that finding
-      And the plan still has three tasks
-
-    Example: The next attempt deals with the subtask
-      Given a plan whose first task has a subtask for a finding
-      And a synthesiser that is satisfied by the doer's second attempt
-      When the doer makes its second attempt at the first task
-      Then it has done that subtask
-      And the first task is done and validated
+      Given every machine runs pi
+      And the reviewers' lens is testability
+      When the doer's first attempt at a task is untestable
+      Then that task has a subtask for the finding
+      And the plan has no new task

@@ -19,9 +19,10 @@ names a field of the result of the machine it leaves. The planner
 decides whether there is more to do; the line holds the loop back to it
 and the retry after failed validation, and the factory limits how many
 attempts a task gets. Lines live in the target, in `.assembly-lines/`,
-with the machines they name in `.assembly-lines/.machines/`. A target
-can hold several lines, and every line in it that names the doer runs
-the same doer. A line never names a target.
+with the machines they name each in a folder of its own in
+`.assembly-lines/.machines/`. A target can hold several lines, and every
+line in it that names the doer runs the same doer. A line never names a
+target.
 
 Validation is done by the **three big brains**, one machine on the line:
 three reviewers on different providers' models report on each attempt,

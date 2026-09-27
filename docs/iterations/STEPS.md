@@ -27,7 +27,8 @@ it to students.
 ### Jobs and lines
 
 - `the target has the machines planner, doer and validator` — 004. Their configurations, in the latest target's `.assembly-lines/.machines/`.
-- `the target has the machines planner, doer and three_big_brains` — 005+.
+- `the target has the machines planner, doer and three_big_brains` — 005+. With three_big_brains's reviewers, reviewer_1 to reviewer_3, and its synthesiser, each a machine of its own; three_big_brains's configuration names them.
+- `the target has the machine validator` — 005+.
 - `the target has an assembly line {string} on which the doer's work is validated` — 004+. The line in `assembly-line.feature`'s Background, in the latest target's `.assembly-lines/`.
 - `the target has an assembly line {string} on which the doer goes straight to the planner` — 004+. The same line, without the validator.
 - `the {string} line has been copied into the target` — 004+. From the target that has it, into the latest.
@@ -49,8 +50,12 @@ it to students.
 validator are machines, named by those words; from 005, so are the
 reviewers and the synthesiser.
 
-- `the {word} is the {word} stand-in` — 001+. The machine (or 001's agent) is run by that stand-in: chosen on the command line through 002, in the machine's configuration from 003.
+- `the {word} is the {word} stand-in` — 001+. The machine (or 001's agent) is run by that stand-in: chosen on the command line through 002, in the machine's configuration from 003, and from 006 as an ACP agent, `stand-ins/acp/<stand-in>`.
 - `every reviewer is the {word} stand-in` — 005+.
+- `every reviewer is the {word} stand-in, taking two seconds` — 005+. With `$STAND_IN_SLEEP` at 2.
+- `the second reviewer is the {word} stand-in` — 005+. reviewer_2 only.
+- `the reviewers' lens is {word}` — 005+.
+- `the reviewers run on Anthropic, Google and OpenAI models` — 006+. reviewer_1 to reviewer_3's configurations name those providers.
 - `the {word} cannot be run` — 001+. Its harness is a path where no program exists.
 - `no harness is chosen` — 001–002. pi, for every machine.
 - `no harness is chosen for the {word}` — 003+. pi, for that machine.
@@ -74,6 +79,34 @@ task's work is a file with its name.
 - `a plan whose first task is done` — 001+.
 - `a plan in which every task is done` — 001+.
 - `a plan for each job with three tasks of its own, none of them done` — 004+. Each job's tasks are named after the job.
+- `a plan with one task, not done` — 005+.
+- `a plan with one task, {string}, not done` — 005+. The task's name is also a script for the scripted stand-in.
+
+### Skills
+
+A skill is `.assembly-lines/.machines/<machine>/skills/<name>/SKILL.md`,
+with a name, a description `how to <name>` and instructions that start
+`INSTRUCTIONS-<name>`, unless a step says otherwise.
+
+- `the doer has the skills {string} and {string}` — 008.
+- `{word} has the skill {string}` — 008.
+- `the doer has a skill {string} whose SKILL.md has no description` — 008.
+- `the doer has a skill {string} whose instructions say to run {string}` — 008.
+- `the doer has the skill {string}, described as writing the test first` — 008, `@real-agent`.
+- `the doer has the skill {string}, whose instructions point at {string}` — 008, `@real-agent`.
+- `the doer has the skill {string}, which also holds {string} that its instructions never mention` — 008, `@real-agent`.
+
+### The running factory
+
+From 006 the factory is a daemon. These steps start a job and leave it
+running, rather than running it to the end.
+
+- `the factory has run the {string} job` — 007+. To the end.
+- `the {string} job is running, with the doer part-way through an attempt` — 006+. Started, and the doer's stand-in has been called.
+- `the {string} job is running, with every reviewer part-way through` — 006+.
+- `I am watching the {string} job` — 006+. Following it, from another command, as it goes.
+- `I am watching the {string} job as it runs` — 006+. Started, and followed.
+- `I have stopped the {string} job` — 006+.
 
 ## When
 
@@ -85,6 +118,15 @@ task's work is a file with its name.
 - `the factory runs the {string} job with that target` — 004+. The latest target, in place of its own.
 - `the factory reads the assembly line` — 003+. Checks the line under test without running it.
 - `the doer's first attempt at a task is untestable` — 002+, `@real-agent`.
+- `the doer activates {string} and follows it` — 008, `@real-agent`.
+- `I start the {string} job` — 006+. The command returns while the job runs.
+- `the {string} job has run to the end` — 006+. Waits until it has.
+- `I stop the {string} job` — 006+.
+- `I stop the factory` — 006+.
+- `I watch the {string} job` — 006+. What the watch command shows now.
+- `I read the {string} job's record` — 006+.
+- `I say {string} to the doer` — 007+.
+- `I say {string} to {word}` — 007+. A machine by name, such as reviewer_2.
 
 ## Then
 
@@ -144,6 +186,78 @@ target.
 - `it reports that it has no machine called {string}` — 003+.
 - `it reports that finish cannot be reached from {word}` — 003+. Among the machines it names.
 - `it says the {string} job already has a target` — 004+.
+
+### Fan out
+
+- `every reviewer has been called once` — 005+.
+- `every reviewer was given the same prompt` — 005+.
+- `every reviewer was given the work for the {word} task` — 005+.
+- `every reviewer was given {string}` — 005+.
+- `the synthesiser was given {string}, {string} and {string}` — 005+.
+- `it was not given {string}` — 005+.
+- `the job took less than four seconds` — 005+.
+- `the reviewers' findings are about {word}` — 005+, `@real-agent`.
+- `no reviewer or synthesiser has changed the plan or the work` — 005+, `@real-agent`.
+
+### The daemon, watching and the record
+
+What watching and the record show is the student's to lay out; the
+steps only need each line of generated text to say which machine it came
+from, and the tokens in and out per machine.
+
+- `the command has returned while the {string} job is running` — 006+.
+- `the factory is running` — 006+.
+- `the factory is not running` — 006+.
+- `the {string} job is running` — 006+.
+- `the {string} job is not running` — 006+.
+- `what I am watching shows that the {string} job was stopped` — 006+.
+- `I see {string} from the doer` — 006+. Waits a little for it.
+- `I do not see {string}` — 006+.
+- `I see {string} from reviewer_1, reviewer_2 and reviewer_3` — 006+.
+- `it shows reviewer_1, reviewer_2 and reviewer_3 as running` — 006+.
+- `I see what the planner generated` — 006+.
+- `it shows what every machine generated` — 006+.
+- `it shows what every machine spent` — 006+.
+- `the record is in the job's folder in the factory, not in the target` — 006+.
+- `it shows tokens in and tokens out for the doer` — 006+.
+- `it shows tokens in and tokens out for the three big brains` — 006+. What its reviewers and synthesiser spent.
+- `it shows a total for each of Anthropic, Google and OpenAI` — 006+.
+- `it shows a total for the whole job` — 006+.
+- `what I watched showed the doer's tokens go up` — 006+.
+- `what I watched showed the job's total go up` — 006+.
+
+### Steering
+
+A machine "heard" a message when its generated text has a line
+`heard: <message>`, as the stand-ins print it.
+
+- `it says that the doer is what is running` — 007+.
+- `it says that nothing is running` — 007+.
+- `the doer heard {string} before it said {string}` — 007+.
+- `{word} heard {string}` — 007+.
+- `neither reviewer_1 nor reviewer_3 heard it` — 007+.
+- `the doer heard {string} once` — 007+.
+- `no reviewer heard {string}` — 007+.
+- `it shows that the doer was told {string}` — 007+.
+
+### Skills and commands
+
+- `the {word} was not given {string}` — 008.
+- `the doer was given the name and description of {string} and of {string}` — 008.
+- `it was given the instructions of neither` — 008.
+- `the {string} job's record says the skill {string} was skipped, and why` — 008.
+- `it shows that the doer activated {string}` — 008.
+- `it does not show that the doer activated {string}` — 008.
+- `the factory ran {string} for the doer` — 008.
+- `the factory ran {string} for the doer once` — 008.
+- `the factory refused {string} for the doer` — 008.
+- `the factory refused {string} for the doer once` — 008.
+- `the doer was told that no activated skill names it` — 008.
+- `the {string} job's record shows the refusal` — 008.
+- `the doer activated {string}` — 008, `@real-agent`.
+- `the doer did not activate {string}` — 008, `@real-agent`.
+- `the doer read {word}` — 008, `@real-agent`.
+- `the doer did not read {word}` — 008, `@real-agent`.
 
 ### Agents
 

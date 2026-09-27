@@ -1,8 +1,8 @@
 Feature: Orchestration
 
   How the factory runs along its assembly line: when a task is finished,
-  when to give up and when to stop. These rules do not care how
-  validation is done.
+  when to give up and when to stop. These rules do not care how validation
+  is done.
 
   Background:
     Given a copy of the factory

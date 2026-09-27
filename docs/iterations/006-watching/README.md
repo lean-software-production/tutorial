@@ -13,6 +13,28 @@ Watching is a separate command that attaches to a job in flight. How it
 attaches — a socket, a pipe, a file the daemon appends to, an HTTP
 endpoint — is yours to choose.
 
+## Your machines speak ACP
+
+Until now each machine was one call: a prompt in, an answer out. To watch
+a machine as it works, and see what it spends, the factory now runs each
+one as an ACP agent — the [Agent Client
+Protocol](https://agentclientprotocol.com), JSON-RPC over the machine's
+stdin and stdout — and is itself the ACP client. A machine's harness is
+an ACP agent from here on:
+
+- Claude Code: `claude-agent-acp` (npm `@agentclientprotocol/claude-agent-acp`)
+- Codex: `codex-acp` (npm `@agentclientprotocol/codex-acp`)
+- pi: `pi-rpc-acp`, the small bridge over pi's RPC mode in your starter
+  repo
+- the stand-ins: `stand-ins/acp/<stand-in>`
+
+What the factory reads: the `agent_message_chunk` updates, as what the
+machine generates; the last line of that text, as its result; and the
+`usage` on its `session/prompt` response — `inputTokens` and
+`outputTokens` — as what it spent. That usage is still a draft in ACP,
+but the Claude Code and Codex adapters send it, and so does the pi
+bridge.
+
 ## The commands you'll end up with
 
 The exact commands are your choice. This is the shape, using `./factory`

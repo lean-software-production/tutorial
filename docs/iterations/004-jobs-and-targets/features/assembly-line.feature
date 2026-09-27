@@ -10,13 +10,13 @@ Feature: Assembly line
   orchestration.feature.
 
   start and finish mark where the line begins and ends. Every other node
-  names a machine the target has: one configured in
-  .assembly-lines/.machines/ under that name. An edge only routes. Its
-  label names a field of the result of the machine it leaves: the edge is
-  taken when that field is true, and one labelled "not" and the field's
-  name when it is false. An edge with no label is taken whatever the
-  result. The planner decides whether there is more to do: it is the only
-  machine with an edge to finish.
+  names a machine the target has: one with a folder of its own,
+  .assembly-lines/.machines/<name>/, holding its configuration. An edge
+  only routes. Its label names a field of the result of the machine it
+  leaves: the edge is taken when that field is true, and one labelled
+  "not" and the field's name when it is false. An edge with no label is
+  taken whatever the result. The planner decides whether there is more to
+  do: it is the only machine with an edge to finish.
 
   Background:
     Given a copy of the factory

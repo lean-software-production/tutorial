@@ -19,9 +19,10 @@ names a field of the result of the machine it leaves. The planner
 decides whether there is more to do; the line holds the loop back to it
 and the retry after failed validation, and the factory limits how many
 attempts a task gets. Lines live in the target, in `.assembly-lines/`,
-with the machines they name in `.assembly-lines/.machines/`. A target
-can hold several lines, and every line in it that names the doer runs
-the same doer. A line never names a target.
+with the machines they name each in a folder of its own in
+`.assembly-lines/.machines/`. A target can hold several lines, and every
+line in it that names the doer runs the same doer. A line never names a
+target.
 
 Validation is done by the **three big brains**, one machine on the line:
 three reviewers on different providers' models report on each attempt,
@@ -29,7 +30,9 @@ and a synthesiser reads their reports and decides.
 
 The factory runs as a daemon. You start a job, and it keeps working
 while another command watches it: what each machine generates and what
-it spends.
+it spends. It runs each machine as an ACP agent, speaking the Agent
+Client Protocol to it over stdio, and keeps what the machines generate
+and spend in the job's record.
 
 Each run is for a **job**: one of the target's assembly lines, a seed,
 saying what to build, and a target, the codebase to build it in. The
@@ -38,5 +41,5 @@ plan with the factory, never in the target. A job can be stopped, and
 started again later.
 
 New since iteration 5: `monitoring.feature` and `observability.feature`;
-the factory runs as a daemon, one job at a time, and jobs can be
-stopped.
+machines run as ACP agents; the factory runs as a daemon, one job at a
+time, and jobs can be stopped.

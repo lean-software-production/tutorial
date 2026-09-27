@@ -1,8 +1,8 @@
 Feature: Orchestration
 
   How the factory runs along its assembly line: when a task is finished,
-  when to give up and when to stop. These rules do not care how
-  validation is done.
+  when to give up and when to stop. These rules do not care how validation
+  is done.
 
   Background:
     Given a copy of the factory
@@ -12,7 +12,7 @@ Feature: Orchestration
     And a job named "tetris", on the "careful" line, with that seed and target
     And the planner is the plan-alpha-beta stand-in
     And the doer is the do-next stand-in
-    And every reviewer is the always-satisfied stand-in
+    And every reviewer is the rubber-stamp stand-in
     And the synthesiser is the always-satisfied stand-in
 
   Rule: The factory works in the target it is given

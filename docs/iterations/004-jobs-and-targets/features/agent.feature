@@ -3,11 +3,11 @@ Feature: Machines
   No machine's work is written by the factory. The planner, the doer and
   the validator are machines on the line. Each has a name, and a harness
   that runs it: a coding agent such as pi by default, or another named in
-  the machine's configuration. Machines are configured in the target, in
-  .assembly-lines/.machines/, under their names; every line in a target
-  that names the doer runs the same doer. A machine could as well be
-  ordinary code. Whatever runs it, a machine answers with a result: JSON
-  describing the job it did.
+  the machine's configuration. Each machine has a folder of its own in the
+  target, .assembly-lines/.machines/<name>/, holding its configuration;
+  every line in a target that names the doer runs the same doer. A machine
+  could as well be ordinary code. Whatever runs it, a machine answers with
+  a result: JSON describing the job it did.
 
   Most examples run a machine with a stand-in: one of the small programs
   the course ships in `stand-ins/`, which take what the factory hands them

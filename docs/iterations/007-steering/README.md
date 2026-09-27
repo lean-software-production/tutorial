@@ -18,6 +18,11 @@ something to stick, it belongs in the seed, the plan, or the machine's own
 prompt. Noticing where the difference bites is most of the point of this
 homework.
 
+Stable ACP has no way to reach a running turn yet. The factory uses
+`_session/steering`, an extension the Claude Code and Codex adapters
+already accept, and the pi bridge too: a request with the `sessionId` and
+a `prompt`, answered `{"outcome": "injected"}` when the message went in.
+
 ## The commands you'll end up with
 
 On top of homework 6's, one more — again, the exact shape is yours:
@@ -26,6 +31,6 @@ On top of homework 6's, one more — again, the exact shape is yours:
 $ ./factory say tetris doer "use curses, not print"
 delivered to doer
 
-$ ./factory say tetris reviewer-1 "be strict about error handling"
+$ ./factory say tetris reviewer_1 "be strict about error handling"
 refused: doer is what is running
 ```

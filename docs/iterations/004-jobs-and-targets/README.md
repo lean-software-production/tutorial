@@ -13,10 +13,10 @@ This homework separates the factory from what it builds.
   on.
 - **The assembly lines move into the target.** A target holds its
   product and, in `.assembly-lines/`, the lines that build it, with the
-  machines they name in `.assembly-lines/.machines/`. A machine's name is
-  unique in its target: every line there that names the doer runs the
-  same doer. Move your line and machines from homework 3 into
-  `tetris/.assembly-lines/`.
+  machines they name in `.assembly-lines/.machines/`, a folder each. A
+  machine's name is unique in its target: every line there that names
+  the doer runs the same doer. Move your line and machines from homework
+  3 into `tetris/.assembly-lines/`.
 - **Each run is for a job.** You name the job, and the first time you
   run it you give it a target, one of that target's lines, and a seed.
   The job remembers all three; after that, its name is enough. It keeps

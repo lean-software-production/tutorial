@@ -10,14 +10,14 @@ Feature: Assembly line
   orchestration.feature.
 
   start and finish mark where the line begins and ends. Every other node
-  names a machine the target has: one configured in
-  .assembly-lines/.machines/ under that name. An edge only routes. Its
-  label names a field of the result of the machine it leaves: the edge is
-  taken when that field is true, and one labelled "not" and the field's
-  name when it is false. An edge with no label is taken whatever the
-  result. The planner decides whether there is more to do: it is the only
-  machine with an edge to finish. The three big brains is one machine
-  here; what is inside it is in validation.feature.
+  names a machine the target has: one with a folder of its own,
+  .assembly-lines/.machines/<name>/, holding its configuration. An edge
+  only routes. Its label names a field of the result of the machine it
+  leaves: the edge is taken when that field is true, and one labelled
+  "not" and the field's name when it is false. An edge with no label is
+  taken whatever the result. The planner decides whether there is more to
+  do: it is the only machine with an edge to finish. The three big brains
+  is one machine here; what is inside it is in validation.feature.
 
   Background:
     Given a copy of the factory
@@ -42,7 +42,8 @@ Feature: Assembly line
       Then it accepts it
 
     Example: The single validator goes back in
-      Given three_big_brains has been replaced by validator throughout the assembly line
+      Given the target has the machine validator
+      And three_big_brains has been replaced by validator throughout the assembly line
       When the factory reads the assembly line
       Then it accepts it
 
