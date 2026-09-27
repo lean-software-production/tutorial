@@ -1,0 +1,3 @@
+#!/bin/sh
+# unreadable-result, over ACP: see agent.mjs.
+exec node "$(dirname "$0")/agent.mjs" unreadable-result "$@"

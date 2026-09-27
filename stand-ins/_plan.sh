@@ -16,11 +16,15 @@ unticked() { sed -n 's/^- \[ \] //p' "$plan_path"; }
 
 first_unticked() { unticked | head -n 1; }
 
-is_committed() { [ -n "$(git log -1 --format=%H -- "$1" 2>/dev/null)" ]; }
+# A task's work is a file named after it, with anything but letters,
+# digits, dots and dashes turned into dashes.
+work_file() { printf '%s' "$1" | tr -c 'A-Za-z0-9.-' '-'; }
+
+is_committed() { [ -n "$(git log -1 --format=%H -- "$(work_file "$1")" 2>/dev/null)" ]; }
 
 tick() {
   awk -v t="$1" '$0 == "- [ ] " t { print "- [x] " t; next } { print }' \
     "$plan_path" > "$plan_path.tmp" && mv "$plan_path.tmp" "$plan_path"
 }
 
-do_task() { echo "done by a stand-in" > "$1"; }
+do_task() { echo "done by a stand-in" > "$(work_file "$1")"; }

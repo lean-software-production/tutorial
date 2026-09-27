@@ -1,0 +1,8 @@
+#!/bin/sh
+# A validator or reviewer that takes $STAND_IN_SLEEP seconds (default 2)
+# to report, then is satisfied. It prints any message it has heard.
+. "$(dirname "$0")/_read-prompt.sh"
+echo "checking"
+sleep "${STAND_IN_SLEEP:-2}"
+hear
+echo '{"satisfied": true, "findings": []}'

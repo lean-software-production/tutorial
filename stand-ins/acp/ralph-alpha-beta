@@ -1,0 +1,3 @@
+#!/bin/sh
+# ralph-alpha-beta, over ACP: see agent.mjs.
+exec node "$(dirname "$0")/agent.mjs" ralph-alpha-beta "$@"

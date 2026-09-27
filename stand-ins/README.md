@@ -18,8 +18,11 @@ they print.
 
 If `$STAND_IN_LOG` is set, each stand-in appends its name to that file
 when it is called. That is how a check counts calls and sees their order.
-If `$STAND_IN_RECORD` is set, each stand-in also appends its name and
-everything it was given, so a check can see what the factory handed it.
+If `$STAND_IN_RECORD` is set, it names a folder, and each stand-in writes
+everything it was given to a file of its own there, named
+`<time>-<stand-in>-<process>`, so a check can see what the factory handed
+each call. Stand-ins that run at the same time, like three reviewers,
+never share a file.
 
 The factory never reads the plan; the agents keep it. The stand-ins that
 keep a plan find it by the first path ending in `plan.md` that their
@@ -44,12 +47,41 @@ result's fields, and routes on them.
 | `plan-alpha-beta` | A planner. With no plan, writes one: `alpha`, then `beta`. With a plan, ticks every task whose work is committed. Result: `{"complete": …}`. |
 | `do-next` | A doer. Does the first task not ticked, and never touches the plan. Result: `{"task": …}`. |
 | `plan-in-prose` | Keeps its plan in prose that no factory could parse, and plays any part: writes the plan, builds whichever of `alpha` and `beta` is not committed yet. Result: `{"complete": …}`, true once both are committed. |
+| `rubber-stamp` | A reviewer that approves whatever it is given: `always-satisfied` under a name of its own, so a check can count reviewers apart from the synthesiser. |
+| `slow-satisfied` | A validator or reviewer that prints `checking`, takes `$STAND_IN_SLEEP` seconds (default 2), prints anything it heard, then is satisfied. |
+| `numbered-report` | A reviewer that is never satisfied, with a numbered finding — `report 1`, `report 2` and so on — so a check can tell reports apart. |
+| `scripted` | A doer that follows the steps written in its task, separated by `;`: `say <text>`, `sleep <seconds>`, `read <skill>` (that skill's `SKILL.md`, whose path the prompt names), `run <command>`, and `on attempt <n>: <step>`. After each step it prints anything it heard. Then it does the task. |
 | `always-satisfied` | A validator. Result: `{"satisfied": true, "findings": []}`, whatever it is asked to check. |
 | `not-satisfied-once` | A validator. Not satisfied, with a finding, the first time it is called; satisfied every time after. It remembers in `$STAND_IN_STATE` (default `${TMPDIR:-/tmp}/stand-in-state`). |
 | `never-satisfied` | A validator. Result: `{"satisfied": false, "findings": [...]}`, whatever it is asked to check. |
 | `write-sentinel` | Writes a file called `SENTINEL` in the current directory, and nothing else. Result: `{"wrote": "SENTINEL"}`. |
-| `record-input` | Records everything it was given, to `$STAND_IN_RECORD` (default `${TMPDIR:-/tmp}/stand-in-record.txt`), then does nothing. Result: `{"recorded": …}`. |
+| `record-input` | Records everything it was given, in `$STAND_IN_RECORD` (default `${TMPDIR:-/tmp}/stand-in-record`), then does nothing. Result: `{"recorded": …}`. |
 | `unreadable-result` | Writes a file called `UNREADABLE`, then answers in prose, not with a result: nothing a factory can route on. |
 
 For "Without an agent, nothing is built", point your factory at a path
 where no agent exists.
+
+## Over ACP
+
+From homework 6 the factory runs each machine as an ACP agent, speaking
+the [Agent Client Protocol](https://agentclientprotocol.com) to it over
+stdio. `acp/<stand-in>` runs any stand-in that way, the way an adapter
+such as `claude-agent-acp` runs a real agent. It needs only Node. For
+each `session/prompt` it runs the stand-in with the prompt, and:
+
+- streams each line the stand-in prints as an `agent_message_chunk`;
+- answers the prompt with `usage`: the prompt's length as `inputTokens`,
+  the answer's as `outputTokens`, so the numbers grow with every attempt;
+- passes a `_session/steering` message on to the running stand-in, which
+  prints it at its next step as `heard: <message>`, and writes it to a
+  file of its own in `$STAND_IN_RECORD`;
+- stops the stand-in on `session/cancel`.
+
+Two kinds of line a stand-in prints are requests, not text:
+
+- `@read <path>` becomes a read tool call whose `locations` name the file
+  — how the factory sees a skill activated;
+- `@run <command>` becomes a call to the `run_command` tool of the first
+  MCP server the factory named in `session/new`; what the tool answers is
+  printed.
+

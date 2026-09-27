@@ -1,0 +1,3 @@
+#!/bin/sh
+# always-satisfied, over ACP: see agent.mjs.
+exec node "$(dirname "$0")/agent.mjs" always-satisfied "$@"
