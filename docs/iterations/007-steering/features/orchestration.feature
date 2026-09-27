@@ -11,13 +11,12 @@ Feature: Orchestration
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
-    And the target has the machines planner, doer and three_big_brains
+    And the target has the machines planner, doer and validator
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
     And the planner plans the tasks alpha and beta
     And the doer does the next task in the plan
-    And every reviewer is always satisfied
-    And the synthesiser is always satisfied
+    And the validator is always satisfied
 
   Rule: The factory works in the target it is given
 
@@ -52,7 +51,7 @@ Feature: Orchestration
       Given a plan with one task, not done
       And the "tetris" job is running, with the doer part-way through an attempt
       And a new target, with a seed describing a game of Snake
-      And the target has the machines planner, doer and three_big_brains
+      And the target has the machines planner, doer and validator
       And the "careful" line has been copied into the target
       And a job named "snake", on the "careful" line, with that seed and target
       When I start the "snake" job
@@ -61,12 +60,12 @@ Feature: Orchestration
 
   Rule: The factory runs the machines its assembly line gives it
 
-    Example: An assembly line with no validation on it
-      Given the three big brains has been taken out of the "careful" line, so the doer goes straight to the planner
+    Example: An assembly line with no validator on it
+      Given the validator has been taken out of the "careful" line, so the doer goes straight to the planner
       And a plan with three tasks, none of them done
       When the factory runs the "tetris" job
       Then the plan shows every task as done
-      And the synthesiser has not been called
+      And the validator has not been called
 
   Rule: Each job runs the assembly line it is given
 
@@ -79,14 +78,14 @@ Feature: Orchestration
       And a plan for each job with three tasks of its own, none of them done
       When the factory runs the "tetris" job
       And the factory runs the "quick" job
-      Then the three big brains was called for the "tetris" job
-      And the three big brains was not called for the "quick" job
+      Then the validator was called for the "tetris" job
+      And the validator was not called for the "quick" job
 
   Rule: A line copied into another target builds there
 
     Example: The careful line, copied
       Given a new target, with a seed describing a game of Snake
-      And the target has the machines planner, doer and three_big_brains
+      And the target has the machines planner, doer and validator
       And the "careful" line has been copied into the target
       And a job named "snake", on the "careful" line, with that seed and target
       And a plan for each job with three tasks of its own, none of them done
@@ -97,7 +96,7 @@ Feature: Orchestration
   Rule: The factory does no work on an assembly line it refuses
 
     Example: The assembly line names a machine the factory does not have
-      Given "three_big_brains" is misspelt "three_big_brain" throughout the "careful" line
+      Given "validator" is misspelt "validater" throughout the "careful" line
       And a plan with three tasks, none of them done
       When the factory runs the "tetris" job
       Then no agent has been called
@@ -122,7 +121,7 @@ Feature: Orchestration
 
     Example: The work is wrong first time
       Given a plan with three tasks, none of them done
-      And the synthesiser is not satisfied the first time
+      And the validator is not satisfied the first time
       When the factory runs the "tetris" job
       Then the doer has been called four times
       And there are three new commits
@@ -140,7 +139,7 @@ Feature: Orchestration
     Example: Validation is never satisfied
       Given a plan with three tasks, none of them done
       And the factory allows at most three attempts at a task
-      And the synthesiser is never satisfied
+      And the validator is never satisfied
       When the factory runs the "tetris" job
       Then the doer has been called three times
       And it reports that a task hit its limit
@@ -185,19 +184,19 @@ Feature: Orchestration
     The factory takes the edge whose label matches it, and never looks
     for words in what a machine says.
 
-    Example: The synthesiser answers in prose
+    Example: The validator answers in prose
       Given a plan with three tasks, none of them done
-      And the synthesiser answers in prose, with no result
+      And the validator answers in prose, with no result
       When the factory runs the "tetris" job
-      Then it reports that it could not read the synthesiser's result
+      Then it reports that it could not read the validator's result
       And there are no new commits
       And the factory has stopped
 
     Example: A label the result does not have
       Given a plan with three tasks, none of them done
-      And the edges from three_big_brains are labelled "approved" and "not approved"
+      And the edges from validator are labelled "approved" and "not approved"
       When the factory runs the "tetris" job
-      Then it reports that the result of three_big_brains has no field "approved"
+      Then it reports that the result of validator has no field "approved"
       And there are no new commits
 
   Rule: Stopping a job leaves the factory running
@@ -220,18 +219,29 @@ Feature: Orchestration
 
   Rule: A stop interrupts the work at once and leaves the job in a sane state
 
-    Stopping is something you choose to do. Whatever machine is working
-    is interrupted there and then, and its attempt is abandoned: nothing is
-    marked done that isn't, and nothing half-finished is committed. What it
-    had written is left in the target, for whoever comes looking. A crash
-    is not a stop; after one, the factory makes a best effort to do the
-    same, and no more is asked of it.
+    Stopping is something you choose to do. Every machine that is
+    working is interrupted there and then, and the attempt is abandoned:
+    nothing is marked done that isn't, and nothing half-finished is
+    committed. What the machines had written is left in the target, for
+    whoever comes looking. A crash is not a stop; after one, the factory
+    makes a best effort to do the same, and no more is asked of it.
 
     Example: The doer is mid-attempt
       Given a plan with one task, not done
       And the "tetris" job is running, with the doer part-way through an attempt, having said "started"
       When I stop the "tetris" job
       Then the plan shows every task as not done
+      And there are no new commits
+
+    Example: The reviewers are mid-review
+      Given the three big brains has replaced the validator on the "careful" line
+      And every reviewer is always satisfied
+      And the synthesiser is always satisfied
+      And a plan with one task, not done
+      And the "tetris" job is running, with every reviewer part-way through
+      When I stop the "tetris" job
+      Then the "tetris" job is not running
+      And the plan shows every task as not done
       And there are no new commits
 
   Rule: A stopped job carries on when it is started again

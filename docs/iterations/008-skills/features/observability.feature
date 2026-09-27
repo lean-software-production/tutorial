@@ -12,13 +12,12 @@ Feature: Observability
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
-    And the target has the machines planner, doer and three_big_brains
+    And the target has the machines planner, doer and validator
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
     And the planner plans the tasks alpha and beta
     And the doer does the next task in the plan
-    And every reviewer is always satisfied
-    And the synthesiser is always satisfied
+    And the validator is always satisfied
 
   Rule: What a machine generates can be read while it is generating it
 
@@ -33,7 +32,10 @@ Feature: Observability
   Rule: Every line says which machine generated it
 
     Example: Three reviewers reporting at once
-      Given a plan with one task, not done
+      Given the three big brains has replaced the validator on the "careful" line
+      And every reviewer is always satisfied
+      And the synthesiser is always satisfied
+      And a plan with one task, not done
       When the factory runs the "tetris" job
       And I watch the "tetris" job
       Then I see "satisfied" from reviewer_1, reviewer_2 and reviewer_3
@@ -41,7 +43,10 @@ Feature: Observability
   Rule: Watching says which machines are running now
 
     Example: During fan out
-      Given a plan with one task, not done
+      Given the three big brains has replaced the validator on the "careful" line
+      And every reviewer is always satisfied
+      And the synthesiser is always satisfied
+      And a plan with one task, not done
       And the "tetris" job is running, with every reviewer part-way through
       When I watch the "tetris" job
       Then it shows reviewer_1, reviewer_2 and reviewer_3 as running

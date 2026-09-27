@@ -12,13 +12,12 @@ Feature: Steering
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
-    And the target has the machines planner, doer and three_big_brains
+    And the target has the machines planner, doer and validator
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
     And the planner plans the tasks alpha and beta
     And the doer does the next task in the plan
-    And every reviewer is always satisfied
-    And the synthesiser is always satisfied
+    And the validator is always satisfied
 
   Rule: A message reaches the machine at its next step
 
@@ -39,7 +38,10 @@ Feature: Steering
     that watching shows as running.
 
     Example: Three reviewers at once
-      Given a plan with one task, not done
+      Given the three big brains has replaced the validator on the "careful" line
+      And every reviewer is always satisfied
+      And the synthesiser is always satisfied
+      And a plan with one task, not done
       And the "tetris" job is running, with every reviewer part-way through
       When I say "be strict about error handling" to reviewer_2
       And the reviewers finish
@@ -52,7 +54,7 @@ Feature: Steering
     Example: The machine named has not started
       Given a plan with one task, not done
       And the "tetris" job is running, with the doer part-way through an attempt
-      When I say "be strict about error handling" to reviewer_1
+      When I say "be strict about error handling" to the validator
       Then the factory refuses
       And it says that the doer is what is running
 
@@ -67,7 +69,7 @@ Feature: Steering
 
     Example: The next attempt has not heard it
       Given a plan with one task, not done
-      And the synthesiser is not satisfied the first time
+      And the validator is not satisfied the first time
       And the "tetris" job is running, with the doer part-way through an attempt
       When I say "use curses, not print" to the doer
       And the doer finishes its attempt
@@ -75,13 +77,13 @@ Feature: Steering
       Then the doer has been called twice
       And the doer heard "use curses, not print" once
 
-    Example: The reviewers have not heard it either
+    Example: The validator has not heard it either
       Given a plan with one task, not done
       And the "tetris" job is running, with the doer part-way through an attempt
       When I say "use curses, not print" to the doer
       And the doer finishes its attempt
       And the "tetris" job has run to the end
-      Then no reviewer heard "use curses, not print"
+      Then the validator did not hear "use curses, not print"
 
   Rule: A message is part of the record
 

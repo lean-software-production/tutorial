@@ -1,15 +1,14 @@
 Feature: Machines
 
-  No machine's work is written by the factory. The planner, the doer and,
-  inside the three big brains, the reviewers and the synthesiser are
-  machines. Each has a name, and a harness that runs it: an ACP agent,
-  which the factory speaks the Agent Client Protocol to over stdio — pi,
-  through its ACP bridge, by default, or another named in the machine's
-  configuration. Each machine has a folder of its own in the target,
-  .assembly-lines/.machines/<name>/, holding its configuration; every line
-  in a target that names the doer runs the same doer. A machine could as
-  well be ordinary code. Whatever runs it, a machine answers with a
-  result: JSON describing the job it did.
+  No machine's work is written by the factory. The planner, the doer and
+  the validator are machines on the line. Each has a name, and a harness
+  that runs it: an ACP agent, which the factory speaks the Agent Client
+  Protocol to over stdio — pi, through its ACP bridge, by default, or
+  another named in the machine's configuration. Each machine has a folder
+  of its own in the target, .assembly-lines/.machines/<name>/, holding its
+  configuration; every line in a target that names the doer runs the same
+  doer. A machine could as well be ordinary code. Whatever runs it, a
+  machine answers with a result: JSON describing the job it did.
 
   Most examples say what each machine does in them: the planner plans
   the tasks alpha and beta, say, and the validator is never satisfied.
@@ -19,19 +18,18 @@ Feature: Machines
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
-    And the target has the machines planner, doer and three_big_brains
+    And the target has the machines planner, doer and validator
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
     And the planner plans the tasks alpha and beta
     And the doer does the next task in the plan
-    And every reviewer is always satisfied
-    And the synthesiser is always satisfied
+    And the validator is always satisfied
 
   Rule: A machine runs pi unless its configuration names another harness
 
-    Example: The synthesiser's configuration names no harness
+    Example: The validator's configuration names no harness
       Given a plan with three tasks, none of them done
-      And no harness is chosen for the synthesiser
+      And no harness is chosen for the validator
       When the factory runs the "tetris" job
       Then pi has been called
       And the doer's chosen harness has been called
@@ -71,12 +69,12 @@ Feature: Machines
       When the factory runs the "tetris" job
       Then the doer was pointed at the plan and at the seed
 
-  Rule: Validation is what the synthesiser decided
+  Rule: Validation is what the validator decided
 
     Example: A validator that is never satisfied
       Given a plan with three tasks, none of them done
       And the factory allows at most three attempts at a task
-      And the synthesiser is never satisfied
+      And the validator is never satisfied
       When the factory runs the "tetris" job
       Then the doer has been called three times
       And there are no new commits
@@ -84,41 +82,36 @@ Feature: Machines
   Rule: Each machine is asked for the fields its edges route on
 
     The factory tells each machine what its result must say: the field
-    each edge leaving it names. The three big brains is ordinary code, so
-    it is its synthesiser that is asked, and asked too why it is not
-    satisfied, in "findings", which go back to the doer. Its reviewers are
-    asked for the same two fields. Nothing but that question makes a
-    machine answer with a result.
+    each edge leaving it names. The validator is also asked why it is
+    not satisfied, in "findings", which go back to the doer. A machine
+    whose edges name no field, such as a branch of a fan out, is still
+    asked for a result. Nothing but that question makes a machine answer
+    with a result.
 
     Example: What the planner is asked for
       Given a plan with three tasks, none of them done
       When the factory runs the "tetris" job
       Then the planner was asked for a result with the field "complete"
 
-    Example: What the synthesiser is asked for
+    Example: What the validator is asked for
       Given a plan with three tasks, none of them done
       When the factory runs the "tetris" job
-      Then the synthesiser was asked for a result with the fields "satisfied" and "findings"
-
-    Example: What the reviewers are asked for
-      Given a plan with three tasks, none of them done
-      When the factory runs the "tetris" job
-      Then every reviewer was asked for a result with the fields "satisfied" and "findings"
+      Then the validator was asked for a result with the fields "satisfied" and "findings"
 
     Example: Edges that name another field
       Given a plan with three tasks, none of them done
-      And the edges from three_big_brains are labelled "approved" and "not approved"
+      And the edges from validator are labelled "approved" and "not approved"
       When the factory runs the "tetris" job
-      Then the synthesiser was asked for a result with the fields "approved" and "findings"
+      Then the validator was asked for a result with the fields "approved" and "findings"
 
   Rule: A result is the last line of the answer that is JSON
 
     A machine may say anything before its result. The factory reads only
     the last line of the answer that parses as JSON.
 
-    Example: The synthesiser talks before its result
+    Example: The validator talks before its result
       Given a plan with three tasks, none of them done
-      And the synthesiser says "looks good to me" before its result
+      And the validator says "looks good to me" before its result
       When the factory runs the "tetris" job
       Then there are three new commits
 

@@ -31,7 +31,7 @@ On top of homework 6's, one more — again, the exact shape is yours:
 $ ./factory say tetris doer "use curses, not print"
 delivered to doer
 
-$ ./factory say tetris reviewer_1 "be strict about error handling"
+$ ./factory say tetris validator "be strict about error handling"
 refused: doer is what is running
 ```
 

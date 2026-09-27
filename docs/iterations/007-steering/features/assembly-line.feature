@@ -16,22 +16,27 @@ Feature: Assembly line
   leaves: the edge is taken when that field is true, and one labelled
   "not" and the field's name when it is false. An edge with no label is
   taken whatever the result. The planner decides whether there is more to
-  do: it is the only machine with an edge to finish. The three big brains
-  is one machine here; what is inside it is in validation.feature.
+  do: it is the only machine with an edge to finish.
+
+  A machine with more than one edge out and no labels on them fans out:
+  every machine those edges lead to runs, at the same time. Each is a
+  branch, and each branch's only edge, unlabelled, leads to the same
+  machine, where the branches meet. What running a fan out does is in
+  fan-out.feature.
 
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
-    And the target has the machines planner, doer and three_big_brains
+    And the target has the machines planner, doer and validator
     And this assembly line:
       """
       digraph assembly_line {
         start -> planner
         planner -> doer        [label="not complete"]
         planner -> finish      [label="complete"]
-        doer -> three_big_brains
-        three_big_brains -> doer     [label="not satisfied"]
-        three_big_brains -> planner  [label="satisfied"]
+        doer -> validator
+        validator -> doer      [label="not satisfied"]
+        validator -> planner   [label="satisfied"]
       }
       """
 
@@ -41,24 +46,93 @@ Feature: Assembly line
       When the factory reads the assembly line
       Then it accepts it
 
-    Example: The single validator goes back in
-      Given the target has the machine validator
-      And three_big_brains has been replaced by validator throughout the assembly line
+    Example: The validator is taken out
+      Given the validator has been taken out, so the doer goes straight to the planner
       When the factory reads the assembly line
       Then it accepts it
 
   Rule: The factory refuses an assembly line naming a machine it does not have
 
-    Example: A misspelt machine
-      Given "three_big_brains" is misspelt "three_big_brain" throughout the assembly line
+    Example: A misspelt validator
+      Given "validator" is misspelt "validater" throughout the assembly line
       When the factory reads the assembly line
       Then it refuses it
-      And it reports that it has no machine called "three_big_brain"
+      And it reports that it has no machine called "validater"
 
   Rule: The factory refuses an assembly line that cannot reach finish
 
     Example: Satisfied work has nowhere to go
-      Given the edge from three_big_brains to planner has been taken out
+      Given the edge from validator to planner has been taken out
       When the factory reads the assembly line
       Then it refuses it
-      And it reports that finish cannot be reached from three_big_brains
+      And it reports that finish cannot be reached from validator
+
+  Rule: The factory accepts a line that fans out and back in
+
+    Example: The three big brains
+      Given the target has the three big brains
+      And this assembly line:
+        """
+        digraph assembly_line {
+          start -> planner
+          planner -> doer          [label="not complete"]
+          planner -> finish        [label="complete"]
+          doer -> reviewer_1
+          doer -> reviewer_2
+          doer -> reviewer_3
+          reviewer_1 -> synthesiser
+          reviewer_2 -> synthesiser
+          reviewer_3 -> synthesiser
+          synthesiser -> doer      [label="not satisfied"]
+          synthesiser -> planner   [label="satisfied"]
+        }
+        """
+      When the factory reads the assembly line
+      Then it accepts it
+
+  Rule: The factory refuses a fan out whose branches do not meet
+
+    Example: A branch that goes somewhere else
+      Given the target has the three big brains
+      And this assembly line:
+        """
+        digraph assembly_line {
+          start -> planner
+          planner -> doer          [label="not complete"]
+          planner -> finish        [label="complete"]
+          doer -> reviewer_1
+          doer -> reviewer_2
+          doer -> reviewer_3
+          reviewer_1 -> synthesiser
+          reviewer_2 -> synthesiser
+          reviewer_3 -> planner
+          synthesiser -> doer      [label="not satisfied"]
+          synthesiser -> planner   [label="satisfied"]
+        }
+        """
+      When the factory reads the assembly line
+      Then it refuses it
+      And it reports that the branches from doer do not meet
+
+    Example: A branch that routes
+      Given the target has the three big brains
+      And this assembly line:
+        """
+        digraph assembly_line {
+          start -> planner
+          planner -> doer          [label="not complete"]
+          planner -> finish        [label="complete"]
+          doer -> reviewer_1
+          doer -> reviewer_2
+          doer -> reviewer_3
+          reviewer_1 -> synthesiser
+          reviewer_2 -> synthesiser  [label="satisfied"]
+          reviewer_2 -> doer         [label="not satisfied"]
+          reviewer_3 -> synthesiser
+          synthesiser -> doer      [label="not satisfied"]
+          synthesiser -> planner   [label="satisfied"]
+        }
+        """
+      When the factory reads the assembly line
+      Then it refuses it
+      And it reports that the branches from doer do not meet

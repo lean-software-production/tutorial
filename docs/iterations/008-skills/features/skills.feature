@@ -12,19 +12,18 @@ Feature: Skills
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
-    And the target has the machines planner, doer and three_big_brains
+    And the target has the machines planner, doer and validator
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
     And the planner plans the tasks alpha and beta
     And the doer does the next task in the plan
-    And every reviewer is always satisfied
-    And the synthesiser is always satisfied
+    And the validator is always satisfied
 
   Rule: A machine's skills are the ones that sit beside it
 
-    Example: The doer and a reviewer have different skills
+    Example: The doer and the validator have different skills
       Given the doer has the skills "tdd" and "commit-style"
-      And reviewer_1 has the skill "security-review"
+      And validator has the skill "security-review"
       And a plan with one task, not done
       When the factory runs the "tetris" job
       Then the doer was given "tdd"

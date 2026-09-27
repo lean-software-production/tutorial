@@ -36,9 +36,8 @@ it to students.
 
 ### Jobs and lines
 
-- `the target has the machines planner, doer and validator` — 004. Their configurations, in the latest target's `.assembly-lines/.machines/`.
-- `the target has the machines planner, doer and three_big_brains` — 005+. With three_big_brains's reviewers, reviewer_1 to reviewer_3, and its synthesiser, each a machine of its own; three_big_brains's configuration names them.
-- `the target has the machine validator` — 005+.
+- `the target has the machines planner, doer and validator` — 004+. Their configurations, in the latest target's `.assembly-lines/.machines/`.
+- `the target has the three big brains` — 005+. reviewer_1 to reviewer_3 and the synthesiser, each a machine of the latest target's, configured alike but for their models.
 - `the target has an assembly line {string} on which the doer's work is validated` — 004+. The line in `assembly-line.feature`'s Background, in the latest target's `.assembly-lines/`.
 - `the target has an assembly line {string} on which the doer goes straight to the planner` — 004+. The same line, without the validator.
 - `the {string} line has been copied into the target` — 004+. From the target that has it, into the latest.
@@ -46,19 +45,18 @@ it to students.
 - `the {string} job has been started` — 004+. It has run once, with all its settings.
 - `this assembly line` — 003+. The graph that follows, as the line under test: in the factory's folder through 003, in the latest target from 004.
 - `the validator has been taken out, so the doer goes straight to the planner` — 003.
-- `the validator has been taken out of the {string} line, so the doer goes straight to the planner` — 004.
-- `the three big brains has been taken out of the {string} line, so the doer goes straight to the planner` — 005+.
+- `the validator has been taken out of the {string} line, so the doer goes straight to the planner` — 004+.
+- `the three big brains has replaced the validator on the {string} line` — 005+. The target has the three big brains; on that line the doer's edge to the validator becomes an unlabelled edge to each reviewer, each reviewer has an unlabelled edge to the synthesiser, and the validator's edges become the synthesiser's.
 - `{string} is misspelt {string} throughout the assembly line` — 003+.
 - `{string} is misspelt {string} throughout the {string} line` — 004+.
 - `the edge from {word} to {word} has been taken out` — 003+.
 - `the edges from {word} are labelled {string} and {string}` — 003+. Its two labelled edges, in place of `satisfied` and `not satisfied`.
-- `three_big_brains has been replaced by validator throughout the assembly line` — 005+.
 
 ### Machines and their harnesses
 
 001 has one agent, "the agent". From 002 the planner, the doer and the
 validator are machines, named by those words; from 005, so are the
-reviewers and the synthesiser.
+three big brains' reviewers and synthesiser.
 
 What a machine does, in the examples that say. A result has the fields
 the line routes on: `complete` for the planner, `satisfied` and
@@ -76,6 +74,8 @@ the line routes on: `complete` for the planner, `satisfied` and
 - `the {word} is not satisfied the first time` — 002+. With the finding `not satisfied the first time`; satisfied every time after.
 - `every reviewer is not satisfied, with a finding of its own: "report 1", "report 2" or "report 3"` — 005+. Numbered in the order they report.
 - `the second reviewer is not satisfied, with the finding {string}` — 005+. reviewer_2 only.
+- `the second reviewer answers in prose, with no result` — 005+. reviewer_2 only.
+- `the second reviewer cannot be run` — 005+. reviewer_2's harness is a path where no program exists.
 - `the {word} answers in prose, with no result` — 001+. Having done its work: the agent or doer writes a file called `UNREADABLE`.
 - `the {word} says {string} before its result` — 001+. A line of prose, then its result.
 - `the doer says {string}, then {string}` — 006+. Generates the first line; the second only once the attempt carries on to its end.
@@ -157,7 +157,7 @@ running, rather than running it to the end.
 - `I stop the factory` — 006+.
 - `I watch the {string} job` — 006+. What the watch command shows now.
 - `I read the {string} job's record` — 006+.
-- `I say {string} to the doer` — 007+.
+- `I say {string} to the {word}` — 007+.
 - `I say {string} to {word}` — 007+. A machine by name, such as reviewer_2.
 
 ## Then
@@ -216,6 +216,9 @@ target.
 - `it reports that the pass hit its limit` — 002.
 - `it reports that a task hit its limit` — 003+.
 - `it reports that it has no machine called {string}` — 003+.
+- `it reports that the branches from {word} do not meet` — 005+. A fan out whose branches do not each lead, by one unlabelled edge, to the same machine.
+- `it reports that it could not read reviewer_2's result` — 005+.
+- `it reports that it could not run reviewer_2` — 005+.
 - `it reports that finish cannot be reached from {word}` — 003+. Among the machines it names.
 - `it says the {string} job already has a target` — 004+.
 
@@ -223,12 +226,12 @@ target.
 
 - `every reviewer has been called once` — 005+.
 - `every reviewer was given the same prompt` — 005+.
+- `every reviewer was asked for a result` — 005+.
 - `every reviewer was given the work for the {word} task` — 005+.
 - `every reviewer was given {string}` — 005+.
 - `the synthesiser was given {string}, {string} and {string}` — 005+.
 - `it was not given {string}` — 005+.
 - `the reviewers' findings are about {word}` — 005+, `@real-agent`.
-- `no reviewer or synthesiser has changed the plan or the work` — 005+, `@real-agent`.
 
 ### The daemon, watching and the record
 
@@ -250,8 +253,7 @@ from, and the tokens in and out per machine.
 - `it shows what every machine generated` — 006+.
 - `it shows what every machine spent` — 006+.
 - `the record is in the job's folder in the factory, not in the target` — 006+.
-- `it shows tokens in and tokens out for the doer` — 006+.
-- `it shows tokens in and tokens out for the three big brains` — 006+. What its reviewers and synthesiser spent.
+- `it shows tokens in and tokens out for the {word}` — 006+.
 - `it shows a total for each of Anthropic, Google and OpenAI` — 006+.
 - `it shows a total for the whole job` — 006+.
 - `what I watched showed the doer's tokens go up` — 006+.
@@ -268,7 +270,7 @@ point it heard it.
 - `{word} heard {string}` — 007+.
 - `neither reviewer_1 nor reviewer_3 heard it` — 007+.
 - `the doer heard {string} once` — 007+.
-- `no reviewer heard {string}` — 007+.
+- `the {word} did not hear {string}` — 007+.
 - `it shows that the doer was told {string}` — 007+.
 
 ### Skills and commands
@@ -306,21 +308,19 @@ Counted over the latest run.
 - `the {word} has been called four times` — 002+.
 - `the {word} has not been called` — 002+.
 - `the planner was called before the doer` — 003+.
-- `the validator was called for the {string} job` — 004.
-- `the validator was not called for the {string} job` — 004.
-- `the three big brains was called for the {string} job` — 005+.
-- `the three big brains was not called for the {string} job` — 005+.
+- `the validator was called for the {string} job` — 004+.
+- `the validator was not called for the {string} job` — 004+.
 
 What a machine (or 001's agent) was given:
 
 - `the {word} was asked for a result with the field {string}` — 001+.
 - `the {word} was asked for a result with the fields {string} and {string}` — 002+.
-- `every reviewer was asked for a result with the fields {string} and {string}` — 005+.
 
 - `the {word} was pointed at the plan and at the seed` — 001+.
 - `the {word} was given the work for the {word} task` — 002+.
 - `it was not given the work for the {word} task` — 002+.
 - `the {word} was given {string}` — 002+.
-- `the {word} was given the validator's findings` — 002+. The findings in the validator's (or from 005 the synthesiser's) result.
+- `the {word} was given the validator's findings` — 002+. The findings in the validator's result.
+- `the doer was given the synthesiser's findings` — 005+.
 - `the validator has changed neither the plan nor the work` — 002+, `@real-agent`.
 - `the validator's findings are about {word}` — 002+, `@real-agent`.

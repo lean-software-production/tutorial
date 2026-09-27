@@ -5,13 +5,12 @@ Feature: Planning
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
-    And the target has the machines planner, doer and three_big_brains
+    And the target has the machines planner, doer and validator
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
     And the planner plans the tasks alpha and beta
     And the doer does the next task in the plan
-    And every reviewer is always satisfied
-    And the synthesiser is always satisfied
+    And the validator is always satisfied
 
   Rule: The seed is the assembly line's only input
 
@@ -81,7 +80,7 @@ Feature: Planning
     Example: Work that gave up is not recorded
       Given a plan with three tasks, none of them done
       And the factory allows at most three attempts at a task
-      And the synthesiser is never satisfied
+      And the validator is never satisfied
       When the factory runs the "tetris" job
       Then the plan shows every task as not done
 
@@ -102,7 +101,7 @@ Feature: Planning
       And a plan whose first task is done
       When the factory runs the "tetris" job, given only its name
       Then there are two new commits
-      And the synthesiser has been called twice
+      And the validator has been called twice
 
   Rule: A job's settings cannot be changed once it has started
 
@@ -126,7 +125,7 @@ Feature: Planning
 
     Example: Two jobs, one after the other
       Given a new target, with a seed describing a game of Snake
-      And the target has the machines planner, doer and three_big_brains
+      And the target has the machines planner, doer and validator
       And the "careful" line has been copied into the target
       And a job named "snake", on the "careful" line, with that seed and target
       When the factory runs the "tetris" job

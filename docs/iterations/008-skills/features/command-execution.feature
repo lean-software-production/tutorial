@@ -9,13 +9,12 @@ Feature: Command execution
   Background:
     Given a copy of the factory
     And a new target, with a seed describing a game of Tetris
-    And the target has the machines planner, doer and three_big_brains
+    And the target has the machines planner, doer and validator
     And the target has an assembly line "careful" on which the doer's work is validated
     And a job named "tetris", on the "careful" line, with that seed and target
     And the planner plans the tasks alpha and beta
     And the doer does the next task in the plan
-    And every reviewer is always satisfied
-    And the synthesiser is always satisfied
+    And the validator is always satisfied
 
   Rule: A machine may run a command an activated skill names
 
@@ -72,7 +71,7 @@ Feature: Command execution
       Given the doer has a skill "tdd" whose instructions say to run "pytest -q"
       And a plan with one task, not done
       And the doer activates "tdd" on its first attempt only, and asks to run "pytest -q" on every attempt
-      And the synthesiser is not satisfied the first time
+      And the validator is not satisfied the first time
       When the factory runs the "tetris" job
       Then the factory ran "pytest -q" for the doer once
       And the factory refused "pytest -q" for the doer once

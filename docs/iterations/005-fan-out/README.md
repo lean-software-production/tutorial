@@ -2,18 +2,44 @@
 
 Read `FACTORY.md`, then the feature files in `features/`.
 
-Now that the route is an assembly line, swapping a machine on it is a
-one-word change. The validator is replaced by a new machine, **the three
-big brains**: the doer's work fans out to three reviewers at once — same
-job, three different providers' models — and a synthesiser reads all
-three reports and decides.
+Until now an assembly line has been a single path: one machine, then the
+next. This time the line itself learns a new move. A machine with several
+edges out and no labels on them **fans out**: every machine those edges
+lead to runs, at the same time. The branches **fan in** where they meet:
+each branch's one edge leads to the same machine, which runs once all of
+them have finished, and is given what each of them answered and nothing
+else. The factory refuses a line whose branches do not meet, and a
+branch that fails, by crashing or by answering with no result, stops the
+job.
 
-On the assembly line it is still a single node. The fan out and the fan in
-happen inside it, and building that is where the work is.
+That is all the factory learns. What you fan out to is up to the line.
+The course's example is **the three big brains**: the doer's work fans
+out to three reviewers, the same job on three different providers'
+models, and a synthesiser reads their reports and decides.
 
-A note on words: the three machines inside are **reviewers**. They assess
-and report; they do not decide. The synthesiser decides. From outside, the
-three big brains is the validation step.
+```dot
+doer -> reviewer_1
+doer -> reviewer_2
+doer -> reviewer_3
+reviewer_1 -> synthesiser
+reviewer_2 -> synthesiser
+reviewer_3 -> synthesiser
+synthesiser -> doer     [label="not satisfied"]
+synthesiser -> planner  [label="satisfied"]
+```
+
+The reviewers being alike is the three big brains' choice, not something
+fanning out needs: each branch is run as that machine would be run
+anywhere, with its own prompt.
+
+A note on words: the three reviewers assess and report; they do not
+decide. The synthesiser decides, and the line routes on its result, as it
+did on the validator's.
+
+The examples still run most of the factory on a line with a single
+validator, and bring in the three big brains only where a fan out is the
+point. Your own target's line is yours: put the three big brains on it
+when you want it there.
 
 ## Checks that see machines at work
 
