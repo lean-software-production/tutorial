@@ -9,7 +9,6 @@
 | 005 | [Fan out](005-fan-out/README.md) |
 | 006 | [Watching](006-watching/README.md) |
 | 007 | [Steering](007-steering/README.md) |
-| 008 | [Skills](008-skills/README.md) |
 
 Your progress is kept in your starter repo (`tetris/.factory/ITERATION`),
 not here. `fetch-iteration` works through these in order.

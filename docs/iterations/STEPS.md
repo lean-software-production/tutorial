@@ -79,10 +79,6 @@ the line routes on: `complete` for the planner, `satisfied` and
 - `the {word} answers in prose, with no result` — 001+. Having done its work: the agent or doer writes a file called `UNREADABLE`.
 - `the {word} says {string} before its result` — 001+. A line of prose, then its result.
 - `the doer says {string}, then {string}` — 006+. Generates the first line; the second only once the attempt carries on to its end.
-- `the doer activates {string}` — 008. Reads that skill's `SKILL.md`.
-- `the doer activates {string} and asks to run {string}` — 008. Then asks the factory's `run_command` tool to run the command.
-- `the doer activates {string} on its first attempt only, and asks to run {string} on every attempt` — 008.
-- `the doer asks to run {string}` — 008. Without activating a skill.
 - `the reviewers' lens is {word}` — 005+.
 - `the reviewers run on Anthropic, Google and OpenAI models` — 006+. reviewer_1 to reviewer_3's configurations name those providers.
 - `the {word} cannot be run` — 001+. Its harness is a path where no program exists.
@@ -109,21 +105,6 @@ its name.
 - `a plan in which every task is done` — 001+.
 - `a plan for each job with three tasks of its own, none of them done` — 004+. Each job's tasks are named after the job.
 - `a plan with one task, not done` — 005+.
-- `a plan with one task, {string}, not done` — 008, `@real-agent`.
-
-### Skills
-
-A skill is `.assembly-lines/.machines/<machine>/skills/<name>/SKILL.md`,
-with a name, a description `how to <name>` and instructions that start
-`INSTRUCTIONS-<name>`, unless a step says otherwise.
-
-- `the doer has the skills {string} and {string}` — 008.
-- `{word} has the skill {string}` — 008.
-- `the doer has a skill {string} whose SKILL.md has no description` — 008.
-- `the doer has a skill {string} whose instructions say to run {string}` — 008.
-- `the doer has the skill {string}, described as writing the test first` — 008, `@real-agent`.
-- `the doer has the skill {string}, whose instructions point at {string}` — 008, `@real-agent`.
-- `the doer has the skill {string}, which also holds {string} that its instructions never mention` — 008, `@real-agent`.
 
 ### The running factory
 
@@ -148,7 +129,6 @@ running, rather than running it to the end.
 - `the factory runs the {string} job with that target` — 004+. The latest target, in place of its own.
 - `the factory reads the assembly line` — 003+. Checks the line under test without running it.
 - `the doer's first attempt at a task is untestable` — 002+, `@real-agent`.
-- `the doer activates {string} and follows it` — 008, `@real-agent`.
 - `the doer finishes its attempt` — 007+.
 - `the reviewers finish` — 007+.
 - `I start the {string} job` — 006+. The command returns while the job runs; the doer does not finish its first attempt until a step says so.
@@ -272,25 +252,6 @@ point it heard it.
 - `the doer heard {string} once` — 007+.
 - `the {word} did not hear {string}` — 007+.
 - `it shows that the doer was told {string}` — 007+.
-
-### Skills and commands
-
-- `the {word} was not given {string}` — 008.
-- `the doer was given the name and description of {string} and of {string}` — 008.
-- `it was given the instructions of neither` — 008.
-- `the {string} job's record says the skill {string} was skipped, and why` — 008.
-- `it shows that the doer activated {string}` — 008.
-- `it does not show that the doer activated {string}` — 008.
-- `the factory ran {string} for the doer` — 008.
-- `the factory ran {string} for the doer once` — 008.
-- `the factory refused {string} for the doer` — 008.
-- `the factory refused {string} for the doer once` — 008.
-- `the doer was told that no activated skill names it` — 008.
-- `the {string} job's record shows the refusal` — 008.
-- `the doer activated {string}` — 008, `@real-agent`.
-- `the doer did not activate {string}` — 008, `@real-agent`.
-- `the doer read {word}` — 008, `@real-agent`.
-- `the doer did not read {word}` — 008, `@real-agent`.
 
 ### Agents
 
