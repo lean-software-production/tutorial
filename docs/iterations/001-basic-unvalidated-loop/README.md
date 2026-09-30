@@ -95,5 +95,19 @@ if its result says complete:  stop
 otherwise:                    commit
 ```
 
-You will keep this. The next homework adds checking the work: the factory
-starts noticing when the agent's output is wrong.
+## Keep Tetris v1
+
+Iterations 001 and 002 are both due this weekend. You will submit one Maven
+project with screenshots of Tetris v1 and Tetris v2, your validator's lens,
+and an explanation of the difference it made to the code.
+
+When your game is playable, run `npm start` from `tetris/` and capture your
+v1 screenshot before fetching 002.
+
+Keep the game, not just its screenshot:
+follow [the v1 checkpoint instructions in homework 2](../002-checking-the-work/README.md#save-v1-before-fetching-002).
+If you have already fetched 002, those instructions still apply as long as
+you have not changed the game.
+
+You will keep this factory. The next homework adds checking the work: the
+factory starts noticing when the agent's output is wrong.
