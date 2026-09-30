@@ -26,13 +26,18 @@ it to students.
 
 ### The factory, the codebase and the seed
 
-- `a copy of the factory, in a folder of its own inside a new codebase` — 001–003. A new git repository, with the factory copied into a folder inside it.
-- `a seed describing a game of Tetris` — 001–003. `seeds/tetris.md` in the codebase, committed.
-- `the codebase has no seed` — 001–003.
+- `a seed describing a game of Tetris` — 001–003. A seed file outside the target, selected with `--seed`.
+- `no seed is chosen` — 001–003. Omit the seed argument.
 - `a seed describing Tetris on a board 8 columns wide, started with {string}` — 001+, `@real-agent`.
-- `a copy of the factory` — 004+. The factory copied into a new folder of its own, with no jobs.
-- `a new target, with a seed describing a game of {word}` — 004+. A new git repository, with the seed in `seeds/`, committed.
-- `the seed has been deleted` — 004+. The current job's seed.
+- `a copy of the factory` — 001+. The factory copied into a new folder of its own, with no jobs or targets.
+- `a new target` — 001–003. A plain folder in the test repository, selected by an explicit target argument. "The codebase" also means this target.
+- `the target folder does not exist` — 001–003. Select a fresh path instead of the default target.
+- `the target is outside any Git repository` — 001–003. A fresh output folder with no repository among its ancestors.
+- `the factory has staged and unstaged changes` — 001–003. Unrelated changes outside the target, including both staged and unstaged edits to the same file.
+- `the target is selected by an absolute path` — 001–003. Pass the existing target's absolute path on the command line.
+- `no target is chosen` — 001–003. Omit the target argument.
+- `a new target, with a seed describing a game of {word}` — 004+. A fresh target and selected seed. Test setup may use a new Git repository for isolation; the factory also accepts targets in a shared repository.
+- `the seed has been deleted` — 001+. The selected seed file (the current job's seed from 004).
 
 ### Jobs and lines
 
@@ -121,6 +126,8 @@ running, rather than running it to the end.
 
 ## When
 
+- `the factory builds the target {string} to completion` — 001–003. Select that folder on the command line; run to completion (`--all` through 002, the assembly line from 003). Relative paths are from the factory's working directory; absolute paths are also accepted.
+
 - `the factory runs one pass` — 001–002.
 - `the factory runs to completion` — 001–002.
 - `the factory runs` — 003.
@@ -153,8 +160,8 @@ running, rather than running it to the end.
 - `the plan shows every task as not done` — 001+.
 - `the plan still has those three tasks` — 001+.
 - `the plan has the tasks {string} and {string}, and no others` — 001+.
-- `the plan is plan.md in the factory's folder` — 001–003.
-- `there is no plan anywhere else in the codebase` — 001–003.
+- `the plan is .factory/plan.md in the target` — 001–003.
+- `there is no plan in the factory's folder` — 001–003.
 - `the plan is plan.md in the factory's jobs folder, under tetris` — 004+.
 - `there is no plan in the target` — 004+.
 - `each job has its own plan` — 004+.
@@ -164,8 +171,9 @@ running, rather than running it to the end.
 
 ### Commits and work
 
-In 001–003 these are about the codebase; from 004, the current job's
-target.
+These are about the selected target (the current job's target from 004).
+Count and inspect commits with a pathspec for that target, excluding plan
+state. Other targets may share the same repository.
 
 - `there is one new commit` — 001+.
 - `there are two new commits` — 001+.
@@ -177,13 +185,18 @@ target.
 - `no new commit contains the work for the first task` — 003+.
 - `the work for alpha and beta has been committed` — 001+.
 - `each target holds only its own job's work` — 004+.
-- `Tetris has been built in the codebase` — 001–003, `@real-agent`.
-- `Tetris has been built in the target` — 004+, `@real-agent`.
-- `{string} in the codebase starts Tetris` — 001–003, `@real-agent`.
-- `{string} in the target starts Tetris` — 004+, `@real-agent`.
+- `Tetris has been built in the target` — 001+, `@real-agent`.
+- `{string} in the target starts Tetris` — 001+, `@real-agent`.
 - `its board is 8 columns wide` — 001+, `@real-agent`.
 
 ### The factory
+
+- `the target is a Git repository` — 001–003. Git was initialized for a target outside any existing repository.
+- `the factory's files, staged changes and path-limited history are unchanged` — 001–003. Compare files, index entries and `git log -- factory/` with before the run. The repository's global history may gain target-only commits.
+- `the target uses the containing repository` — 001–003. The target has no nested `.git`; its Git root is the existing test repository.
+- `it reports that a target is required` — 001–003.
+- `the targets {string} and {string} each have their own completed plan and committed work` — 001–003. Each has alpha and beta and a completed plan. Commits for each target contain only its work, excluding `.factory/plan.md`. Inspect history limited to that target's paths.
+- `the target {string} is unchanged` — 001–003. Compare its files, plan and path-limited Git history with the last time it ran.
 
 - `the factory has stopped` — 001+.
 - `the factory refuses` — 004+.

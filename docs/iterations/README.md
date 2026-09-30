@@ -10,7 +10,7 @@
 | 006 | [Watching](006-watching/README.md) |
 | 007 | [Steering](007-steering/README.md) |
 
-Your progress is kept in your starter repo (`tetris/.factory/ITERATION`),
+Your progress is kept in your starter repo (`factory/ITERATION`),
 not here. `fetch-iteration` works through these in order.
 
 ## Spec structure

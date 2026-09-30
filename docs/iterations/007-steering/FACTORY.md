@@ -40,8 +40,8 @@ it on with ACP's `_session/steering`.
 
 Each run is for a **job**: one of the target's assembly lines, a seed,
 saying what to build, and a target, the codebase to build it in. The
-factory has a codebase of its own, outside any target. The job keeps its
-plan with the factory, never in the target. A job can be stopped, and
+factory source stays in `factory/`, outside the target folders. The job
+keeps its plan in `factory/jobs/<name>/plan.md`, never in the target. A job can be stopped, and
 started again later.
 
 New since iteration 6: `steering.feature`.

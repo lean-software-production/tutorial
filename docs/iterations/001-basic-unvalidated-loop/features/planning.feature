@@ -3,7 +3,8 @@ Feature: Planning
   How the plan is made from the seed, and who keeps it true.
 
   Background:
-    Given a copy of the factory, in a folder of its own inside a new codebase
+    Given a copy of the factory
+    And a new target
     And a seed describing a game of Tetris
     And the agent plans the tasks alpha and beta, and does one task a pass
 
@@ -15,14 +16,25 @@ Feature: Planning
     Example: The work is given a seed and nothing else
       Given the agent is pi
       When the factory runs to completion
-      Then Tetris has been built in the codebase
+      Then Tetris has been built in the target
 
-  Rule: The seed is seeds/tetris.md in the codebase
+  Rule: The seed is selected on the command line
 
-    The factory always looks there. There is no other seed to choose.
+    A seed argument is required alongside the target argument. Relative
+    paths are resolved from the caller's working directory. The factory
+    gives machines the resolved seed path so they can read it from the
+    target. There is no default seed.
+
+    Example: No seed argument
+      Given no seed is chosen
+      And no plan
+      When the factory runs one pass
+      Then it reports that there is no seed
+      And no agent has been called
+      And there is no plan
 
     Example: There is no seed
-      Given the codebase has no seed
+      Given the seed has been deleted
       And no plan
       When the factory runs one pass
       Then it reports that there is no seed
@@ -50,16 +62,18 @@ Feature: Planning
       When the factory runs one pass
       Then every task in the plan comes from the seed
 
-  Rule: The plan is kept in the factory's folder
+  Rule: Each target keeps its own plan
 
-    There is one plan: plan.md, next to the factory. The work the factory
-    commits to the codebase never includes it.
+    The plan is .factory/plan.md inside the selected target. That folder
+    holds run state, not factory code, and is excluded from work commits.
+    A fresh target starts without a plan; selecting an existing target
+    resumes its plan. The factory never shares a plan between targets.
 
     Example: The first pass
       Given no plan
       When the factory runs one pass
-      Then the plan is plan.md in the factory's folder
-      And there is no plan anywhere else in the codebase
+      Then the plan is .factory/plan.md in the target
+      And there is no plan in the factory's folder
 
   Rule: The agent keeps the plan, and the factory never reads it
 

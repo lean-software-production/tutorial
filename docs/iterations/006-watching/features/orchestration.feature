@@ -20,16 +20,16 @@ Feature: Orchestration
 
   Rule: The factory works in the target it is given
 
-    The target is the codebase a job builds the product in: a git
-    repository, holding the product and, in .assembly-lines/, the
-    assembly lines and machines that build it. The factory is not in it;
-    it has a codebase of its own. It commits the work to the target, and
-    leaves .assembly-lines/ out of those commits.
+    The target is a plain folder holding the product and, in
+    .assembly-lines/, its lines and machines. The factory source stays
+    in factory/. It uses the repository containing the target, initializing
+    Git only if none contains it. Staging and commits include only the
+    target's work, excluding .assembly-lines/ and leaving unrelated staged
+    and unstaged changes alone.
 
-    A copy of the factory, for an example, is a copy in a new folder,
-    with no jobs. A new target is a new git repository. That is how an
-    example keeps out of your factory's jobs and the codebases you are
-    building.
+    Examples use a fresh factory copy and fresh targets. They may use a
+    new repository per target for isolation; separate repositories are
+    not a requirement of the factory.
 
   Rule: The factory runs as a daemon
 

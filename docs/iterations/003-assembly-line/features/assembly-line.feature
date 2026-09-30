@@ -15,7 +15,8 @@ Feature: Assembly line
   more to do: it is the only machine with an edge to finish.
 
   Background:
-    Given a copy of the factory, in a folder of its own inside a new codebase
+    Given a copy of the factory
+    And a new target
     And this assembly line:
       """
       digraph assembly_line {
