@@ -1,12 +1,13 @@
 # Homework 4 — Jobs and targets
 
-Read `FACTORY.md`, then the feature files in `features/`. Together they
-are the whole spec of the factory at this point, not just the new parts.
+Read `FACTORY.md`, then the feature files in `features/`. Together they are
+the whole spec of the factory at this point, not just the new parts.
 
-Your factory already builds into the target folder you choose. Until
-now every run supplied a seed and target and used the same assembly line.
-Each target kept one plan: an implicit job for that generation. This homework introduces named jobs that remember what
-they build and how, while the factory source stays in `factory/`.
+Your factory already builds into the target folder you choose. Until now
+every run supplied a seed and target and used the same assembly line. Each
+target kept one plan: an implicit job for that generation. This homework
+introduces named jobs that remember what they build and how, while the
+factory source stays in `factory/`.
 
 - **The assembly lines move into the target.** A target holds its
   product and, in `.assembly-lines/`, the lines that build it, with the
@@ -21,14 +22,14 @@ they build and how, while the factory source stays in `factory/`.
   existing game, move its `.factory/plan.md` there; a job
   now owns that plan. Or start with a fresh target.
 
-Once the route is data, a target can hold more than one line. Write a
-second one — the same line without the validator will do — and have each
-job say which line it runs.
+Once the route is data, a target can hold more than one line. Write a second
+one — the same line without the validator will do — and have each job say
+which line it runs.
 
 ## The commands you'll end up with
 
-The exact shape is your choice. Run from the repository root, with `bin/factory`
-linked to your entry point:
+The exact shape is your choice. Run from the repository root, with
+`bin/factory` linked to your entry point:
 
 ```sh
 # a new job: its target, its line and its seed
@@ -44,9 +45,9 @@ $ cp -r tetris/tetris2/.assembly-lines snake/snake1/
 $ bin/factory --job snakejobname --target snake/snake1 --line quick --seed snake/spec.md
 ```
 
-The factory should build whatever the new seed describes, without
-disturbing the first job.
+The factory should build whatever the new seed describes, without disturbing
+the first job.
 
-The checks still run against a copy of your factory, because jobs live
-with the factory. The copy still builds in separate targets,
-now each holding its own lines and machines.
+The checks still run against a copy of your factory, because jobs live with
+the factory. The copy still builds in separate targets, now each holding its
+own lines and machines.
