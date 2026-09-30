@@ -13,15 +13,11 @@ Feature: Orchestration
 
   Rule: The factory works in the target selected on the command line
 
-    The factory source lives in factory/. The target argument selects a
-    plain output folder. Agent calls work there. The factory uses the
-    containing Git repository and initializes one only if none contains
-    the target. Both staging and committing are limited to the target's
-    paths, excluding .factory/plan.md. Unrelated staged and unstaged
-    changes, including the student's factory edits, are left alone.
-
-    Each example uses a fresh factory copy and a separate target. That
-    keeps checks out of both your factory and your generated games.
+    The target is a plain output folder. Agent calls work there. The
+    factory uses the Git repository containing it, initializing one only
+    if none contains it. Work commits include only the selected target's
+    generated work, excluding .factory/plan.md. Unrelated staged and
+    unstaged changes are left alone.
 
   Rule: Each pass completes one task, then stops
 

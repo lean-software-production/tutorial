@@ -72,11 +72,21 @@ Feature: Planning
     A fresh target starts without a plan; selecting an existing target
     resumes its plan. The factory never shares a plan between targets.
 
+    A student can commit the plan separately as the generation's record.
+    Even then, the factory's work commits leave the plan out.
+
     Example: The first pass
       Given no plan
       When the factory runs one pass
       Then the plan is .factory/plan.md in the target
       And there is no plan in the factory's folder
+
+    Example: A plan already kept in Git
+      Given a plan with three tasks, none of them done
+      And the plan has been committed
+      When the factory runs one pass
+      Then the plan shows the first task as done
+      And no new commit includes the plan
 
   Rule: The planner keeps the plan, and the factory never reads it
 

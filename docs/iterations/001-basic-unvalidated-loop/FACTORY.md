@@ -10,10 +10,8 @@ The factory writes no project code and no plan itself, and never reads
 the plan. A coding agent does all of that — `pi` by default, or another
 chosen for the run.
 
-The factory source lives in `factory/` in the student's capstone repo.
-From the repository root, `bin/factory` requires both `--seed <file>` and
-`--target <folder>`. Relative paths are resolved from the caller's working
-directory; absolute paths work too. Targets are plain folders. The factory
+Each run requires both a seed file and a target folder. Relative paths
+are resolved from the caller's working directory; absolute paths work too. Targets are plain folders. The factory
 creates a missing folder, uses its containing Git repository and initializes
 Git only if no repository contains it. It runs agents in the target and
 limits both staging and commits to that target's work, excluding its plan

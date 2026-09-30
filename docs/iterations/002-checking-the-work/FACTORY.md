@@ -14,10 +14,8 @@ chosen for the run. Each machine answers with a result, a line of JSON
 describing the job it did, and the factory reads the planner's and the
 validator's results to decide what happens next.
 
-The factory source lives in `factory/` in the student's capstone repo.
-From the repository root, `bin/factory` requires both `--seed <file>` and
-`--target <folder>`. Relative paths are resolved from the caller's working
-directory; absolute paths work too. Targets are plain folders. The factory
+Each run requires both a seed file and a target folder. Relative paths
+are resolved from the caller's working directory; absolute paths work too. Targets are plain folders. The factory
 creates a missing folder, uses its containing Git repository and initializes
 Git only if no repository contains it. It runs agents in the target and
 limits both staging and commits to that target's work, excluding its plan

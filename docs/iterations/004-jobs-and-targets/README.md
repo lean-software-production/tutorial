@@ -14,7 +14,7 @@ factory source stays in `factory/`.
   machines they name in `.assembly-lines/.machines/`, a folder each. A
   machine's name is unique in its target: every line there that names
   the doer runs the same doer. Move your line and machines from homework
-  3 into `tetris/tetris2/.assembly-lines/` (or whichever target you choose).
+  3 into `tetris/tetris3/.assembly-lines/` (or whichever target you choose).
 - **Each run is for a job.** You name the job, and the first time you
   run it you give it a target, one of that target's lines, and a seed.
   The job remembers all three; after that, its name is enough. It keeps
@@ -33,7 +33,7 @@ The exact shape is your choice. Run from the repository root, with
 
 ```sh
 # a new job: its target, its line and its seed
-$ bin/factory --job tetrisjob --target tetris/tetris2 --line careful --seed tetris/spec.md
+$ bin/factory --job tetrisjob --target tetris/tetris3 --line careful --seed tetris/spec.md
 
 # after that, its name is enough
 $ bin/factory --job tetrisjob
@@ -41,7 +41,7 @@ $ bin/factory --job tetrisjob
 # a second target: write snake/spec.md describing Snake first
 # give it a line and machines of its own
 $ mkdir -p snake/snake1
-$ cp -r tetris/tetris2/.assembly-lines snake/snake1/
+$ cp -r tetris/tetris3/.assembly-lines snake/snake1/
 $ bin/factory --job snakejobname --target snake/snake1 --line quick --seed snake/spec.md
 ```
 

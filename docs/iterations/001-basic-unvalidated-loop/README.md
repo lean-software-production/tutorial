@@ -67,8 +67,6 @@ $ bin/factory --seed tetris/spec.md --target tetris/tetris1 --all
 {"complete": true}
 factory stopped
 
-# the payoff: a real, playable Tetris
-$ npm --prefix tetris/tetris1 start
 ```
 
 What the agent says will differ; the point is that real code appears in
@@ -109,6 +107,23 @@ call the agent: "write the plan, or do the next task and mark it done"
 if its result says complete:  stop
 otherwise:                    commit
 ```
+
+## Once your suite passes
+
+Use your factory with a real coding agent to build the first generation.
+From the repository root:
+
+```sh
+bin/factory --seed tetris/spec.md --target tetris/tetris1 --all
+git add -- tetris/tetris1/.factory/plan.md
+git commit --only -m "Save Tetris 1 plan" -- tetris/tetris1/.factory/plan.md
+npm --prefix tetris/tetris1 start
+```
+
+Play the game and keep it for comparison with the next generation. The
+factory leaves the plan out of its per-task work commits; commit it
+separately as shown so the generation's record stays with the game.
+The explicit path keeps unrelated staged edits out of the plan commit.
 
 You will keep this. The next homework adds checking the work: the factory
 starts noticing when the agent's output is wrong.

@@ -24,19 +24,18 @@ it to students.
 
 ## Given
 
-### The factory, the codebase and the seed
+### The factory, the target and the seed
 
 - `a seed describing a game of Tetris` — 001–003. A seed file outside the target, selected with `--seed`.
 - `no seed is chosen` — 001–003. Omit the seed argument.
 - `a seed describing Tetris on a board 8 columns wide, started with {string}` — 001+, `@real-agent`.
 - `a copy of the factory` — 001+. The factory copied into a new folder of its own, with no jobs or targets.
-- `a new target` — 001–003. A plain folder in the test repository, selected by an explicit target argument. "The codebase" also means this target.
-- `the target folder does not exist` — 001–003. Select a fresh path instead of the default target.
-- `the target is outside any Git repository` — 001–003. A fresh output folder with no repository among its ancestors.
-- `the factory has staged and unstaged changes` — 001–003. Unrelated changes outside the target, including both staged and unstaged edits to the same file.
-- `the target is selected by an absolute path` — 001–003. Pass the existing target's absolute path on the command line.
-- `no target is chosen` — 001–003. Omit the target argument.
-- `a new target, with a seed describing a game of {word}` — 004+. A fresh target and selected seed. Test setup may use a new Git repository for isolation; the factory also accepts targets in a shared repository.
+- `a new target` — 001–003. A plain folder in the test repository, selected by an explicit target argument.
+- `the target folder does not exist` — 001–003. The explicitly selected output path does not exist yet.
+- `the target is outside any Git repository` — 001+. Select a folder with no repository among its ancestors. From 004 place the selected line and machines there before invoking the job; this setup must not initialize Git.
+- `the factory has staged and unstaged changes` — 001+. Unrelated changes outside the target, including both staged and unstaged edits to the same file.
+- `no target is chosen` — 001+. Omit the target argument. From 004 this is the first invocation of a job with no saved configuration, not a resumed job.
+- `a new target, with a seed describing a game of {word}` — 004+. A fresh target folder and selected seed in the same test repository as the factory copy. Never initialize a nested repository here; shared-repository behavior must remain covered.
 - `the seed has been deleted` — 001+. The selected seed file (the current job's seed from 004).
 
 ### Jobs and lines
@@ -104,6 +103,7 @@ Plans in steps are in whatever format the student's machines keep. The
 tasks are `first`, `second` and `third`, and a task's work is a file with
 its name.
 
+- `the plan has been committed` — 001–003. Commit the current target's plan as a separate generation-history checkpoint before running the factory.
 - `no plan` — 001+.
 - `a plan with three tasks, none of them done` — 001+.
 - `a plan whose first task is done` — 001+.
@@ -126,7 +126,9 @@ running, rather than running it to the end.
 
 ## When
 
-- `the factory builds the target {string} to completion` — 001–003. Select that folder on the command line; run to completion (`--all` through 002, the assembly line from 003). Relative paths are from the factory's working directory; absolute paths are also accepted.
+- `the factory builds the target {string} to completion` — 001–003. Select that folder on the command line; run to completion (`--all` through 002, the assembly line from 003). Relative paths are from the caller's working directory; absolute paths are also accepted.
+
+- `the factory builds the same target using its absolute path` — 001–003. Repeat the previous target-building command to completion, replacing only its target argument with the absolute path to that same folder.
 
 - `the factory runs one pass` — 001–002.
 - `the factory runs to completion` — 001–002.
@@ -173,12 +175,16 @@ running, rather than running it to the end.
 
 These are about the selected target (the current job's target from 004).
 Count and inspect commits with a pathspec for that target, excluding plan
-state. Other targets may share the same repository.
+state. Other targets may share the same repository. Each invocation captures
+a new baseline before running: commit counts are relative to that invocation,
+not to scenario setup. For a daemon, capture the baseline before starting
+the job and compare after it finishes.
 
 - `there is one new commit` — 001+.
 - `there are two new commits` — 001+.
 - `there are three new commits` — 001+.
 - `there are no new commits` — 001+.
+- `no new commit includes the plan` — 001–003. Examine all commits since the current invocation's baseline, including when the plan was already tracked.
 - `it contains the work for the {word} task` — 001+. The newest commit holds that task's work and nothing else.
 - `it contains SENTINEL and nothing else` — 001+.
 - `each new commit contains the work for one task` — 003+.
@@ -191,12 +197,12 @@ state. Other targets may share the same repository.
 
 ### The factory
 
-- `the target is a Git repository` — 001–003. Git was initialized for a target outside any existing repository.
-- `the factory's files, staged changes and path-limited history are unchanged` — 001–003. Compare files, index entries and `git log -- factory/` with before the run. The repository's global history may gain target-only commits.
-- `the target uses the containing repository` — 001–003. The target has no nested `.git`; its Git root is the existing test repository.
-- `it reports that a target is required` — 001–003.
+- `the target is a Git repository` — 001+. Git was initialized for a target outside any existing repository.
+- `the factory's own files and unrelated uncommitted changes are as they were` — 001+. Snapshot the factory copy's source files and all pre-existing unrelated staged and unstaged changes before each invocation. Compare file contents, index entries and path-limited history using the actual source paths in that copy, not a prescribed folder name. Exclude the job's own runtime state, which is expected to change. The repository's global history may gain target-only commits.
+- `the target uses the containing repository` — 001+. The target has no nested `.git`; its Git root is the existing test repository.
+- `it reports that a target is required` — 001+.
 - `the targets {string} and {string} each have their own completed plan and committed work` — 001–003. Each has alpha and beta and a completed plan. Commits for each target contain only its work, excluding `.factory/plan.md`. Inspect history limited to that target's paths.
-- `the target {string} is unchanged` — 001–003. Compare its files, plan and path-limited Git history with the last time it ran.
+- `the target {string} is unchanged` — 001–003. Snapshot all known targets before each invocation; compare this target's files, plan and path-limited Git history with that snapshot.
 
 - `the factory has stopped` — 001+.
 - `the factory refuses` — 004+.

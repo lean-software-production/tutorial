@@ -4,8 +4,8 @@ Feature: Choosing where to build
   the seed. Relative paths are from the caller's working directory;
   absolute paths work too. Targets may share a Git repository. Each has
   its own plan, and commits include only the selected target's work,
-  excluding .factory/plan.md. History is inspected with that target's
-  pathspec. A completed game never prevents a different target being built.
+  excluding .factory/plan.md. A completed game never prevents a different
+  target being built.
 
   Background:
     Given a copy of the factory
@@ -23,7 +23,7 @@ Feature: Choosing where to build
       When the factory runs
       Then it reports that a target is required
       And no agent has been called
-      And the factory's files, staged changes and path-limited history are unchanged
+      And the factory's own files and unrelated uncommitted changes are as they were
 
   Rule: A target uses its containing repository
 
@@ -32,7 +32,7 @@ Feature: Choosing where to build
       When the factory runs
       Then the target uses the containing repository
       And the plan is .factory/plan.md in the target
-      And the factory's files, staged changes and path-limited history are unchanged
+      And the factory's own files and unrelated uncommitted changes are as they were
 
   Rule: Git is initialized only for a target outside any repository
 
@@ -41,15 +41,16 @@ Feature: Choosing where to build
       When the factory runs
       Then the target is a Git repository
       And the plan is .factory/plan.md in the target
-      And the factory's files, staged changes and path-limited history are unchanged
+      And the factory's own files and unrelated uncommitted changes are as they were
 
   Rule: An absolute path selects the same target
 
-    Example: An absolute target path
-      Given the target is selected by an absolute path
-      When the factory runs
-      Then the plan is .factory/plan.md in the target
-      And the factory's files, staged changes and path-limited history are unchanged
+    Example: A relative path and an absolute path identify the same target
+      When the factory builds the target "a-generation" to completion
+      And the factory builds the same target using its absolute path
+      Then the target "a-generation" is unchanged
+      And there are no new commits
+      And the factory's own files and unrelated uncommitted changes are as they were
 
   Rule: Targets do not share plans or work
 
@@ -61,7 +62,7 @@ Feature: Choosing where to build
       When the factory builds the target "<first>" to completion
       Then the target "<second>" is unchanged
       And there are no new commits
-      And the factory's files, staged changes and path-limited history are unchanged
+      And the factory's own files and unrelated uncommitted changes are as they were
 
       Examples:
         | first                | second               |

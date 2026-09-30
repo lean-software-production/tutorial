@@ -16,16 +16,11 @@ Feature: Orchestration
 
   Rule: The factory works in the target it is given
 
-    The target is a plain folder holding the product and, in
-    .assembly-lines/, its lines and machines. The factory source stays
-    in factory/. It uses the repository containing the target, initializing
-    Git only if none contains it. Staging and commits include only the
-    target's work, excluding .assembly-lines/ and leaving unrelated staged
-    and unstaged changes alone.
-
-    Examples use a fresh factory copy and fresh targets. They may use a
-    new repository per target for isolation; separate repositories are
-    not a requirement of the factory.
+    The target is a plain output folder. Agent calls work there. The
+    factory uses the Git repository containing it, initializing one only
+    if none contains it. Work commits include only the selected target's
+    generated work, excluding .assembly-lines/. Unrelated staged and
+    unstaged changes are left alone.
 
   Rule: The factory runs the machines its assembly line gives it
 

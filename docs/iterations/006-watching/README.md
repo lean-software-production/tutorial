@@ -36,8 +36,7 @@ bridge.
 
 ## The commands you'll end up with
 
-The exact commands are your choice. Run from the repository root, with `bin/factory`
-for whatever you call it:
+Run these commands from the repository root, through `bin/factory`:
 
 ```sh
 # start a job — you get your terminal back

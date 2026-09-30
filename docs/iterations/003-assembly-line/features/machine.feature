@@ -46,7 +46,7 @@ Feature: Machines
       When the factory runs
       Then the plan has the tasks "alpha" and "beta", and no others
 
-  Rule: The codebase holds what the doer wrote
+  Rule: The target holds what the doer wrote
 
     Example: A doer that writes a file for each task
       Given a plan with three tasks, none of them done

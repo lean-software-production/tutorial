@@ -271,7 +271,7 @@ sub-agent:
 target:
   term: "Target"
   definition: |-
-    The codebase a *job* works on: its own git repository, holding the product and, beside it, the *assembly lines* and *machines* that build it. The target is chosen when the job starts, and the job runs one of the target's lines. An assembly line never names a target, so the same line, copied into another codebase, can build there too.
+    The folder a *job* builds its product in. Targets may share a Git repository; the factory commits only work inside the selected target and initializes Git only when no repository contains it. A target also holds the *assembly lines* and *machines* that build its product. The target is chosen when the job starts, and the job runs one of the target's lines. An assembly line never names a target, so the same line, copied into another codebase, can build there too.
 
 token:
   term: "Token"
