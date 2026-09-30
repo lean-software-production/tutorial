@@ -55,8 +55,8 @@ Feature: Machines
       Given a plan with three tasks, none of them done
       And the doer writes a file called SENTINEL
       When the factory runs one pass
-      Then there is one new commit
-      And it contains SENTINEL and nothing else
+      Then there is one new work commit
+      And its only product file is SENTINEL
 
   Rule: The doer is pointed at the plan and the seed
 
@@ -106,7 +106,7 @@ Feature: Machines
       Given a plan with three tasks, none of them done
       And the validator says "looks good to me" before its result
       When the factory runs one pass
-      Then there is one new commit
+      Then there is one new work commit
 
   Rule: What gets built follows the seed
 

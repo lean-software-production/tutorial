@@ -31,8 +31,8 @@ Feature: Choosing where to build
       Given a plan with three tasks, none of them done
       When the factory runs the "tetris" job
       Then the target uses the containing repository
-      And there are three new commits
-      And each new commit contains the work for one task
+      And there are three new work commits
+      And each new work commit contains the work for one task
       And the factory's own files and unrelated uncommitted changes are as they were
 
   Rule: Git is initialized only outside an existing repository

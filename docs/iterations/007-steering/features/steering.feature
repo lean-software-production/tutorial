@@ -29,7 +29,7 @@ Feature: Steering
       And the doer finishes its attempt
       And the "tetris" job has run to the end
       Then the doer heard "use curses, not print" before it said "finished"
-      And there is one new commit
+      And there is one new work commit
 
   Rule: A message names the machine it is for
 

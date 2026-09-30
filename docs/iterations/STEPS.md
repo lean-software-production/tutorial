@@ -101,9 +101,9 @@ the line routes on: `complete` for the planner, `satisfied` and
 
 Plans in steps are in whatever format the student's machines keep. The
 tasks are `first`, `second` and `third`, and a task's work is a file with
-its name.
+its name. In 001–003, plans supplied by Given steps are committed as the
+starting state before the invocation baseline is captured.
 
-- `the plan has been committed` — 001–003. Commit the current target's plan as a separate generation-history checkpoint before running the factory.
 - `no plan` — 001+.
 - `a plan with three tasks, none of them done` — 001+.
 - `a plan whose first task is done` — 001+.
@@ -153,6 +153,9 @@ running, rather than running it to the end.
 
 ### The plan
 
+- `the committed plan matches the plan on disk` — 001–003. Compare the plan in HEAD with the target's plan file; no parsing by the factory is required.
+- `the target has no uncommitted changes` — 001–003. Check tracked and untracked non-ignored files inside the selected target. Unrelated changes elsewhere must remain untouched.
+- `there are no new work commits` — 001–003. Plan-only commits are allowed.
 - `there is a plan` — 001+.
 - `there is no plan` — 001+.
 - `the plan shows the first task as done` — 001+.
@@ -174,20 +177,22 @@ running, rather than running it to the end.
 ### Commits and work
 
 These are about the selected target (the current job's target from 004).
-Count and inspect commits with a pathspec for that target, excluding plan
-state. Other targets may share the same repository. Each invocation captures
+Count commits with a pathspec for the selected target. A work commit
+changes product files; a plan-only commit does not count as a work commit.
+Plans are part of target history through 003; from 004 they live outside
+the target. Other targets may share the same repository. Each invocation captures
 a new baseline before running: commit counts are relative to that invocation,
 not to scenario setup. For a daemon, capture the baseline before starting
 the job and compare after it finishes.
 
-- `there is one new commit` — 001+.
-- `there are two new commits` — 001+.
-- `there are three new commits` — 001+.
+- `there is one new work commit` — 001+.
+- `there are two new work commits` — 001+.
+- `there are three new work commits` — 001+.
 - `there are no new commits` — 001+.
-- `no new commit includes the plan` — 001–003. Examine all commits since the current invocation's baseline, including when the plan was already tracked.
-- `it contains the work for the {word} task` — 001+. The newest commit holds that task's work and nothing else.
-- `it contains SENTINEL and nothing else` — 001+.
-- `each new commit contains the work for one task` — 003+.
+- `it contains the work for the {word} task` — 001+. The newest work commit holds that task's product files and no other task's product files. In 001–003 it may also include the plan.
+- `its only product file is SENTINEL` — 001–003. Inspect the latest work commit: apart from the plan, its only changed file is SENTINEL.
+- `it contains SENTINEL and nothing else` — 004+.
+- `each new work commit contains the work for one task` — 003+.
 - `no new commit contains the work for the first task` — 003+.
 - `the work for alpha and beta has been committed` — 001+.
 - `each target holds only its own job's work` — 004+.
@@ -201,7 +206,7 @@ the job and compare after it finishes.
 - `the factory's own files and unrelated uncommitted changes are as they were` — 001+. Snapshot the factory copy's source files and all pre-existing unrelated staged and unstaged changes before each invocation. Compare file contents, index entries and path-limited history using the actual source paths in that copy, not a prescribed folder name. Exclude the job's own runtime state, which is expected to change. The repository's global history may gain target-only commits.
 - `the target uses the containing repository` — 001+. The target has no nested `.git`; its Git root is the existing test repository.
 - `it reports that a target is required` — 001+.
-- `the targets {string} and {string} each have their own completed plan and committed work` — 001–003. Each has alpha and beta and a completed plan. Commits for each target contain only its work, excluding `.factory/plan.md`. Inspect history limited to that target's paths.
+- `the targets {string} and {string} each have their own completed plan and committed work` — 001–003. Each has alpha and beta and a completed plan, all committed. Commits for each target contain only its work and plan. Inspect history limited to that target's paths.
 - `the target {string} is unchanged` — 001–003. Snapshot all known targets before each invocation; compare this target's files, plan and path-limited Git history with that snapshot.
 
 - `the factory has stopped` — 001+.

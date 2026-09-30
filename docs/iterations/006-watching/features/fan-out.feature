@@ -37,7 +37,7 @@ Feature: Fan out
       When the factory runs the "tetris" job
       Then every reviewer has been called once
       And the synthesiser has been called once
-      And there is one new commit
+      And there is one new work commit
 
   Rule: The branches run at the same time
 
@@ -50,7 +50,7 @@ Feature: Fan out
       And no reviewer finishes until all three have begun
       When the factory runs the "tetris" job
       Then every reviewer has been called once
-      And there is one new commit
+      And there is one new work commit
 
   Rule: Each branch is asked for a result
 
@@ -76,7 +76,7 @@ Feature: Fan out
       And the second reviewer is not satisfied, with the finding "report 1"
       When the factory runs the "tetris" job
       Then the synthesiser was given "report 1"
-      And there is one new commit
+      And there is one new work commit
 
   Rule: The line routes on the result of the machine where the branches meet
 

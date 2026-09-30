@@ -20,7 +20,9 @@ factory source stays in `factory/`.
   The job remembers all three; after that, its name is enough. It keeps
   its plan with the factory, in `factory/jobs/<name>/plan.md`. To resume your
   existing game, move its `.factory/plan.md` there; a job
-  now owns that plan. Or start with a fresh target.
+  now owns that plan. Or start with a fresh target. Unlike the target's
+  plan in earlier homeworks, job state under `factory/jobs/` is ignored
+  by Git in the starter.
 
 Once the route is data, a target can hold more than one line. Write a second
 one — the same line without the validator will do — and have each job say
