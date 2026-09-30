@@ -75,7 +75,7 @@ Feature: Planning
       Given a plan whose first task is done
       When the factory runs the "tetris" job
       Then the plan shows every task as done
-      And there are two new commits
+      And there are two new work commits
 
     Example: Work that gave up is not recorded
       Given a plan with three tasks, none of them done
@@ -100,7 +100,7 @@ Feature: Planning
       Given the "tetris" job has been started
       And a plan whose first task is done
       When the factory runs the "tetris" job, given only its name
-      Then there are two new commits
+      Then there are two new work commits
       And the validator has been called twice
 
   Rule: A job's settings cannot be changed once it has started
@@ -119,7 +119,7 @@ Feature: Planning
       Given the "tetris" job has been started
       And a plan with three tasks, none of them done
       When the factory runs the "tetris" job
-      Then there are three new commits
+      Then there are three new work commits
 
   Rule: Each job has its own plan and its own target
 

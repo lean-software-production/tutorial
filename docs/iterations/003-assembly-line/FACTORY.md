@@ -20,14 +20,15 @@ attempts a task gets. The factory has one assembly line, kept in its own
 folder.
 
 Each run requires both a seed file and a target folder. Relative paths
-are resolved from the caller's working directory; absolute paths work too. Targets are plain folders. The factory
-creates a missing folder, uses its containing Git repository and initializes
+are resolved from the caller's working directory; absolute paths work too.
+Targets are plain folders. The factory creates a missing folder, uses its containing Git repository and initializes
 Git only if no repository contains it. It runs agents in the target and
-limits both staging and commits to that target's work, excluding its plan
-and preserving unrelated staged and unstaged edits. Each target keeps its
-own plan in `.factory/plan.md`. A fresh target starts fresh; rerunning a
+commits only that target's work and plan, preserving unrelated staged
+and unstaged edits. Each target keeps its own plan in `.factory/plan.md`. A fresh target starts fresh; rerunning a
 target resumes its plan. An omitted or missing seed reports that there is
-no seed, without calling an agent.
+no seed, without calling an agent. Before stopping successfully, the
+factory records the final plan, including updates after a work commit.
+A completed run leaves no uncommitted changes in the target.
 
 New since iteration 2: `assembly-line.feature`. The pass is gone — the
 line says what runs next — and each machine is configured under its

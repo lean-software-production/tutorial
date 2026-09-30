@@ -24,14 +24,13 @@ a new target. From the repository root:
 
 ```sh
 bin/factory --seed tetris/spec.md --target tetris/tetris2 --all
-git add -- tetris/tetris2/.factory/plan.md
-git commit --only -m "Save Tetris 2 plan" -- tetris/tetris2/.factory/plan.md
 npm --prefix tetris/tetris2 start
 ```
 
-Keep this generation's plan in Git as you did for v1. The factory leaves
-plans out of its per-task work commits; the separate plan commit preserves
-this generation's record without including unrelated staged edits.
+The factory commits this generation's plan with its work. The planner
+marks tasks done after the work is committed, so the factory also records
+the final plan update before it stops. A run to completion leaves no
+uncommitted changes in the target; no separate plan checkpoint is needed.
 
 The new target gets its own plan. Running against `tetris/tetris1` again
 would find its completed plan and stop. Changing the target gives the

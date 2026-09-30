@@ -17,7 +17,7 @@ Feature: Orchestration
     The target is a plain output folder. Agent calls work there. The
     factory uses the Git repository containing it, initializing one only
     if none contains it. Work commits include only the selected target's
-    generated work, excluding .factory/plan.md. Unrelated staged and
+    generated work and plan. Unrelated staged and
     unstaged changes are left alone.
 
   Rule: The factory runs the machines its assembly line gives it
@@ -45,8 +45,8 @@ Feature: Orchestration
     Example: Three tasks remain
       Given a plan with three tasks, none of them done
       When the factory runs
-      Then there are three new commits
-      And each new commit contains the work for one task
+      Then there are three new work commits
+      And each new work commit contains the work for one task
 
   Rule: A task is finished when validation is satisfied
 
@@ -60,7 +60,7 @@ Feature: Orchestration
       And the validator is not satisfied the first time
       When the factory runs
       Then the doer has been called four times
-      And there are three new commits
+      And there are three new work commits
 
   Rule: A task gives up after a set number of attempts
 
@@ -84,15 +84,15 @@ Feature: Orchestration
 
   Rule: The factory commits each time a task is finished
 
-    Example: Three tasks, three commits
+    Example: Three tasks, three work commits
       Given a plan with three tasks, none of them done
       When the factory runs
-      Then there are three new commits
+      Then there are three new work commits
 
     Example: Finished work is not redone
       Given a plan whose first task is done
       When the factory runs
-      Then there are two new commits
+      Then there are two new work commits
       And no new commit contains the work for the first task
 
   Rule: The factory stops when the planner says the plan is complete

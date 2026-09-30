@@ -54,8 +54,8 @@ Feature: Machines
     Example: A doer that writes a file for each task
       Given a plan with three tasks, none of them done
       When the factory runs the "tetris" job
-      Then there are three new commits
-      And each new commit contains the work for one task
+      Then there are three new work commits
+      And each new work commit contains the work for one task
 
   Rule: The doer is pointed at the plan and the seed
 
@@ -112,7 +112,7 @@ Feature: Machines
       Given a plan with three tasks, none of them done
       And the validator says "looks good to me" before its result
       When the factory runs the "tetris" job
-      Then there are three new commits
+      Then there are three new work commits
 
   Rule: What gets built follows the seed
 

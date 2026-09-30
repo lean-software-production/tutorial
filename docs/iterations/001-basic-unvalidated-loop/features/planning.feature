@@ -41,14 +41,16 @@ Feature: Planning
       And no agent has been called
       And there is no plan
 
-  Rule: A pass with no plan writes one, and does nothing else
+  Rule: A pass with no plan records one before any product work
 
     Example: A seed with no plan yet
       Given no plan
       When the factory runs one pass
       Then there is a plan
       And the plan shows every task as not done
-      And there are no new commits
+      And there are no new work commits
+      And the committed plan matches the plan on disk
+      And the target has no uncommitted changes
 
     Example: A plan already exists
       Given a plan with three tasks, none of them done
@@ -65,12 +67,9 @@ Feature: Planning
   Rule: Each target keeps its own plan
 
     The plan is .factory/plan.md inside the selected target. That folder
-    holds run state, not factory code, and is excluded from work commits.
+    holds the generation's plan, which the factory commits with its work.
     A fresh target starts without a plan; selecting an existing target
     resumes its plan. The factory never shares a plan between targets.
-
-    A student can commit the plan separately as the generation's record.
-    Even then, the factory's work commits leave the plan out.
 
     Example: The first pass
       Given no plan
@@ -78,12 +77,6 @@ Feature: Planning
       Then the plan is .factory/plan.md in the target
       And there is no plan in the factory's folder
 
-    Example: A plan already kept in Git
-      Given a plan with three tasks, none of them done
-      And the plan has been committed
-      When the factory runs one pass
-      Then the plan shows the first task as done
-      And no new commit includes the plan
 
   Rule: The agent keeps the plan, and the factory never reads it
 
@@ -106,3 +99,26 @@ Feature: Planning
       And no plan
       When the factory runs to completion
       Then the work for alpha and beta has been committed
+
+  Rule: A successful run records the final plan with the work
+
+    The plan is part of the target's history. Before stopping successfully,
+    the factory records the latest plan, including any updates made after
+    a task's work was committed. A completed run leaves no uncommitted
+    changes in the target. Plan-only commits do not represent extra tasks.
+
+    Example: Finish the tasks and record their final state
+      Given a plan with three tasks, none of them done
+      When the factory runs to completion
+      Then the plan shows every task as done
+      And there are three new work commits
+      And the committed plan matches the plan on disk
+      And the target has no uncommitted changes
+
+    Example: Record the plan after a successful pass
+      Given a plan with three tasks, none of them done
+      When the factory runs one pass
+      Then the plan shows the first task as done
+      And there is one new work commit
+      And the committed plan matches the plan on disk
+      And the target has no uncommitted changes

@@ -3,8 +3,8 @@ Feature: Choosing where to build
   A target is a plain output folder selected on the command line alongside
   the seed. Relative paths are from the caller's working directory;
   absolute paths work too. Targets may share a Git repository. Each has
-  its own plan, and commits include only the selected target's work,
-  excluding .factory/plan.md. A completed game never prevents a different
+  its own plan, and commits include only the selected target's work
+  and plan. A completed game never prevents a different
   target being built.
 
   Background:

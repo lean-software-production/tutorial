@@ -52,8 +52,8 @@ Feature: The coding agent
       Given a plan with three tasks, none of them done
       And the agent writes a file called SENTINEL
       When the factory runs one pass
-      Then there is one new commit
-      And it contains SENTINEL and nothing else
+      Then there is one new work commit
+      And its only product file is SENTINEL
 
   Rule: The agent is pointed at the plan and the seed
 

@@ -14,7 +14,7 @@ Feature: Orchestration
     The target is a plain output folder. Agent calls work there. The
     factory uses the Git repository containing it, initializing one only
     if none contains it. Work commits include only the selected target's
-    generated work, excluding .factory/plan.md. Unrelated staged and
+    generated work and plan. Unrelated staged and
     unstaged changes are left alone.
 
   Rule: Each pass does one task, then stops
@@ -28,16 +28,16 @@ Feature: Orchestration
 
   Rule: The factory commits after every pass that does a task
 
-    Example: One pass, one commit
+    Example: One pass, one work commit
       Given a plan with three tasks, none of them done
       When the factory runs one pass
-      Then there is one new commit
+      Then there is one new work commit
       And it contains the work for the first task
 
     Example: Finished work is not redone
       Given a plan whose first task is done
       When the factory runs one pass
-      Then there is one new commit
+      Then there is one new work commit
       And it contains the work for the second task
 
   Rule: The factory stops when the agent says the plan is complete
@@ -51,7 +51,7 @@ Feature: Orchestration
       Given a plan with three tasks, none of them done
       When the factory runs to completion
       Then the plan shows every task as done
-      And there are three new commits
+      And there are three new work commits
       And the factory has stopped
 
     Example: Every task is already done

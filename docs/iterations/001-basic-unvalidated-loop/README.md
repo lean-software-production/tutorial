@@ -33,7 +33,7 @@ points the agent at the resolved seed and plan paths, and the agent:
 All of that is in your prompt; ask for the result there, or use your
 harness's structured output if it has one. The factory never reads the plan:
 it stages and commits only the generated work in the target, using pathspecs
-for both operations and excluding `.factory/plan.md`, and stops when the
+for both operations and including `.factory/plan.md`, and stops when the
 agent's result says the plan is complete. Unrelated staged and unstaged
 changes in the repository are left alone. It never looks for words in what
 the agent says.
@@ -57,7 +57,7 @@ $ bin/factory --seed tetris/spec.md --target tetris/tetris1
 $ bin/factory --seed tetris/spec.md --target tetris/tetris1
 {"complete": false, "task": "set up the project"}
 $ git log --oneline -- tetris/tetris1
-# one new commit
+# one new work commit; plan-only commits may also appear
 
 # run to completion
 $ bin/factory --seed tetris/spec.md --target tetris/tetris1 --all
@@ -104,8 +104,8 @@ reference version is a few lines, and the language is irrelevant:
 
 ```text
 call the agent: "write the plan, or do the next task and mark it done"
-if its result says complete:  stop
-otherwise:                    commit
+commit the changed work and plan in the target
+if its result says complete: stop
 ```
 
 ## Once your suite passes
@@ -115,15 +115,12 @@ From the repository root:
 
 ```sh
 bin/factory --seed tetris/spec.md --target tetris/tetris1 --all
-git add -- tetris/tetris1/.factory/plan.md
-git commit --only -m "Save Tetris 1 plan" -- tetris/tetris1/.factory/plan.md
 npm --prefix tetris/tetris1 start
 ```
 
 Play the game and keep it for comparison with the next generation. The
-factory leaves the plan out of its per-task work commits; commit it
-separately as shown so the generation's record stays with the game.
-The explicit path keeps unrelated staged edits out of the plan commit.
+factory commits the plan with the work, so the generation's record stays
+with the game automatically. There is no separate plan checkpoint to make.
 
 You will keep this. The next homework adds checking the work: the factory
 starts noticing when the agent's output is wrong.
