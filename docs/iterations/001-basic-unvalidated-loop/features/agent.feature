@@ -46,7 +46,7 @@ Feature: The coding agent
       When the factory runs one pass
       Then the plan has the tasks "alpha" and "beta", and no others
 
-  Rule: The codebase holds what the agent wrote
+  Rule: The target holds what the agent wrote
 
     Example: An agent that writes one file
       Given a plan with three tasks, none of them done

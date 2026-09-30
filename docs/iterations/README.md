@@ -17,7 +17,7 @@ not here. `fetch-iteration` works through these in order.
 
 Each iteration folder holds the whole spec at that point, not just what's new:
 
-- `README.md` — the homework framing: what's changing, what to watch for, and the CLI commands you should end up with.
+- `README.md` — the homework framing: what's changing, what to watch for, and the CLI commands you should end up with. An optional `## Once your suite passes` section holds tasks to do after the acceptance suite passes. The starter's coaching and implementation skills offer to work through that section before marking the iteration Done; keep the heading exact. Course-specific tasks and report requirements belong in that section, not in the skills.
 - `FACTORY.md` — a short summary of the factory at this point. The features win where they disagree.
 - `spec.md` — the seed: the project the factory builds (when there is one).
 - `features/*.feature` — the acceptance criteria, in Gherkin. They are also your factory's test suite.
