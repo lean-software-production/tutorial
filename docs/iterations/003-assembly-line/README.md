@@ -35,3 +35,18 @@ the acceptance criteria clean, not because it is the only way — if you
 would rather express the assembly line some other way, go ahead.
 The only thing you need to remember is you'll have to carry over any changes
 you make to the feature files across the future iterations
+
+
+## Run against a target
+
+The factory source stays in `factory/`, and the target argument still
+selects the output codebase. Running the assembly line replaces `--all`:
+
+```sh
+$ bin/factory --seed tetris/spec.md --target tetris/tetris3
+$ npm --prefix tetris/tetris3 start
+```
+
+A fresh target starts with a fresh plan in `.factory/plan.md`. Reusing
+`tetris/tetris2` resumes its plan, which may already be complete. The seed is still supplied with `--seed`; the line and machine
+configurations live with the factory.

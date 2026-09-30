@@ -5,22 +5,24 @@ Feature: Orchestration
   validation is done.
 
   Background:
-    Given a copy of the factory, in a folder of its own inside a new codebase
+    Given a copy of the factory
+    And a new target
     And a seed describing a game of Tetris
     And the planner plans the tasks alpha and beta
     And the doer does the next task in the plan
     And the validator is always satisfied
 
-  Rule: The factory works in the codebase around it
+  Rule: The factory works in the target selected on the command line
 
-    The factory sits in a folder of its own inside the codebase it builds,
-    and builds in the folder around it. The codebase is a git repository;
-    the factory commits its work there, and leaves its own folder out of
-    those commits.
+    The factory source lives in factory/. The target argument selects a
+    plain output folder. Agent calls work there. The factory uses the
+    containing Git repository and initializes one only if none contains
+    the target. Both staging and committing are limited to the target's
+    paths, excluding .factory/plan.md. Unrelated staged and unstaged
+    changes, including the student's factory edits, are left alone.
 
-    A new codebase, for an example, is a new git repository with a copy
-    of the factory in it. That is how an example keeps out of the codebase
-    you are building.
+    Each example uses a fresh factory copy and a separate target. That
+    keeps checks out of both your factory and your generated games.
 
   Rule: The factory runs the machines its assembly line gives it
 

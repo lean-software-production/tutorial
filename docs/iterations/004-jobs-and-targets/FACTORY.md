@@ -23,9 +23,12 @@ target.
 
 Each run is for a **job**: one of the target's assembly lines, a seed,
 saying what to build, and a target, the codebase to build it in. The
-factory has a codebase of its own, outside any target. The job keeps its
-plan with the factory, never in the target.
+factory source stays in `factory/` in the capstone repository. Targets
+are plain folders: commits in their containing repository include only
+the selected target's work and preserve unrelated staged changes. Git is
+initialized only when no repository contains the target. The job keeps
+its plan in `factory/jobs/<name>/plan.md`, never in the target.
 
 New since iteration 3: jobs, and targets that hold their own lines and
-machines. The factory moves out of what it builds, into a codebase of
-its own.
+machines. Plans move from each target into `factory/jobs/`;
+the factory source stays in `factory/`.

@@ -36,30 +36,30 @@ bridge.
 
 ## The commands you'll end up with
 
-The exact commands are your choice. This is the shape, with `./factory`
+The exact commands are your choice. Run from the repository root, with `bin/factory`
 for whatever you call it:
 
 ```sh
 # start a job — you get your terminal back
-$ ./factory --job tetris --target ../tetris --line careful --seed ../tetris/seeds/tetris.md
+$ bin/factory --job tetris --target tetris/tetris2 --line careful --seed tetris/spec.md
 started job tetris
 
 # attach to it, now or later — catches you up, then follows live
-$ ./factory watch tetris
+$ bin/factory watch tetris
 planner    | ...
 doer       | ...
 tokens     doer 12.4k in / 3.1k out   anthropic 15.5k   google 4.2k   openai 3.9k   job 23.6k
 
 # a second job while one is running is refused
-$ ./factory --job snake --target ../snake --line quick --seed ../tetris/seeds/snake.md
+$ bin/factory --job snake --target snake/snake1 --line quick --seed snake/spec.md
 refused: job tetris is running
 
 # stop the job (the factory stays up); start it again later by name alone
-$ ./factory stop tetris
-$ ./factory --job tetris
+$ bin/factory stop tetris
+$ bin/factory --job tetris
 
 # stop the factory itself — its job stops with it
-$ ./factory stop
+$ bin/factory stop
 ```
 
 Before you start, look at what your factory does today. It probably

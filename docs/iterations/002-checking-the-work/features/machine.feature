@@ -13,7 +13,8 @@ Feature: Machines
   result. Examples tagged @real-agent run a real agent.
 
   Background:
-    Given a copy of the factory, in a folder of its own inside a new codebase
+    Given a copy of the factory
+    And a new target
     And a seed describing a game of Tetris
     And the planner plans the tasks alpha and beta
     And the doer does the next task in the plan
@@ -117,5 +118,5 @@ Feature: Machines
       Given every machine runs pi
       And a seed describing Tetris on a board 8 columns wide, started with "npm run play"
       When the factory runs to completion
-      Then "npm run play" in the codebase starts Tetris
+      Then "npm run play" in the target starts Tetris
       And its board is 8 columns wide

@@ -12,7 +12,8 @@ Feature: The coding agent
   tagged @real-agent run a real agent.
 
   Background:
-    Given a copy of the factory, in a folder of its own inside a new codebase
+    Given a copy of the factory
+    And a new target
     And a seed describing a game of Tetris
     And the agent plans the tasks alpha and beta, and does one task a pass
 
@@ -98,5 +99,5 @@ Feature: The coding agent
       Given the agent is pi
       And a seed describing Tetris on a board 8 columns wide, started with "npm run play"
       When the factory runs to completion
-      Then "npm run play" in the codebase starts Tetris
+      Then "npm run play" in the target starts Tetris
       And its board is 8 columns wide
