@@ -58,3 +58,15 @@ npm --prefix tetris/tetris-002 start
 For your Maven submission, include screenshots of both versions, name your
 validator's lens, and explain what difference validation made to the code,
 if any. Use the plan and comparison report to help explain what you observed.
+
+### Bonus round: change the lens
+
+Choose a different lens for the validator and build another generation from
+the same seed in a fresh target. Keep the model and everything else the same.
+Name the target for the lens you chose, such as
+`tetris/tetris-002-security`, and leave `tetris/tetris-002` unchanged.
+
+Compare the two validated generations. Start with their plans: did the new
+lens produce different findings or subtasks? Then compare the code. Which
+differences can you trace back to those findings? What impact did changing
+the lens have? Finding no difference is useful too.
