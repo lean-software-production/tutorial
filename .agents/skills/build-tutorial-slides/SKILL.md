@@ -20,7 +20,7 @@ Before changing the deck, read:
 
 The iteration files define the course. Do not invent capabilities, commands or ordering from memory. Discover all numbered iteration directories rather than assuming there are seven.
 
-For setup details, prefer the starter repository's current `README.md`. Students fork and clone that repository; they do not clone this tutorial repository.
+For setup details, prefer the starter repository's current `README.md`. Students fork that repository and open it in a Codespace or clone it; they do not clone this tutorial repository.
 
 ## 2. Refresh the brand guidance
 
@@ -54,7 +54,7 @@ Use whole SVG files from the brand catalogue. Never edit, recolour or redraw the
 The deck needs three acts:
 
 1. **Orientation** — show the destination and the learning rhythm. The overall story is a progression from a small agent loop, through explicit composition, to an observable and steerable factory.
-2. **Start now** — show how to fork and rename the starter, clone the fork, run `bin/doctor`, stay at the repository root, start Pi/Claude Code/Codex, then say `fetch iteration` and `coach me`. Explain how to run the factory produced by Homework 1.
+2. **Start now** — show how to fork and rename the starter, open the fork in a GitHub Codespace, sign in to Codex and run `bin/doctor`, stay at the repository root, start Codex (or Pi/Claude Code), then say `fetch iteration` and `coach me`. Mention cloning the fork as the local alternative. Codespaces with Codex is the path the starter README walks through. Explain how to run the factory produced by Homework 1.
 3. **The journey** — give each iteration its own slide. State the pressure it introduces and the concrete capability the factory gains. Finish with the complete capability stack and the course's working rules.
 
 Keep the deck useful without a presenter. Put optional presenter context in `<aside class="notes">`, not in dense slide copy.

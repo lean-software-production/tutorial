@@ -136,6 +136,8 @@ def main() -> int:
         "starter repository": "lean-software-production/capstone-project-starter",
         "fork instruction": "Fork the starter",
         "clone command": "git clone https://github.com/YOUR-NAME/YOUR-CAPSTONE.git",
+        "Codespace instruction": "Create codespace",
+        "Codex sign-in": "codex login --device-auth",
         "environment check": "bin/doctor",
         "factory source directory": "factory/",
         "first iteration request": "fetch iteration",
