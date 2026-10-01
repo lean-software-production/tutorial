@@ -18,13 +18,13 @@ whether it is satisfied and, if not, why: the fields `satisfied` and
 
 ## Once your suite passes
 
-Keep the game you built in homework 1 in `tetris/tetris1/`. Use your
+Keep the game you built in homework 1 in `tetris/tetris-001/`. Use your
 upgraded factory with a real coding agent to build from the same seed in
 a new target. From the repository root:
 
 ```sh
-bin/factory --seed tetris/spec.md --target tetris/tetris2 --all
-npm --prefix tetris/tetris2 start
+bin/factory --seed tetris/spec.md --target tetris/tetris-002 --all
+npm --prefix tetris/tetris-002 start
 ```
 
 The factory commits this generation's plan with its work. The planner
@@ -32,16 +32,17 @@ marks tasks done after the work is committed, so the factory also records
 the final plan update before it stops. A run to completion leaves no
 uncommitted changes in the target; no separate plan checkpoint is needed.
 
-The new target gets its own plan. Running against `tetris/tetris1` again
+The new target gets its own plan. Running against `tetris/tetris-001` again
 would find its completed plan and stop. Changing the target gives the
 upgraded factory fresh work without deleting v1 or changing the seed.
 
 What difference did validation make? **None is a fine answer.** Start by
-looking at `tetris/tetris2/.factory/plan.md`: any validator findings are
+looking at `tetris/tetris-002/.factory/plan.md`: any validator findings are
 recorded there as subtasks. Then compare the two games.
 
-Your agent should offer to compare `tetris/tetris1` with `tetris/tetris2`,
-summarise what differs, and build an HTML report of the comparison at
+Your agent should offer to compare `tetris/tetris-001` with
+`tetris/tetris-002`, summarise what differs, and build an HTML report of the
+comparison at
 `tetris/comparison.html`. Review it together. Two builds from the same seed
 can differ anyway; the report should distinguish differences supported by
 recorded validator findings from other differences between the generations.
@@ -50,8 +51,8 @@ It should also say when there are no recorded findings.
 You can play both versions in separate terminals:
 
 ```sh
-npm --prefix tetris/tetris1 start
-npm --prefix tetris/tetris2 start
+npm --prefix tetris/tetris-001 start
+npm --prefix tetris/tetris-002 start
 ```
 
 For your Maven submission, include screenshots of both versions, name your

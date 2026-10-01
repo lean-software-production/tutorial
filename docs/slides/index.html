@@ -148,14 +148,45 @@ pi       # or: claude
 
     <section class="mid" data-menu-title="Run your first factory">
       <h2 class="sk-section">Run your first factory</h2>
-      <p class="lede compact">You choose the executable’s name. Suppose it is <code>./factory</code>:</p>
+      <p class="lede compact">From the repository root, give every run the seed and its target:</p>
       <div class="command-grid">
-        <div><span class="command-label">Write the plan</span><pre><code>./factory</code></pre></div>
-        <div><span class="command-label">Do one task</span><pre><code>./factory</code></pre></div>
-        <div><span class="command-label">Finish the plan</span><pre><code>./factory --all</code></pre></div>
-        <div><span class="command-label">Play the result</span><pre><code>cd .. &amp;&amp; npm start</code></pre></div>
+        <div><span class="command-label">Write the plan</span><pre><code>bin/factory \
+  --seed tetris/spec.md \
+  --target tetris/tetris-001</code></pre></div>
+        <div><span class="command-label">Do one task</span><pre><code>bin/factory \
+  --seed tetris/spec.md \
+  --target tetris/tetris-001</code></pre></div>
+        <div><span class="command-label">Finish the plan</span><pre><code>bin/factory \
+  --seed tetris/spec.md \
+  --target tetris/tetris-001 --all</code></pre></div>
+        <div><span class="command-label">Play the result</span><pre><code>npm --prefix \
+  tetris/tetris-001 start</code></pre></div>
       </div>
       <div class="sk-ribbon"><img src="https://lean-software-production.github.io/brand/kit/icons/car.svg" alt=""><span class="sk-kicker">Small win:</span> a real game appears, one agent task and one commit at a time.</div>
+    </section>
+
+    <section class="mid" data-menu-title="Bonus · Try another model">
+      <h2 class="sk-section">Bonus · Try another model</h2>
+      <p class="lede compact">See how much the model changes what your small factory produces.</p>
+      <div class="sk-row three-up">
+        <div class="sk-panel sk-mustard">
+          <div class="sk-step"><span class="sk-num">1</span><span class="sk-label">Keep your baseline</span></div>
+          <img src="https://lean-software-production.github.io/brand/kit/icons/checklist.svg" alt="A checklist">
+          <p>Leave <code>tetris/tetris-001</code> unchanged for the next homework.</p>
+        </div>
+        <div class="sk-panel sk-teal">
+          <div class="sk-step"><span class="sk-num">2</span><span class="sk-label">Switch models</span></div>
+          <img src="https://lean-software-production.github.io/brand/kit/icons/robot.svg" alt="A small robot">
+          <p>Pass a model choice to your harness. Build twice into fresh targets.</p>
+        </div>
+        <div class="sk-panel sk-forest">
+          <div class="sk-step"><span class="sk-num">3</span><span class="sk-label">Compare</span></div>
+          <img src="https://lean-software-production.github.io/brand/kit/icons/magnifier.svg" alt="A magnifying glass">
+          <p>Time the runs, play the games and decide which output you prefer.</p>
+        </div>
+      </div>
+      <p class="callout">Keep this informal. You do not need to build a benchmarking framework.</p>
+      <aside class="notes">Later homeworks move model choice into machine configuration, combine several models’ judgements and track token cost.</aside>
     </section>
 
     <section class="center section-break" data-menu-title="Seven iterations, one story">
@@ -203,7 +234,7 @@ pi       # or: claude
         <div class="sk-panel sk-teal"><div class="sk-step"><span class="sk-label">Target</span></div><p>Owns its product, lines and machines.</p></div>
         <div class="sk-panel sk-forest"><div class="sk-step"><span class="sk-label">Job</span></div><p>Remembers a target, line, seed and plan.</p></div>
       </div>
-      <pre class="single-command"><code>./factory --job tetris --target ../tetris --line careful --seed ../tetris/seeds/tetris.md</code></pre>
+      <pre class="single-command"><code>bin/factory --job tetris --target tetris/tetris-003 --line careful --seed tetris/spec.md</code></pre>
       <div class="gain"><span>Factory gains</span><strong>Many resumable jobs across many codebases.</strong></div>
     </section>
 

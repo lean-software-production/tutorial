@@ -11,7 +11,7 @@ Your factory source lives in `factory/` in your capstone repository. Open
 your coding agent at the repository root; `bin/factory` is a symlink to the
 entry point you build, created during project setup. Each run requires a
 seed file and target folder, for example `--seed tetris/spec.md --target
-tetris/tetris1`. The factory creates the folder if needed and runs the
+tetris/tetris-001`. The factory creates the folder if needed and runs the
 coding agent there. It uses the containing Git repository, initializing Git
 only if the target is outside any repo. Relative seed and target paths are
 resolved from the caller's working directory; absolute paths work too.
@@ -50,17 +50,17 @@ you call it:
 
 ```sh
 # first run — no plan yet, so the agent writes one instead of building
-$ bin/factory --seed tetris/spec.md --target tetris/tetris1
-{"complete": false}                  # the agent wrote tetris/tetris1/.factory/plan.md
+$ bin/factory --seed tetris/spec.md --target tetris/tetris-001
+{"complete": false}                  # the agent wrote tetris/tetris-001/.factory/plan.md
 
 # next run — one pass, one task, one commit
-$ bin/factory --seed tetris/spec.md --target tetris/tetris1
+$ bin/factory --seed tetris/spec.md --target tetris/tetris-001
 {"complete": false, "task": "set up the project"}
-$ git log --oneline -- tetris/tetris1
+$ git log --oneline -- tetris/tetris-001
 # one new work commit; plan-only commits may also appear
 
 # run to completion
-$ bin/factory --seed tetris/spec.md --target tetris/tetris1 --all
+$ bin/factory --seed tetris/spec.md --target tetris/tetris-001 --all
 {"complete": false, "task": "..."}
 {"complete": false, "task": "..."}
 {"complete": false, "task": "..."}
@@ -70,7 +70,7 @@ factory stopped
 ```
 
 What the agent says will differ; the point is that real code appears in
-`tetris/tetris1/`, one task per pass, and `npm start` runs Tetris.
+`tetris/tetris-001/`, one task per pass, and `npm start` runs Tetris.
 
 The feature files are your tests, too: start by setting up a Gherkin runner
 for them in your factory's language (see the [ground
@@ -114,13 +114,26 @@ Use your factory with a real coding agent to build the first generation.
 From the repository root:
 
 ```sh
-bin/factory --seed tetris/spec.md --target tetris/tetris1 --all
-npm --prefix tetris/tetris1 start
+bin/factory --seed tetris/spec.md --target tetris/tetris-001 --all
+npm --prefix tetris/tetris-001 start
 ```
 
 Play the game and keep it for comparison with the next generation. The
 factory commits the plan with the work, so the generation's record stays
 with the game automatically. There is no separate plan checkpoint to make.
 
-You will keep this. The next homework adds checking the work: the factory
-starts noticing when the agent's output is wrong.
+### Bonus round: try another model
+
+If your harness supports choosing a model, extend your factory to accept
+that choice and pass it to the harness. Build two more generations from the
+same seed with different models, each in a fresh target. Compare how long
+they take and what they produce. Which result do you prefer, and why?
+
+Keep `tetris/tetris-001` unchanged: the next homework uses it to explore
+the effect of validation. This is an informal experiment, not a feature
+requirement, so do not build a benchmarking framework. Later iterations
+will move model choice into machine configuration and give you better ways
+to compare cost and combine several models' judgements.
+
+You will keep `tetris/tetris-001`. The next homework adds checking the work:
+the factory starts noticing when the agent's output is wrong.

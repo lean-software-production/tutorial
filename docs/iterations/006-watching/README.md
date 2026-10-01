@@ -40,7 +40,7 @@ Run these commands from the repository root, through `bin/factory`:
 
 ```sh
 # start a job — you get your terminal back
-$ bin/factory --job tetris --target tetris/tetris2 --line careful --seed tetris/spec.md
+$ bin/factory --job tetris --target tetris/tetris-002 --line careful --seed tetris/spec.md
 started job tetris
 
 # attach to it, now or later — catches you up, then follows live

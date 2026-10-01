@@ -140,9 +140,11 @@ def main() -> int:
         "factory working directory": "tetris/.factory",
         "first iteration request": "fetch iteration",
         "coaching request": "coach me",
-        "single factory pass": "./factory",
-        "complete factory run": "./factory --all",
-        "Tetris start command": "npm start",
+        "factory launcher": "bin/factory",
+        "Tetris seed argument": "--seed tetris/spec.md",
+        "first generation target": "--target tetris/tetris-001",
+        "complete factory run": "--target tetris/tetris-001 --all",
+        "Tetris start command": "tetris/tetris-001 start",
     }
     for label, snippet in required_snippets.items():
         if snippet not in source:

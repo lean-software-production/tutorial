@@ -66,5 +66,5 @@ Feature: Choosing where to build
 
       Examples:
         | first                | second               |
-        | tetris/tetris1       | tetris/tetris2       |
+        | tetris/tetris-001    | tetris/tetris-002    |
         | build outputs/game 1 | build outputs/game 2 |

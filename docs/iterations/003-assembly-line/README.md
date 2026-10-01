@@ -41,11 +41,11 @@ The factory source stays in `factory/`, and the target argument still
 selects the output codebase. Running the assembly line replaces `--all`:
 
 ```sh
-$ bin/factory --seed tetris/spec.md --target tetris/tetris3
-$ npm --prefix tetris/tetris3 start
+$ bin/factory --seed tetris/spec.md --target tetris/tetris-003
+$ npm --prefix tetris/tetris-003 start
 ```
 
 A fresh target starts with a fresh plan in `.factory/plan.md`. Reusing
-`tetris/tetris2` resumes its plan, which may already be complete. The seed
+`tetris/tetris-002` resumes its plan, which may already be complete. The seed
 is still supplied with `--seed`; the line and machine configurations live
 with the factory.
