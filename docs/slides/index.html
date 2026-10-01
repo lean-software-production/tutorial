@@ -112,13 +112,11 @@ bin/doctor</code></pre>
 
     <section class="mid" data-menu-title="3. Start your coding agent">
       <h2 class="sk-section">3 · Start your coding agent</h2>
-      <p class="lede compact">Start it inside <code>tetris/.factory</code>. That is where it finds the course instructions and skills.</p>
-      <pre><code>cd tetris/.factory
-
-pi       # or: claude
+      <p class="lede compact">Stay at the repository root. That is where your agent finds its instructions and skills.</p>
+      <pre><code>pi       # or: claude
          # or: codex</code></pre>
-      <div class="sk-ribbon"><img src="https://lean-software-production.github.io/brand/kit/icons/compass.svg" alt=""><span class="sk-kicker">Check:</span> your agent’s working directory ends in <code>tetris/.factory</code>.</div>
-      <aside class="notes">Do not start the agent at the repository root. The local AGENTS.md and project skills are under tetris/.factory.</aside>
+      <div class="sk-ribbon"><img src="https://lean-software-production.github.io/brand/kit/icons/compass.svg" alt=""><span class="sk-kicker">Check:</span> your working directory is the root of your fork. Your factory source will live in <code>factory/</code>.</div>
+      <aside class="notes">Start the agent at the repository root, where AGENTS.md and the project skills live.</aside>
     </section>
 
     <section class="mid" data-menu-title="4. Fetch Homework 1">
@@ -334,7 +332,7 @@ pi       # or: claude
       <p class="kicker">You know where this is going</p>
       <h2 class="sk-title"><span class="sk-burst"><span class="sk-hl">Start the</span><br><span class="sk-hl">first loop</span></span></h2>
       <div class="final-commands">
-        <code>cd tetris/.factory</code>
+        <code>cd YOUR-CAPSTONE</code>
         <code>pi</code>
         <span>then say</span>
         <strong>fetch iteration</strong>

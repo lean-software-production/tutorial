@@ -54,7 +54,7 @@ Use whole SVG files from the brand catalogue. Never edit, recolour or redraw the
 The deck needs three acts:
 
 1. **Orientation** — show the destination and the learning rhythm. The overall story is a progression from a small agent loop, through explicit composition, to an observable and steerable factory.
-2. **Start now** — show how to fork and rename the starter, clone the fork, run `bin/doctor`, enter `tetris/.factory`, start Pi/Claude Code/Codex, then say `fetch iteration` and `coach me`. Explain how to run the factory produced by Homework 1.
+2. **Start now** — show how to fork and rename the starter, clone the fork, run `bin/doctor`, stay at the repository root, start Pi/Claude Code/Codex, then say `fetch iteration` and `coach me`. Explain how to run the factory produced by Homework 1.
 3. **The journey** — give each iteration its own slide. State the pressure it introduces and the concrete capability the factory gains. Finish with the complete capability stack and the course's working rules.
 
 Keep the deck useful without a presenter. Put optional presenter context in `<aside class="notes">`, not in dense slide copy.

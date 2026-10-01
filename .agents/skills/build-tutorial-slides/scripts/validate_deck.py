@@ -137,7 +137,7 @@ def main() -> int:
         "fork instruction": "Fork the starter",
         "clone command": "git clone https://github.com/YOUR-NAME/YOUR-CAPSTONE.git",
         "environment check": "bin/doctor",
-        "factory working directory": "tetris/.factory",
+        "factory source directory": "factory/",
         "first iteration request": "fetch iteration",
         "coaching request": "coach me",
         "factory launcher": "bin/factory",
