@@ -3,6 +3,9 @@
 A hands-on course for building an agentic software factory. Work through the
 iterations one homework at a time, as directed by your instructor.
 
+[See the tutorial slides](https://lean-software-production.github.io/tutorial/slides/)
+for the journey from the first agent loop to an observable, steerable factory.
+
 ## Get started
 
 1. Fork or clone
