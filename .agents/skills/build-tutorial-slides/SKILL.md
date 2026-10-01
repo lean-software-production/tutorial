@@ -54,7 +54,7 @@ Use whole SVG files from the brand catalogue. Never edit, recolour or redraw the
 The deck needs three acts:
 
 1. **Orientation** — show the destination and the learning rhythm. The overall story is a progression from a small agent loop, through explicit composition, to an observable and steerable factory.
-2. **Start now** — show how to fork and rename the starter, open the fork in a GitHub Codespace, sign in to Codex and run `bin/doctor`, stay at the repository root, start Codex (or Pi/Claude Code), then say `fetch iteration` and `coach me`. Mention cloning the fork as the local alternative. Codespaces with Codex is the path the starter README walks through. Explain how to run the factory produced by Homework 1.
+2. **Start now** — show how to fork and rename the starter, open the fork in a GitHub Codespace, sign in to the Codex extension (Sign in with ChatGPT) and to Pi (`/login` → OpenAI Codex (legacy) → device code), run `bin/doctor`, open the Codex chat panel at the repository root, then say `fetch iteration` and `coach me`. The Codex extension coaches; Pi is the agent the factory runs. Mention cloning the fork, and terminal agents (Pi/Claude Code/Codex), as alternatives. This is the path the starter README walks through. Explain how to run the factory produced by Homework 1.
 3. **The journey** — give each iteration its own slide. State the pressure it introduces and the concrete capability the factory gains. Finish with the complete capability stack and the course's working rules.
 
 Keep the deck useful without a presenter. Put optional presenter context in `<aside class="notes">`, not in dense slide copy.

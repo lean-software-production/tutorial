@@ -73,7 +73,7 @@
     <section class="center section-break" data-menu-title="Get started">
       <p class="kicker">First things first</p>
       <h2 class="sk-title"><span class="sk-hl">Get started</span></h2>
-      <p class="lede">Fork the starter, open it in a Codespace, start your agent at the root, then fetch Homework 1.</p>
+      <p class="lede">Fork the starter, open it in a Codespace, sign in with ChatGPT, then fetch Homework 1 in the Codex chat.</p>
       <img class="section-icon" src="https://lean-software-production.github.io/brand/kit/icons/laptop.svg" alt="A laptop">
     </section>
 
@@ -97,31 +97,33 @@
       <h2 class="sk-section">2 · Open and check</h2>
       <div class="split code-split">
         <div>
-          <p class="lede compact">On <em>your fork</em>, choose <strong>Code → Codespaces → Create codespace</strong>. In its terminal, sign in to Codex and check the tools without calling a model.</p>
-          <pre><code>codex login --device-auth
-bin/doctor --agent codex</code></pre>
+          <p class="lede compact">On <em>your fork</em>, choose <strong>Code → Codespaces → Create codespace</strong>. Sign in twice with ChatGPT, then check the tools without calling a model.</p>
+          <ol class="action-list sk-mustard">
+            <li><strong>Codex extension</strong>, your coach: open Codex in the sidebar, then <strong>Sign in with ChatGPT</strong>.</li>
+            <li><strong>Pi</strong>, which your factory runs: in the terminal, <code>pi</code>, then <code>/login</code> → <strong>OpenAI Codex (legacy)</strong> → <strong>Device code login</strong>.</li>
+          </ol>
+          <pre><code>bin/doctor --agent codex</code></pre>
           <p class="small-copy">Working locally instead? <code>git clone https://github.com/YOUR-NAME/YOUR-CAPSTONE.git</code>, then run <code>bin/doctor</code> in it.</p>
         </div>
         <div class="sk-panel sk-blue sk-wash tip-card">
           <img src="https://lean-software-production.github.io/brand/kit/icons/checklist.svg" alt="A checklist">
-          <p><strong>Ready means:</strong> Bash, Git, Node, npm and all three agent CLIs are present, and Codex is signed in.</p>
+          <p><strong>Ready means:</strong> Bash, Git, Node, npm and all three agent CLIs are present, and Pi and Codex are signed in.</p>
         </div>
       </div>
-      <aside class="notes">Device code sign-in is off by default. Before signing in, turn on “Enable device code authorization for Codex” in ChatGPT Settings → Security; on a Business or Team workspace, an admin enables it under Permissions &amp; Roles. The Codespace runs bin/doctor once when it is first built; a warning that Codex is not configured is expected until you sign in.</aside>
+      <aside class="notes">Pi signs in with a device code, which is off by default. Before signing in, turn on “Enable device code authorization for Codex” in ChatGPT Settings → Security; on a Business or Team workspace, an admin enables it under Permissions &amp; Roles. The Codespace runs bin/doctor once when it is first built; warnings that Pi and Codex are not signed in are expected until you sign in. The Codex extension and the codex CLI share one sign-in, so bin/doctor sees the extension's. Type /quit to leave Pi after signing in.</aside>
     </section>
 
     <section class="mid" data-menu-title="3. Start your coding agent">
       <h2 class="sk-section">3 · Start your coding agent</h2>
-      <p class="lede compact">Stay at the repository root. That is where your agent finds its instructions and skills.</p>
-      <pre><code>codex    # or: pi
-         # or: claude</code></pre>
-      <div class="sk-ribbon"><img src="https://lean-software-production.github.io/brand/kit/icons/compass.svg" alt=""><span class="sk-kicker">Check:</span> your working directory is the root of your fork. Your factory source will live in <code>factory/</code>.</div>
-      <aside class="notes">Start the agent at the repository root, where AGENTS.md and the project skills live. A Codespace terminal opens there.</aside>
+      <p class="lede compact">Open the <strong>Codex chat panel</strong>. It works at the repository root, where your agent finds its instructions and skills.</p>
+      <div class="sk-ribbon"><img src="https://lean-software-production.github.io/brand/kit/icons/compass.svg" alt=""><span class="sk-kicker">Check:</span> Codex is working in the root of your fork. Your factory source will live in <code>factory/</code>.</div>
+      <p class="small-copy">Prefer a terminal agent? Start <code>pi</code>, <code>claude</code> or <code>codex</code> at the repository root instead.</p>
+      <aside class="notes">The agent must start at the repository root, where AGENTS.md and the project skills live. The Codex extension opens on the Codespace's folder, which is the root.</aside>
     </section>
 
     <section class="mid" data-menu-title="4. Fetch Homework 1">
       <h2 class="sk-section">4 · Fetch Homework 1</h2>
-      <p class="lede compact">Now talk to the coding agent. These are requests in its chat, not shell commands.</p>
+      <p class="lede compact">Now talk to your coding agent in the Codex chat panel. These are messages, not shell commands.</p>
       <div class="chat-sequence">
         <div class="sk-bubble"><span class="speaker">You</span> fetch iteration</div>
         <svg class="down-arrow" viewBox="0 0 30 55" aria-hidden="true"><path d="M15 3 L15 44 M7 36 L15 46 L23 36" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#sk-wobble-line)"/></svg>
@@ -358,8 +360,7 @@ bin/doctor --agent codex</code></pre>
       <div class="final-commands">
         <span>in your Codespace</span>
         <code>bin/doctor</code>
-        <code>codex</code>
-        <span>then say</span>
+        <span>then in the Codex chat, say</span>
         <strong>fetch iteration</strong>
         <strong>coach me</strong>
       </div>
