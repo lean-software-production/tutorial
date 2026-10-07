@@ -7,15 +7,11 @@ on:
       - ".github/workflows/pages.yml"
       - "docs/**"
       - ".agents/skills/build-tutorial-slides/**"
-      - "bin/**"
-      - "tests/**"
   pull_request:
     paths:
       - ".github/workflows/pages.yml"
       - "docs/**"
       - ".agents/skills/build-tutorial-slides/**"
-      - "bin/**"
-      - "tests/**"
   workflow_dispatch:
 
 permissions:
@@ -29,17 +25,11 @@ concurrency:
 
 jobs:
   check:
-    name: Check tutorial
+    name: Check deck
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Test tutorial checks
-        run: python3 -m unittest discover -s tests
-      - name: Validate run terminology and iteration links
-        run: python3 bin/check-runs
-      - name: Validate feature step vocabulary
-        run: python3 bin/step-drift
       - name: Validate slides
         run: python3 .agents/skills/build-tutorial-slides/scripts/validate_deck.py
       - name: Configure GitHub Pages

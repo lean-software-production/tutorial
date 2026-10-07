@@ -24,8 +24,6 @@ Each iteration folder holds the whole spec at that point, not just what's new:
 
 [`STEPS.md`](STEPS.md) lists every step the features use. It is for
 the course's authors, and `bin/step-drift` checks the features against it.
-`bin/check-runs` checks the named-run vocabulary from 004 onward and local
-iteration links. Both checks run in CI alongside slide validation.
 
 ## Ground rules
 
