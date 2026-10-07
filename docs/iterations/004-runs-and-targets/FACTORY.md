@@ -21,13 +21,13 @@ with the machines they name each in a folder of its own in
 line in it that names the doer runs the same doer. A line never names a
 target.
 
-Each run is for a **job**: one of the target's assembly lines, a seed,
-saying what to build, and a target, the codebase to build it in. The
+A **run** is a named execution of one of the target's assembly lines on a
+seed, saying what to build, against a target, the codebase to build it in. The
 factory source is separate from the generated product. Targets
 are plain folders: commits in their containing repository include only
 the selected target's work and preserve unrelated staged changes. Git is
-initialized only when no repository contains the target. The job keeps
-its plan in `jobs/<name>/plan.md` in the factory's folder, never in the target.
+initialized only when no repository contains the target. The run keeps
+its plan in `runs/<name>/plan.md` in the factory's folder, never in the target.
 
-New since iteration 3: jobs, and targets that hold their own lines and
-machines. Plans move from each target into the factory's `jobs/` folder.
+New since iteration 3: runs, and targets that hold their own lines and
+machines. Plans move from each target into the factory's `runs/` folder.

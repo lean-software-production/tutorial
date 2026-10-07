@@ -36,7 +36,7 @@
         <div class="sk-panel sk-teal sk-wash">
           <img src="https://lean-software-production.github.io/brand/kit/icons/gear.svg" alt="Two gears">
           <div class="sk-step"><span class="sk-num">2</span><span class="sk-label">Compose</span></div>
-          <p>Make routes, machines, jobs and targets explicit.</p>
+          <p>Make routes, machines, runs and targets explicit.</p>
         </div>
         <svg class="sk-arrow" viewBox="0 0 40 20" aria-hidden="true"><line x1="4" y1="10" x2="30" y2="10" stroke-width="4" stroke-linecap="round" marker-end="url(#sk-head)" filter="url(#sk-wobble-line)"/></svg>
         <div class="sk-panel sk-forest sk-wash">
@@ -250,16 +250,16 @@
       <div class="gain"><span>Factory gains</span><strong>A configurable workflow instead of a hard-coded sequence.</strong></div>
     </section>
 
-    <section class="mid" data-iteration="004" data-menu-title="004 · Jobs and targets">
+    <section class="mid" data-iteration="004" data-menu-title="004 · Runs and targets">
       <p class="iteration-kicker">Homework 004</p>
-      <h2 class="sk-section">Jobs and targets</h2>
+      <h2 class="sk-section">Runs and targets</h2>
       <div class="sk-row three-up">
         <div class="sk-panel sk-mustard"><div class="sk-step"><span class="sk-label">Factory</span></div><p>Moves into its own codebase.</p></div>
         <div class="sk-panel sk-teal"><div class="sk-step"><span class="sk-label">Target</span></div><p>Owns its product, lines and machines.</p></div>
-        <div class="sk-panel sk-forest"><div class="sk-step"><span class="sk-label">Job</span></div><p>Remembers a target, line, seed and plan.</p></div>
+        <div class="sk-panel sk-forest"><div class="sk-step"><span class="sk-label">Run</span></div><p>Remembers a target, line, seed and plan.</p></div>
       </div>
-      <pre class="single-command"><code>bin/factory --job tetris --target tetris/tetris-003 --line careful --seed tetris/spec.md</code></pre>
-      <div class="gain"><span>Factory gains</span><strong>Many resumable jobs across many codebases.</strong></div>
+      <pre class="single-command"><code>bin/factory --run tetris --target tetris/tetris-003 --line careful --seed tetris/spec.md</code></pre>
+      <div class="gain"><span>Factory gains</span><strong>Many resumable runs across many codebases.</strong></div>
     </section>
 
     <section class="mid" data-iteration="005" data-menu-title="005 · Fan out">
@@ -285,9 +285,9 @@
       <h2 class="sk-section">Watching</h2>
       <div class="split iteration-split">
         <div>
-          <p class="lede compact">The factory becomes a service. Start a job, get your terminal back, then attach.</p>
-          <pre><code>./factory --job tetris …
-# started job tetris
+          <p class="lede compact">The factory becomes a service. Start a run, get your terminal back, then attach.</p>
+          <pre><code>./factory --run tetris …
+# started run tetris
 
 ./factory watch tetris
 # planner | …
@@ -299,7 +299,7 @@
           <p>Machines speak <strong>ACP</strong>: the Agent Client Protocol. Output and token usage stream as they work.</p>
         </div>
       </div>
-      <div class="gain"><span>Factory gains</span><strong>Background jobs, durable output and live cost visibility.</strong></div>
+      <div class="gain"><span>Factory gains</span><strong>Background runs, durable output and live cost visibility.</strong></div>
     </section>
 
     <section class="mid" data-iteration="007" data-menu-title="007 · Steering">
@@ -322,7 +322,7 @@
       <div class="capability-stack">
         <div class="stack-item sk-mustard"><span>001</span> Plans and does</div>
         <div class="stack-item sk-teal"><span>002–003</span> Checks and routes</div>
-        <div class="stack-item sk-forest"><span>004</span> Remembers jobs and targets</div>
+        <div class="stack-item sk-forest"><span>004</span> Remembers runs and targets</div>
         <div class="stack-item sk-coral"><span>005</span> Runs branches in parallel</div>
         <div class="stack-item sk-blue"><span>006–007</span> Shows its work and listens</div>
       </div>

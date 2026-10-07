@@ -135,11 +135,6 @@ inputoutput-cost-asymmetry:
   definition: |-
     Output tokens cost several times more than input tokens (typically 3–6×), because generation is autoregressive (one pass per token) while input is processed in parallel. A long prompt is usually cheaper than a long response. [→ token-cost](concepts/token-cost-and-cost-management.md)
 
-job:
-  term: "Job"
-  definition: |-
-    One run of an *assembly line* on a *seed*, against a *target*, under a name. The job's own state — its plan and its record — lives with the *factory*, in a folder named after the job, not in the target. Naming the same job again picks it up where it stopped.
-
 judge-llm-judge-judge-agent:
   term: "Judge (LLM judge / judge agent)"
   definition: |-
@@ -228,6 +223,11 @@ relevance-vs-context-bloat:
   definition: |-
     The RAG tradeoff: more retrieved content raises the chance of including what you need, but also raises cost, noise, and latency and can bury the signal. The goal is precision, not volume. [→ rag](concepts/rag.md)
 
+run:
+  term: "Run"
+  definition: |-
+    A named execution of an *assembly line* on a *seed*, against a *target*. The run's own state — its plan and its record — lives with the *factory*, in `runs/<name>/`, not in the target. Naming the same run again picks it up where it stopped; starting or resuming it is an invocation of that run.
+
 seed:
   term: "Seed"
   definition: |-
@@ -271,7 +271,7 @@ sub-agent:
 target:
   term: "Target"
   definition: |-
-    The folder a *job* builds its product in. Targets may share a Git repository; the factory commits only work inside the selected target and initializes Git only when no repository contains it. A target also holds the *assembly lines* and *machines* that build its product. The target is chosen when the job starts, and the job runs one of the target's lines. An assembly line never names a target, so the same line, copied into another codebase, can build there too.
+    The folder a *run* builds its product in. Targets may share a Git repository; the factory commits only work inside the selected target and initializes Git only when no repository contains it. A target also holds the *assembly lines* and *machines* that build its product. The target is chosen when the run starts, and the run executes one of the target's lines. An assembly line never names a target, so the same line, copied into another codebase, can build there too.
 
 token:
   term: "Token"

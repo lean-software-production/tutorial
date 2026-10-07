@@ -5,7 +5,7 @@
 | 001 | [Basic unvalidated loop](001-basic-unvalidated-loop/README.md) |
 | 002 | [Checking the work](002-checking-the-work/README.md) |
 | 003 | [The assembly line](003-assembly-line/README.md) |
-| 004 | [Jobs and targets](004-jobs-and-targets/README.md) |
+| 004 | [Runs and targets](004-runs-and-targets/README.md) |
 | 005 | [Fan out](005-fan-out/README.md) |
 | 006 | [Watching](006-watching/README.md) |
 | 007 | [Steering](007-steering/README.md) |

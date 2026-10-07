@@ -24,23 +24,23 @@ target.
 A line can **fan out**: a machine with several unlabelled edges out runs
 every machine they lead to at the same time, and those branches meet at
 one machine, which runs once they have all finished and is given their
-results and nothing else. A branch that fails stops the job. The
+results and nothing else. A branch that fails stops the run. The
 course's example is the **three big brains**: three reviewers on
 different providers' models report on each attempt, and a synthesiser
 reads their reports and decides.
 
-The factory runs as a daemon. You start a job, and it keeps working
+The factory runs as a daemon. You start a run, and it keeps working
 while another command watches it: what each machine generates and what
 it spends. It runs each machine as an ACP agent, speaking the Agent
 Client Protocol to it over stdio, and keeps what the machines generate
-and spend in the job's record.
+and spend in the run's record.
 
-Each run is for a **job**: one of the target's assembly lines, a seed,
-saying what to build, and a target, the codebase to build it in. The
-factory source is separate from the generated product. The job
-keeps its plan in `jobs/<name>/plan.md` in the factory's folder, never in the target. A job can be stopped, and
+A **run** is a named execution of one of the target's assembly lines on a
+seed, saying what to build, against a target, the codebase to build it in. The
+factory source is separate from the generated product. The run
+keeps its plan in `runs/<name>/plan.md` in the factory's folder, never in the target. A run can be stopped, and
 started again later.
 
 New since iteration 5: `monitoring.feature` and `observability.feature`;
-machines run as ACP agents; the factory runs as a daemon, one job at a
-time, and jobs can be stopped.
+machines run as ACP agents; the factory runs as a daemon, one run at a
+time, and runs can be stopped.

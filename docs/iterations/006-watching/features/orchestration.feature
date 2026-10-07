@@ -4,8 +4,8 @@ Feature: Orchestration
   when to give up and when to stop. These rules do not care how validation
   is done.
 
-  A machine an example sees at work, part-way through or in a job just
-  started, goes on working until the example says it finishes, or the job
+  A machine an example sees at work, part-way through or in a run just
+  started, goes on working until the example says it finishes, or the run
   is stopped or run to the end.
 
   Background:
@@ -13,7 +13,7 @@ Feature: Orchestration
     And a new target, with a seed describing a game of Tetris
     And the target has the machines planner, doer and validator
     And the target has an assembly line "careful" on which the doer's work is validated
-    And a job named "tetris", on the "careful" line, with that seed and target
+    And a run named "tetris", on the "careful" line, with that seed and target
     And the planner plans the tasks alpha and beta
     And the doer does the next task in the plan
     And the validator is always satisfied
@@ -29,52 +29,52 @@ Feature: Orchestration
   Rule: The factory runs as a daemon
 
     From here on the factory keeps running after the command that starts
-    a job returns, and it runs each machine as an ACP agent, speaking the
-    Agent Client Protocol to it over stdio. "The factory runs a job" still
+    a run returns, and it runs each machine as an ACP agent, speaking the
+    Agent Client Protocol to it over stdio. "The factory runs a run" still
     means running it to the end: starting it, then waiting until it has
     finished.
 
-    Example: Starting a job
+    Example: Starting a run
       Given a plan with one task, not done
-      When I start the "tetris" job
-      Then the command has returned while the "tetris" job is running
+      When I start the "tetris" run
+      Then the command has returned while the "tetris" run is running
       And the factory is running
 
-  Rule: The factory runs one job at a time
+  Rule: The factory runs one run at a time
 
-    Example: A second job while one is running
+    Example: A second run while one is running
       Given a plan with one task, not done
-      And the "tetris" job is running, with the doer part-way through an attempt
+      And the "tetris" run is running, with the doer part-way through an attempt
       And a new target, with a seed describing a game of Snake
       And the target has the machines planner, doer and validator
       And the "careful" line has been copied into the target
-      And a job named "snake", on the "careful" line, with that seed and target
-      When I start the "snake" job
+      And a run named "snake", on the "careful" line, with that seed and target
+      When I start the "snake" run
       Then the factory refuses
-      And the "tetris" job is running
+      And the "tetris" run is running
 
   Rule: The factory runs the machines its assembly line gives it
 
     Example: An assembly line with no validator on it
       Given the validator has been taken out of the "careful" line, so the doer goes straight to the planner
       And a plan with three tasks, none of them done
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then the plan shows every task as done
       And the validator has not been called
 
-  Rule: Each job runs the assembly line it is given
+  Rule: Each run executes the assembly line it is given
 
-    A target can hold more than one assembly line. Which one a job runs
-    is chosen when the job starts; a line never names a target.
+    A target can hold more than one assembly line. Which one a run executes
+    is chosen when the run starts; a line never names a target.
 
     Example: Two lines, one target
       Given the target has an assembly line "quick" on which the doer goes straight to the planner
-      And a job named "quick", on the "quick" line, with that seed and target
-      And a plan for each job with three tasks of its own, none of them done
-      When the factory runs the "tetris" job
-      And the factory runs the "quick" job
-      Then the validator was called for the "tetris" job
-      And the validator was not called for the "quick" job
+      And a run named "quick", on the "quick" line, with that seed and target
+      And a plan for each run with three tasks of its own, none of them done
+      When the factory runs the "tetris" run
+      And the factory runs the "quick" run
+      Then the validator was called for the "tetris" run
+      And the validator was not called for the "quick" run
 
   Rule: A line copied into another target builds there
 
@@ -82,18 +82,18 @@ Feature: Orchestration
       Given a new target, with a seed describing a game of Snake
       And the target has the machines planner, doer and validator
       And the "careful" line has been copied into the target
-      And a job named "snake", on the "careful" line, with that seed and target
-      And a plan for each job with three tasks of its own, none of them done
-      When the factory runs the "tetris" job
-      And the factory runs the "snake" job
-      Then each target holds only its own job's work
+      And a run named "snake", on the "careful" line, with that seed and target
+      And a plan for each run with three tasks of its own, none of them done
+      When the factory runs the "tetris" run
+      And the factory runs the "snake" run
+      Then each target holds only its own run's work
 
   Rule: The factory does no work on an assembly line it refuses
 
     Example: The assembly line names a machine the factory does not have
       Given "validator" is misspelt "validater" throughout the "careful" line
       And a plan with three tasks, none of them done
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then no agent has been called
       And there are no new commits
 
@@ -103,7 +103,7 @@ Feature: Orchestration
 
     Example: Three tasks remain
       Given a plan with three tasks, none of them done
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then there are three new work commits
       And each new work commit contains the work for one task
 
@@ -111,13 +111,13 @@ Feature: Orchestration
 
     Example: The work is right first time
       Given a plan with three tasks, none of them done
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then the doer has been called three times
 
     Example: The work is wrong first time
       Given a plan with three tasks, none of them done
       And the validator is not satisfied the first time
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then the doer has been called four times
       And there are three new work commits
 
@@ -135,7 +135,7 @@ Feature: Orchestration
       Given a plan with three tasks, none of them done
       And the factory allows at most three attempts at a task
       And the validator is never satisfied
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then the doer has been called three times
       And it reports that a task hit its limit
       And there are no new commits
@@ -145,12 +145,12 @@ Feature: Orchestration
 
     Example: Three tasks, three work commits
       Given a plan with three tasks, none of them done
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then there are three new work commits
 
     Example: Finished work is not redone
       Given a plan whose first task is done
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then there are two new work commits
       And no new commit contains the work for the first task
 
@@ -162,13 +162,13 @@ Feature: Orchestration
 
     Example: Work remains
       Given a plan with three tasks, none of them done
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then the plan shows every task as done
       And the factory has stopped
 
     Example: Every task is already done
       Given a plan in which every task is done
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then the doer has not been called
       And there are no new commits
       And the factory has stopped
@@ -182,7 +182,7 @@ Feature: Orchestration
     Example: The validator answers in prose
       Given a plan with three tasks, none of them done
       And the validator answers in prose, with no result
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then it reports that it could not read the validator's result
       And there are no new commits
       And the factory has stopped
@@ -190,29 +190,29 @@ Feature: Orchestration
     Example: A label the result does not have
       Given a plan with three tasks, none of them done
       And the edges from validator are labelled "approved" and "not approved"
-      When the factory runs the "tetris" job
+      When the factory runs the "tetris" run
       Then it reports that the result of validator has no field "approved"
       And there are no new commits
 
-  Rule: Stopping a job leaves the factory running
+  Rule: Stopping a run leaves the factory running
 
-    Example: Stopping the "tetris" job
+    Example: Stopping the "tetris" run
       Given a plan with one task, not done
-      And the "tetris" job is running, with the doer part-way through an attempt
-      When I stop the "tetris" job
-      Then the "tetris" job is not running
+      And the "tetris" run is running, with the doer part-way through an attempt
+      When I stop the "tetris" run
+      Then the "tetris" run is not running
       And the factory is running
 
-  Rule: Stopping the factory stops its job too
+  Rule: Stopping the factory stops its run too
 
-    Example: Stopping the factory while a job runs
+    Example: Stopping the factory while a run runs
       Given a plan with one task, not done
-      And the "tetris" job is running, with the doer part-way through an attempt
+      And the "tetris" run is running, with the doer part-way through an attempt
       When I stop the factory
       Then the factory is not running
-      And the "tetris" job is not running
+      And the "tetris" run is not running
 
-  Rule: A stop interrupts the work at once and leaves the job in a sane state
+  Rule: A stop interrupts the work at once and leaves the run in a sane state
 
     Stopping is something you choose to do. Every machine that is
     working is interrupted there and then, and the attempt is abandoned:
@@ -223,8 +223,8 @@ Feature: Orchestration
 
     Example: The doer is mid-attempt
       Given a plan with one task, not done
-      And the "tetris" job is running, with the doer part-way through an attempt, having said "started"
-      When I stop the "tetris" job
+      And the "tetris" run is running, with the doer part-way through an attempt, having said "started"
+      When I stop the "tetris" run
       Then the plan shows every task as not done
       And there are no new commits
 
@@ -233,18 +233,18 @@ Feature: Orchestration
       And every reviewer is always satisfied
       And the synthesiser is always satisfied
       And a plan with one task, not done
-      And the "tetris" job is running, with every reviewer part-way through
-      When I stop the "tetris" job
-      Then the "tetris" job is not running
+      And the "tetris" run is running, with every reviewer part-way through
+      When I stop the "tetris" run
+      Then the "tetris" run is not running
       And the plan shows every task as not done
       And there are no new commits
 
-  Rule: A stopped job carries on when it is started again
+  Rule: A stopped run carries on when it is started again
 
-    Example: Starting the "tetris" job again
+    Example: Starting the "tetris" run again
       Given a plan with one task, not done
-      And the "tetris" job is running, with the doer part-way through an attempt, having said "started"
-      And I have stopped the "tetris" job
-      When the factory runs the "tetris" job, given only its name
+      And the "tetris" run is running, with the doer part-way through an attempt, having said "started"
+      And I have stopped the "tetris" run
+      When the factory runs the "tetris" run, given only its name
       Then the plan shows every task as done
       And there is one new work commit
