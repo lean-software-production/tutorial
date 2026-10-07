@@ -25,7 +25,7 @@ they lead to, at the same time, each with its own prompt. Each branch's
 one unlabelled edge leads to the same machine, which runs once they have
 all finished and is given their results and nothing else. The factory
 refuses a line whose branches do not meet, and a branch that fails stops
-the job. The three big brains stays as the course's example of a fan
+the run. The three big brains stays as the course's example of a fan
 out: three reviewers configured alike on different models, meeting at a
 synthesiser. The examples run on a single-validator line from 004 on, and
 bring in the three big brains only where several machines at once are

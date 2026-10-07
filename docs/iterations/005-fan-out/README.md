@@ -10,7 +10,7 @@ each branch's one edge leads to the same machine, which runs once all of
 them have finished, and is given what each of them answered and nothing
 else. The factory refuses a line whose branches do not meet, and a
 branch that fails, by crashing or by answering with no result, stops the
-job.
+run.
 
 That is all the factory learns. What you fan out to is up to the line.
 The course's example is **the three big brains**: the doer's work fans

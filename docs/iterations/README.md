@@ -5,7 +5,7 @@
 | 001 | [Basic unvalidated loop](001-basic-unvalidated-loop/README.md) |
 | 002 | [Checking the work](002-checking-the-work/README.md) |
 | 003 | [The assembly line](003-assembly-line/README.md) |
-| 004 | [Jobs and targets](004-jobs-and-targets/README.md) |
+| 004 | [Runs and targets](004-runs-and-targets/README.md) |
 | 005 | [Fan out](005-fan-out/README.md) |
 | 006 | [Watching](006-watching/README.md) |
 | 007 | [Steering](007-steering/README.md) |
@@ -24,6 +24,8 @@ Each iteration folder holds the whole spec at that point, not just what's new:
 
 [`STEPS.md`](STEPS.md) lists every step the features use. It is for
 the course's authors, and `bin/step-drift` checks the features against it.
+`bin/check-runs` checks the named-run vocabulary from 004 onward and local
+iteration links. Both checks run in CI alongside slide validation.
 
 ## Ground rules
 

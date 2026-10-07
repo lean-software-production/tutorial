@@ -24,14 +24,14 @@ target.
 A line can **fan out**: a machine with several unlabelled edges out runs
 every machine they lead to at the same time, and those branches meet at
 one machine, which runs once they have all finished and is given their
-results and nothing else. A branch that fails stops the job. The
+results and nothing else. A branch that fails stops the run. The
 course's example is the **three big brains**: three reviewers on
 different providers' models report on each attempt, and a synthesiser
 reads their reports and decides.
 
-Each run is for a **job**: one of the target's assembly lines, a seed,
-saying what to build, and a target, the codebase to build it in. The
-factory source is separate from the generated product. The job
-keeps its plan in `jobs/<name>/plan.md` in the factory's folder, never in the target.
+A **run** is a named execution of one of the target's assembly lines on a
+seed, saying what to build, against a target, the codebase to build it in. The
+factory source is separate from the generated product. The run
+keeps its plan in `runs/<name>/plan.md` in the factory's folder, never in the target.
 
 New since iteration 4: `fan-out.feature`; lines can fan out and back in.

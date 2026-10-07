@@ -2,8 +2,11 @@
 
 Every step in the iterations' feature files, as one vocabulary. A
 student's step definitions carry over from one iteration to the next, so
-a step's words change only when what it means changes. When an iteration
-needs a new step, add it here first. `bin/step-drift` checks every step
+a step's words change only when what it means changes. From 004, the
+named factory execution is a **run**; its steps use that noun consistently
+through every later iteration. Starting or resuming it is an invocation
+of the same run, not a new run. When an iteration needs a new step, add
+it here first. `bin/step-drift` checks every step
 against this list, and shows what each iteration adds and drops.
 
 `{string}` is a quoted value, `{word}` a single word. The range says which
@@ -15,8 +18,7 @@ a small program chosen as the validator's harness: a test double. No
 feature mentions one.
 
 No step waits a set time. A machine an example needs to see at work stays
-part-way through until a step says it finishes, or the job is run to the
-end, and a step that waits for something waits for it to happen, not for
+part-way through until a step says it finishes, or the run finishes, and a step that waits for something waits for it to happen, not for
 a while.
 
 This file is for authors of the course. `fetch-iteration` does not copy
@@ -29,24 +31,24 @@ it to students.
 - `a seed describing a game of Tetris` — 001–003. A seed file outside the target, selected with `--seed`.
 - `no seed is chosen` — 001–003. Omit the seed argument.
 - `a seed describing Tetris on a board 8 columns wide, started with {string}` — 001+, `@real-agent`.
-- `a copy of the factory` — 001+. The factory copied into a new folder of its own, with no jobs or targets.
+- `a copy of the factory` — 001+. The factory copied into a new folder of its own, with no runs or targets.
 - `a new target` — 001–003. A plain folder in the test repository, selected by an explicit target argument.
 - `the target folder does not exist` — 001–003. The explicitly selected output path does not exist yet.
-- `the target is outside any Git repository` — 001+. Select a folder with no repository among its ancestors. From 004 place the selected line and machines there before invoking the job; this setup must not initialize Git.
+- `the target is outside any Git repository` — 001+. Select a folder with no repository among its ancestors. From 004 place the selected line and machines there before invoking the run; this setup must not initialize Git.
 - `the factory has staged and unstaged changes` — 001+. Unrelated changes outside the target, including both staged and unstaged edits to the same file.
-- `no target is chosen` — 001+. Omit the target argument. From 004 this is the first invocation of a job with no saved configuration, not a resumed job.
+- `no target is chosen` — 001+. Omit the target argument. From 004 this is the first invocation of a run with no saved configuration, not a resumed run.
 - `a new target, with a seed describing a game of {word}` — 004+. A fresh target folder and selected seed in the same test repository as the factory copy. Never initialize a nested repository here; shared-repository behavior must remain covered.
-- `the seed has been deleted` — 001+. The selected seed file (the current job's seed from 004).
+- `the seed has been deleted` — 001+. The selected seed file (the current run's seed from 004).
 
-### Jobs and lines
+### Runs and lines
 
 - `the target has the machines planner, doer and validator` — 004+. Their configurations, in the latest target's `.assembly-lines/.machines/`.
 - `the target has the three big brains` — 005+. reviewer_1 to reviewer_3 and the synthesiser, each a machine of the latest target's, configured alike but for their models.
 - `the target has an assembly line {string} on which the doer's work is validated` — 004+. The line in `assembly-line.feature`'s Background, in the latest target's `.assembly-lines/`.
 - `the target has an assembly line {string} on which the doer goes straight to the planner` — 004+. The same line, without the validator.
 - `the {string} line has been copied into the target` — 004+. From the target that has it, into the latest.
-- `a job named {string}, on the {string} line, with that seed and target` — 004+. The latest target and its seed; the line is one of that target's. The first job named is the current one.
-- `the {string} job has been started` — 004+. It has run once, with all its settings.
+- `a run named {string}, on the {string} line, with that seed and target` — 004+. The latest target and its seed; the line is one of that target's. The first run named is the current one.
+- `the {string} run has been started` — 004+. It has run once, with all its settings.
 - `this assembly line` — 003+. The graph that follows, as the line under test: in the factory's folder through 003, in the latest target from 004.
 - `the validator has been taken out, so the doer goes straight to the planner` — 003.
 - `the validator has been taken out of the {string} line, so the doer goes straight to the planner` — 004+.
@@ -73,7 +75,7 @@ the line routes on: `complete` for the planner, `satisfied` and
 - `the {word} writes a file called SENTINEL` — 001+. And nothing else.
 - `the {word} is always satisfied` — 002+. A validator or the synthesiser.
 - `every reviewer is always satisfied` — 005+.
-- `no reviewer finishes until all three have begun` — 005+. A factory that runs them one after another never finishes the job.
+- `no reviewer finishes until all three have begun` — 005+. A factory that runs them one after another never finishes the run.
 - `the {word} is never satisfied` — 002+. With a finding.
 - `the {word} is not satisfied the first time` — 002+. With the finding `not satisfied the first time`; satisfied every time after.
 - `every reviewer is not satisfied, with a finding of its own: "report 1", "report 2" or "report 3"` — 005+. Numbered in the order they report.
@@ -108,21 +110,21 @@ starting state before the invocation baseline is captured.
 - `a plan with three tasks, none of them done` — 001+.
 - `a plan whose first task is done` — 001+.
 - `a plan in which every task is done` — 001+.
-- `a plan for each job with three tasks of its own, none of them done` — 004+. Each job's tasks are named after the job.
+- `a plan for each run with three tasks of its own, none of them done` — 004+. Each run's tasks are named after the run.
 - `a plan with one task, not done` — 005+.
 
 ### The running factory
 
-From 006 the factory is a daemon. These steps start a job and leave it
+From 006 the factory is a daemon. These steps start a run and leave it
 running, rather than running it to the end.
 
-- `the factory has run the {string} job` — 007+. To the end.
-- `the {string} job is running, with the doer part-way through an attempt` — 006+. Started, and the doer has begun an attempt it does not finish until a step says so.
-- `the {string} job is running, with the doer part-way through an attempt, having said {string}` — 006+. And the doer has generated that line.
-- `the {string} job is running, with every reviewer part-way through` — 006+. All three have begun, and none finishes until a step says so.
-- `I am watching the {string} job` — 006+. Following it, from another command, as it goes.
-- `I am watching the {string} job as it runs` — 006+. Started, and followed.
-- `I have stopped the {string} job` — 006+.
+- `the factory has run the {string} run` — 007+. To the end.
+- `the {string} run is running, with the doer part-way through an attempt` — 006+. Started, and the doer has begun an attempt it does not finish until a step says so.
+- `the {string} run is running, with the doer part-way through an attempt, having said {string}` — 006+. And the doer has generated that line.
+- `the {string} run is running, with every reviewer part-way through` — 006+. All three have begun, and none finishes until a step says so.
+- `I am watching the {string} run` — 006+. Following it, from another command, as it goes.
+- `I am watching the {string} run as it runs` — 006+. Started, and followed.
+- `I have stopped the {string} run` — 006+.
 
 ## When
 
@@ -133,19 +135,19 @@ running, rather than running it to the end.
 - `the factory runs one pass` — 001–002.
 - `the factory runs to completion` — 001–002.
 - `the factory runs` — 003.
-- `the factory runs the {string} job` — 004+. With all its settings: naming them again is fine.
-- `the factory runs the {string} job, given only its name` — 004+.
-- `the factory runs the {string} job with that target` — 004+. The latest target, in place of its own.
+- `the factory runs the {string} run` — 004+. With all its settings: naming them again is fine.
+- `the factory runs the {string} run, given only its name` — 004+.
+- `the factory runs the {string} run with that target` — 004+. The latest target, in place of its own.
 - `the factory reads the assembly line` — 003+. Checks the line under test without running it.
 - `the doer's first attempt at a task is untestable` — 002+, `@real-agent`.
 - `the doer finishes its attempt` — 007+.
 - `the reviewers finish` — 007+.
-- `I start the {string} job` — 006+. The command returns while the job runs; the doer does not finish its first attempt until a step says so.
-- `the {string} job has run to the end` — 006+. Waits until it has.
-- `I stop the {string} job` — 006+.
+- `I start the {string} run` — 006+. The command returns while the run is running; the doer does not finish its first attempt until a step says so.
+- `the {string} run has run to the end` — 006+. Waits until it has.
+- `I stop the {string} run` — 006+.
 - `I stop the factory` — 006+.
-- `I watch the {string} job` — 006+. What the watch command shows now.
-- `I read the {string} job's record` — 006+.
+- `I watch the {string} run` — 006+. What the watch command shows now.
+- `I read the {string} run's record` — 006+.
 - `I say {string} to the {word}` — 007+.
 - `I say {string} to {word}` — 007+. A machine by name, such as reviewer_2.
 
@@ -167,23 +169,23 @@ running, rather than running it to the end.
 - `the plan has the tasks {string} and {string}, and no others` — 001+.
 - `the plan is .factory/plan.md in the target` — 001–003.
 - `there is no plan in the factory's folder` — 001–003.
-- `the plan is plan.md in the factory's jobs folder, under tetris` — 004+.
+- `the plan is plan.md in the factory's runs folder, under tetris` — 004+.
 - `there is no plan in the target` — 004+.
-- `each job has its own plan` — 004+.
+- `each run has its own plan` — 004+.
 - `every task in the plan comes from the seed` — 001+, `@real-agent`.
 - `that task has a subtask for the finding` — 002+, `@real-agent`.
 - `the plan has no new task` — 002+, `@real-agent`.
 
 ### Commits and work
 
-These are about the selected target (the current job's target from 004).
+These are about the selected target (the current run's target from 004).
 Count commits with a pathspec for the selected target. A work commit
 changes product files; a plan-only commit does not count as a work commit.
 Plans are part of target history through 003; from 004 they live outside
 the target. Other targets may share the same repository. Each invocation captures
 a new baseline before running: commit counts are relative to that invocation,
 not to scenario setup. For a daemon, capture the baseline before starting
-the job and compare after it finishes.
+the run and compare after it finishes.
 
 - `there is one new work commit` — 001+.
 - `there are two new work commits` — 001+.
@@ -195,7 +197,7 @@ the job and compare after it finishes.
 - `each new work commit contains the work for one task` — 003+.
 - `no new commit contains the work for the first task` — 003+.
 - `the work for alpha and beta has been committed` — 001+.
-- `each target holds only its own job's work` — 004+.
+- `each target holds only its own run's work` — 004+.
 - `Tetris has been built in the target` — 001+, `@real-agent`.
 - `{string} in the target starts Tetris` — 001+, `@real-agent`.
 - `its board is 8 columns wide` — 001+, `@real-agent`.
@@ -203,7 +205,7 @@ the job and compare after it finishes.
 ### The factory
 
 - `the target is a Git repository` — 001+. Git was initialized for a target outside any existing repository.
-- `the factory's own files and unrelated uncommitted changes are as they were` — 001+. Snapshot the factory copy's source files and all pre-existing unrelated staged and unstaged changes before each invocation. Compare file contents, index entries and path-limited history using the actual source paths in that copy, not a prescribed folder name. Exclude the job's own runtime state, which is expected to change. The repository's global history may gain target-only commits.
+- `the factory's own files and unrelated uncommitted changes are as they were` — 001+. Snapshot the factory copy's source files and all pre-existing unrelated staged and unstaged changes before each invocation. Compare file contents, index entries and path-limited history using the actual source paths in that copy, not a prescribed folder name. Exclude the run's own runtime state, which is expected to change. The repository's global history may gain target-only commits.
 - `the target uses the containing repository` — 001+. The target has no nested `.git`; its Git root is the existing test repository.
 - `it reports that a target is required` — 001+.
 - `the targets {string} and {string} each have their own completed plan and committed work` — 001–003. Each has alpha and beta and a completed plan, all committed. Commits for each target contain only its work and plan. Inspect history limited to that target's paths.
@@ -224,7 +226,7 @@ the job and compare after it finishes.
 - `it reports that it could not read reviewer_2's result` — 005+.
 - `it reports that it could not run reviewer_2` — 005+.
 - `it reports that finish cannot be reached from {word}` — 003+. Among the machines it names.
-- `it says the {string} job already has a target` — 004+.
+- `it says the {string} run already has a target` — 004+.
 
 ### Fan out
 
@@ -243,12 +245,12 @@ What watching and the record show is the student's to lay out; the
 steps only need each line of generated text to say which machine it came
 from, and the tokens in and out per machine.
 
-- `the command has returned while the {string} job is running` — 006+.
+- `the command has returned while the {string} run is running` — 006+.
 - `the factory is running` — 006+.
 - `the factory is not running` — 006+.
-- `the {string} job is running` — 006+.
-- `the {string} job is not running` — 006+.
-- `what I am watching shows that the {string} job was stopped` — 006+.
+- `the {string} run is running` — 006+.
+- `the {string} run is not running` — 006+.
+- `what I am watching shows that the {string} run was stopped` — 006+.
 - `I see {string} from the doer` — 006+. Waits a little for it.
 - `I do not see {string}` — 006+.
 - `I see {string} from reviewer_1, reviewer_2 and reviewer_3` — 006+.
@@ -256,12 +258,12 @@ from, and the tokens in and out per machine.
 - `I see what the planner generated` — 006+.
 - `it shows what every machine generated` — 006+.
 - `it shows what every machine spent` — 006+.
-- `the record is in the job's folder in the factory, not in the target` — 006+.
+- `the record is in the run's folder in the factory, not in the target` — 006+.
 - `it shows tokens in and tokens out for the {word}` — 006+.
 - `it shows a total for each of Anthropic, Google and OpenAI` — 006+.
-- `it shows a total for the whole job` — 006+.
+- `it shows a total for the whole run` — 006+.
 - `what I watched showed the doer's tokens go up` — 006+.
-- `what I watched showed the job's total go up` — 006+.
+- `what I watched showed the run's total go up` — 006+.
 
 ### Steering
 
@@ -293,8 +295,8 @@ Counted over the latest run.
 - `the {word} has been called four times` — 002+.
 - `the {word} has not been called` — 002+.
 - `the planner was called before the doer` — 003+.
-- `the validator was called for the {string} job` — 004+.
-- `the validator was not called for the {string} job` — 004+.
+- `the validator was called for the {string} run` — 004+.
+- `the validator was not called for the {string} run` — 004+.
 
 What a machine (or 001's agent) was given:
 

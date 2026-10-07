@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+"""Check the named-run vocabulary and iteration links (no dependencies).
+
+Run alongside bin/step-drift. Ordinary-work uses of 'job' are intentional;
+features still describe what machines do, not their test implementations.
+"""
+import re
+import sys
+from pathlib import Path
+from urllib.parse import unquote, urlparse
+
+ROOT = Path(__file__).resolve().parent.parent
+ITERATIONS = ROOT / "docs" / "iterations"
+ORDINARY_WORK = ("job it did", "same job on")
+
+
+def vocabulary_errors(text):
+    for phrase in ORDINARY_WORK:
+        text = text.replace(phrase, "ordinary work")
+    return [f"line {number}: obsolete named-execution vocabulary"
+            for number, line in enumerate(text.splitlines(), 1)
+            if re.search(r"\bjobs?\b", line, re.IGNORECASE)]
+
+
+def main():
+    errors = []
+    folders = sorted(p for p in ITERATIONS.iterdir()
+                     if p.is_dir() and re.match(r"\d{3}-", p.name))
+    later = [p for p in folders if int(p.name[:3]) >= 4]
+    if [p.name for p in folders if p.name.startswith("004-")] != ["004-runs-and-targets"]:
+        errors.append("004 must be the unique folder 004-runs-and-targets")
+
+    sources = [p for folder in later for p in folder.rglob("*") if p.is_file()]
+    sources += [ITERATIONS / "STEPS.md", ITERATIONS / "README.md",
+                ROOT / "docs/slides/index.html",
+                ROOT / "docs/adr/0003-fan-out-is-edges-on-the-line.md"]
+    for path in sources:
+        errors += [f"{path.relative_to(ROOT)}: {error}"
+                   for error in vocabulary_errors(path.read_text())]
+    for folder in later:
+        factory = (folder / "FACTORY.md").read_text()
+        if "`runs/<name>/plan.md`" not in factory:
+            errors.append(f"{folder.name}: missing canonical run plan path")
+
+    lexicon = (ROOT / "docs/lexicon.yaml").read_text()
+    if not re.search(r'^run:\n  term: "Run"$', lexicon, re.MULTILINE):
+        errors.append("lexicon must define Run")
+    if re.search(r"^job:|\*job\*", lexicon, re.MULTILINE):
+        errors.append("lexicon still defines or refers to named Job")
+
+    # Only authored Markdown links, not example runtime paths in code spans.
+    links_checked = 0
+    for path in ITERATIONS.rglob("*.md"):
+        for reference in re.findall(r"\[[^\]]+\]\(([^\s)]+)\)", path.read_text()):
+            parsed = urlparse(reference)
+            if parsed.scheme or parsed.netloc or not parsed.path:
+                continue
+            links_checked += 1
+            if not (path.parent / unquote(parsed.path)).exists():
+                errors.append(f"{path.relative_to(ROOT)}: broken link {reference}")
+
+    if errors:
+        for error in errors:
+            print(f"FAIL: {error}", file=sys.stderr)
+        return 1
+    print(f"PASS: named-run vocabulary across {len(later)} iterations; "
+          f"{links_checked} local iteration links resolve.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

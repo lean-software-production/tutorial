@@ -8,8 +8,8 @@ is that you can watch it: what every machine generates, and what every
 machine costs.
 
 This is where your factory stops being something you run and becomes
-something that is running. You start a job and get your terminal back.
-Watching is a separate command that attaches to a job in flight. How it
+something that is running. You start a run and get your terminal back.
+Watching is a separate command that attaches to a run in flight. How it
 attaches — a socket, a pipe, a file the daemon appends to, an HTTP
 endpoint — is yours to choose.
 
@@ -39,25 +39,25 @@ bridge.
 Run these commands from the repository root, through `bin/factory`:
 
 ```sh
-# start a job — you get your terminal back
-$ bin/factory --job tetris --target tetris/tetris-002 --line careful --seed tetris/spec.md
-started job tetris
+# start a run — you get your terminal back
+$ bin/factory --run tetris --target tetris/tetris-002 --line careful --seed tetris/spec.md
+started run tetris
 
 # attach to it, now or later — catches you up, then follows live
 $ bin/factory watch tetris
 planner    | ...
 doer       | ...
-tokens     doer 12.4k in / 3.1k out   anthropic 15.5k   google 4.2k   openai 3.9k   job 23.6k
+tokens     doer 12.4k in / 3.1k out   anthropic 15.5k   google 4.2k   openai 3.9k   run 23.6k
 
-# a second job while one is running is refused
-$ bin/factory --job snake --target snake/snake1 --line quick --seed snake/spec.md
-refused: job tetris is running
+# a second run while one is running is refused
+$ bin/factory --run snake --target snake/snake1 --line quick --seed snake/spec.md
+refused: run tetris is running
 
-# stop the job (the factory stays up); start it again later by name alone
+# stop the run (the factory stays up); start it again later by name alone
 $ bin/factory stop tetris
-$ bin/factory --job tetris
+$ bin/factory --run tetris
 
-# stop the factory itself — its job stops with it
+# stop the factory itself — its run stops with it
 $ bin/factory stop
 ```
 
